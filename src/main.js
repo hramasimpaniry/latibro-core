@@ -31,8 +31,7 @@ const config = {
       ],
       speed: 20,
       customRadius: 100,
-      borderColor: 'white',
-      borderCssClass: 'border-solid'
+      borderColor: 'white'
     },    
   ],
 };

@@ -15,6 +15,7 @@ class Orbital {
       this.container.style.justifyContent = 'center';
       this.container.style.backgroundColor = this.backgroundColor;
   
+      // Add orbits
       this.orbits.forEach((orbit, orbitIndex) => {
         const orbitRadius = (orbit.customRadius || 75) + orbitIndex * this.orbitSpacing;
         const orbitAnimationName = `orbit-${orbitIndex}-rotation`;
@@ -68,8 +69,8 @@ class Orbital {
           img.style.objectFit = 'contain';
 
           this.addAnimation(`@keyframes ${itemAnimationName} {
-              0% { offset-distance: ${itemInitialOffset}%; offset-rotate: 360deg}
-              100% { offset-distance: ${itemInitialOffset + 100}%; offset-rotate: 0deg}
+              0% { offset-distance: ${itemInitialOffset}%; offset-rotate: 360deg }
+              100% { offset-distance: ${itemInitialOffset + 100}%; offset-rotate: 0deg }
           }`); 
 
           imgDiv.appendChild(img);
