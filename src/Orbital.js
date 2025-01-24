@@ -20,6 +20,7 @@ class Orbital {
         const orbitRadius = (orbit.customRadius || 75) + orbitIndex * this.orbitSpacing;
         const orbitAnimationName = `orbit-${orbitIndex}-rotation`;
         const itemCount = orbit.items.length;
+        const orbitCssList = orbit.customCss ? orbit.customCss.split(' ') : [];
   
         // Create orbit
         const orbitDiv = document.createElement('div');
@@ -27,7 +28,10 @@ class Orbital {
         orbitDiv.style.width = `${2 * orbitRadius}px`;
         orbitDiv.style.height = `${2 * orbitRadius}px`;
         orbitDiv.style.borderRadius = '50%';
-        orbitDiv.style.border = `${orbit.borderWidth || 2}px ${orbit.borderStyle || 'dashed'} ${orbit.borderColor || 'white'}`;
+        orbitCssList.forEach(function(css) {
+          orbitDiv.classList.add(css);
+        });
+        orbitDiv.style.border = orbitCssList.length <= 0 ? `${orbit.borderWidth || 2}px ${orbit.borderStyle || 'dashed'} ${orbit.borderColor || 'white'}` : '';
         orbitDiv.style.animation = `${orbitAnimationName} ${orbit.speed || 10}s linear infinite ${orbitIndex % 2 === 0 ? 'normal' : 'reverse'}`;
   
         this.addAnimation(`@keyframes ${orbitAnimationName} {

@@ -1,3 +1,15 @@
 * {
   box-sizing: border-box;
 }
+
+.border-red {
+  border-color: #ff6868;
+}
+
+.border-solid {
+  border-style: solid;
+}
+
+.border-1 {
+  border-width: 2px;
+}

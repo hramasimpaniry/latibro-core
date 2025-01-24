@@ -31,7 +31,12 @@ const config = {
       ],
       speed: 20,
       customRadius: 100,
-      borderColor: 'white'
+      // If customCss is provided, inline styling like 
+      // borderWidth, borderColor or borderStyle are ignored.
+      customCss: 'border-solid border-red border-1', 
+      borderColor: 'white',
+      borderStyle: 'dotted',
+      borderWidth: 5
     },    
   ],
 };
