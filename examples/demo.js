@@ -1,4 +1,4 @@
-import Orbital from './Orbital.js';
+import Orbital from '../src/Orbital';
 
 const container = document.getElementById('orbital-container');
 

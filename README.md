@@ -1,4 +1,4 @@
-# Latibro
+# latibro-core
 
 Latibro (read backwards) is a lightweight JavaScript library for creating animated orbital components.
 

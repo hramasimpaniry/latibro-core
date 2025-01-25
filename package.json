@@ -1,7 +1,7 @@
 {
-  "name": "latibro",
+  "name": "@latibro/core",
   "version": "1.0.0",
-  "description": "A lightweight Vanilla JS library for creating animated orbital components.",
+  "description": "The core library for creating animated orbital components.",
   "main": "dist/orbital.umd.js",
   "module": "dist/orbital.es.js",
   "type": "module",
@@ -25,6 +25,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hramasimpaniry/latibro.git"
+    "url": "git+https://github.com/hramasimpaniry/latibro-core.git"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
