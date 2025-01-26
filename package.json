@@ -1,7 +1,7 @@
 {
-  "name": "@latibro/core",
+  "name": "latibro-core",
   "version": "1.0.0",
-  "description": "The core library for creating animated orbital components.",
+  "description": "The core library for creating animated latibro (read backwards) components.",
   "main": "dist/orbital.umd.js",
   "module": "dist/orbital.es.js",
   "type": "module",
