@@ -21,15 +21,34 @@ npm install latibro-core
 
 ### Basic Example
 
+### <code>index.html</code>
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orbital Demo</title>
+</head>
+
+<body>
+  <div id="orbital-container" style="width: 500px; height: 500px;"></div>
+  <link rel="stylesheet" href="/src/style.css">
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
+```
+
+### <code>src/main.js</code>
 ```javascript
 import Orbital from 'latibro-core';
 
 const container = document.getElementById('orbital-container');
 const config = {
   orbits: [
-    { items: ['https://via.placeholder.com/50', 'https://via.placeholder.com/50'], speed: 10 },
-    { items: ['https://via.placeholder.com/50', 'https://via.placeholder.com/50'], speed: 15 },
-    { items: ['https://via.placeholder.com/50', 'https://via.placeholder.com/50'], speed: 20 },    
+    { items: ['https://placehold.co/50', 'https://placehold.co/50'], speed: 10 },
+    { items: ['https://placehold.co/50', 'https://placehold.co/50'], speed: 15 },
+    { items: ['https://placehold.co/50', 'https://placehold.co/50'], speed: 20 },    
   ]
 };
 

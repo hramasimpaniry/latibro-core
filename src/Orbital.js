@@ -86,8 +86,22 @@ class Orbital {
     }
   
     addAnimation(keyframes) {
-      const styleSheet = document.styleSheets[0];
-      styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+      const styleId = "latibro-core";
+      let styleTag = document.getElementById(styleId);
+
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
+      }
+
+      const styleSheet = [...document.styleSheets].find(
+        (sheet) => sheet.ownerNode.id === styleId
+      );
+
+      if (styleSheet) {
+        styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+      }
     }
   }
   
