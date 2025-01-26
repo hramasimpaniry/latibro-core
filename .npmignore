@@ -3,3 +3,4 @@ tests/
 .vite/
 node_modules/
 dist/*.map
+TODO.md
