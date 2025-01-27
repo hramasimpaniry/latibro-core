@@ -55,6 +55,18 @@ const config = {
 new Orbital(container, config);
 ```
 
+### Other Examples
+Please check folder <code>/examples/</code> to view usage of various features and options.
+
+1. **Basic** (`basic/`)  
+   A simple example with one orbit and default parameters.
+
+2. **Custom CSS** (`custom-css/`)  
+   Example showing how to style orbits using custom CSS classes.
+
+3. **Multiple Orbits** (`multi-orbits/`)  
+   Example with multiple orbits, each having independent configurations.
+
 ## Props
 
 ### Main Props (Options for Orbital)
