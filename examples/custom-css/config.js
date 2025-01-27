@@ -9,7 +9,8 @@ const config = {
         "https://placehold.co/50",
         "https://placehold.co/50",
       ],
-      speed: 10,
+      customCss: "orbit-custom",
+      speed: 12,
     },
   ],
 };
