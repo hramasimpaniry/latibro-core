@@ -14,7 +14,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "echo 'No tests yet!'",
+    "test": "vitest",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -31,5 +31,9 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "jsdom": "^26.0.0",
+    "vitest": "^3.0.4"
   }
 }
