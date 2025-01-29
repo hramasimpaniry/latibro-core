@@ -8,59 +8,73 @@ class Orbital {
     this.init();
   }
 
-  init(options) {
+  init() {
+    const containerCssRuleName = `orbital-container`;
+
+    this.addCSSRule(`.${containerCssRuleName} {
+        width: 500px;
+        height: 500px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: ${this.backgroundColor};}
+      `);
+    // default CSS
+    this.container.classList.add(containerCssRuleName);
+
     if (this.options?.container?.customCss) {
       // custom CSS
       this.container.classList.add(
         ...this.options.container.customCss.split(" ")
       );
-    } else {
-      // default inline styles
-      Object.assign(this.container.style, {
-        width: "500px",
-        height: "500px",
-        position: "relative",
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: this.backgroundColor,
-      });
-
-      // custom inline styles
-      if (this.options?.container?.styles) {
-        Object.assign(this.container.style, this.options.container.styles);
-      }
     }
 
-    // Add orbits
+    if (this.options?.container?.styles) {
+      // custom inline styles
+      Object.assign(this.container.style, this.options.container.styles || {});
+    }
+
+    this.createOrbits();
+  }
+
+  createOrbits() {
     this.orbits.forEach((orbit, orbitIndex) => {
       const orbitRadius =
         (orbit.customRadius || 75) + orbitIndex * this.orbitSpacing;
       const orbitAnimationName = `orbit-${orbitIndex}-rotation`;
       const itemCount = orbit.items.length;
-      const orbitCssList = orbit.customCss ? orbit.customCss.split(" ") : [];
-
-      // Create orbit
       const orbitDiv = document.createElement("div");
-      orbitDiv.style.position = "absolute";
-      orbitDiv.style.width = `${2 * orbitRadius}px`;
-      orbitDiv.style.height = `${2 * orbitRadius}px`;
-      orbitDiv.style.borderRadius = "50%";
-      orbitCssList.forEach(function (css) {
-        orbitDiv.classList.add(css);
-      });
-      orbitDiv.style.border =
-        orbitCssList.length <= 0
-          ? `${orbit.borderWidth || 2}px ${orbit.borderStyle || "dashed"} ${
-              orbit.borderColor || "white"
-            }`
-          : "";
-      orbitDiv.style.animation = `${orbitAnimationName} ${
-        orbit.speed || 10
-      }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"}`;
+      const orbitCssRuleName = `orbit-${orbitIndex}`;
 
-      this.addAnimation(`@keyframes ${orbitAnimationName} {
+      // default CSS
+      this.addCSSRule(`.${orbitCssRuleName} {
+        position: absolute;
+        width: ${2 * orbitRadius}px;
+        height: ${2 * orbitRadius}px;
+        border-radius: 50%;
+        border: ${orbit.borderWidth || 2}px ${orbit.borderStyle || "dashed"} ${
+        orbit.borderColor || "white"
+      };
+        animation: ${orbitAnimationName} ${
+        orbit.speed || 10
+      }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"};}
+      `);
+
+      orbitDiv.classList.add(orbitCssRuleName);
+
+      if (orbit.customCss) {
+        // custom CSS
+        orbitDiv.classList.add(...orbit.customCss.split(" "));
+      }
+
+      if (orbit.styles) {
+        // custom inline styles
+        Object.assign(orbitDiv.style, orbit.styles || {});
+      }
+
+      this.addCSSRule(`@keyframes ${orbitAnimationName} {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
         }`);
@@ -101,7 +115,7 @@ class Orbital {
         img.style.height = "32px";
         img.style.objectFit = "contain";
 
-        this.addAnimation(`@keyframes ${itemAnimationName} {
+        this.addCSSRule(`@keyframes ${itemAnimationName} {
               0% { offset-distance: ${itemInitialOffset}%; offset-rotate: 360deg }
               100% { offset-distance: ${
                 itemInitialOffset + 100
@@ -116,14 +130,14 @@ class Orbital {
     });
   }
 
-  addAnimation(keyframes) {
+  addCSSRule(cssRules) {
     const styleId = "latibro-core";
     let styleTag = document.getElementById(styleId);
 
     if (!styleTag) {
       styleTag = document.createElement("style");
       styleTag.id = styleId;
-      document.head.appendChild(styleTag);
+      document.head.prepend(styleTag);
     }
 
     const styleSheet = [...document.styleSheets].find(
@@ -131,7 +145,7 @@ class Orbital {
     );
 
     if (styleSheet) {
-      styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+      styleSheet.insertRule(cssRules, styleSheet.cssRules.length);
     }
   }
 }
