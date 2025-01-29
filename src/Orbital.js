@@ -9,20 +9,27 @@ class Orbital {
   }
 
   init(options) {
-    // orbit-container default styles
-    this.container.style.position = "relative";
-    this.container.style.overflow = "hidden";
-    this.container.style.display = "flex";
-    this.container.style.alignItems = "center";
-    this.container.style.justifyContent = "center";
-    this.container.style.backgroundColor = this.backgroundColor;
+    if (this.options?.container?.customCss) {
+      // custom CSS
+      this.container.classList.add(
+        ...this.options.container.customCss.split(" ")
+      );
+    } else {
+      // default inline styles
+      Object.assign(this.container.style, {
+        width: "500px",
+        height: "500px",
+        position: "relative",
+        overflow: "hidden",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: this.backgroundColor,
+      });
 
-    // orbit-container custom styles
-    if (this.options && this.options.container) {
-      const { styles } = this.options.container;
-
-      if (styles) {
-        Object.assign(this.container.style, styles);
+      // custom inline styles
+      if (this.options?.container?.styles) {
+        Object.assign(this.container.style, this.options.container.styles);
       }
     }
 

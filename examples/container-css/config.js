@@ -8,6 +8,7 @@ const config = {
       border: "2px solid #000",
       padding: "10px",
     },
+    customCss: "custom-css border-lg border-rounded",
   },
   orbits: [
     {
