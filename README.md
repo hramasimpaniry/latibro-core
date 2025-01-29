@@ -2,12 +2,14 @@
 
 Latibro (read backwards) is a lightweight JavaScript library for creating animated orbital components.
 
+![alt text](./examples/basic/basic.png "Title")
+
 ## Features
 
 - Dynamic circular orbit animations.
 - Supports multiple orbits with independent speeds.
 - Fully customizable:
-  - <code>v0.2.0</code> Container styles (custom css styles).
+  - <code>v0.2.0</code> Container customization (inline styles and custom CSS classes).
   - Orbit styles (color, thickness, etc.).
   - Element animations and spacing.
 - Designed for performance and ease of use.
@@ -30,13 +32,13 @@ npm install latibro-core
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Orbital Demo</title>
+    <title>Orbit CSS</title>
+    <script type="module" src="./config.js"></script>
+    <link rel="stylesheet" href="./style.css" />
   </head>
 
   <body>
     <div id="orbital-container" style="width: 500px; height: 500px;"></div>
-    <link rel="stylesheet" href="/src/style.css" />
-    <script type="module" src="/src/main.js"></script>
   </body>
 </html>
 ```
@@ -48,18 +50,20 @@ import Orbital from "latibro-core";
 
 const container = document.getElementById("orbital-container");
 const config = {
+  container: {
+    styles: {
+      width: "500px",
+      height: "500px",
+    },
+  },
   orbits: [
     {
-      items: ["https://placehold.co/50", "https://placehold.co/50"],
+      items: [
+        "https://placehold.co/50",
+        "https://placehold.co/50",
+        "https://placehold.co/50",
+      ],
       speed: 10,
-    },
-    {
-      items: ["https://placehold.co/50", "https://placehold.co/50"],
-      speed: 15,
-    },
-    {
-      items: ["https://placehold.co/50", "https://placehold.co/50"],
-      speed: 20,
     },
   ],
 };
@@ -75,7 +79,7 @@ Please check folder <code>/examples/</code> to view usage of various features an
    A simple example with one orbit and default parameters.
 
 2. **Container CSS** (`container-css/`)  
-   Example showing how to style orbit container using custom CSS classes.
+   Example showing how to style orbit container using styles or custom CSS classes.
 
 3. **Orbit CSS** (`orbit-css/`)  
    Example showing how to style orbits using custom CSS classes.
@@ -87,10 +91,37 @@ Please check folder <code>/examples/</code> to view usage of various features an
 
 ### Container
 
-| Prop                          | Type                | Default                | Description                                                 |
-| ----------------------------- | ------------------- | ---------------------- | ----------------------------------------------------------- |
-| <code>backgroundColor</code>  | <code>String</code> | <code>"#1a202c"</code> | The background color of the orbital container.              |
-| <code>container.styles</code> | <code>Object</code> | <code>{}</code>        | <code>v0.2.0</code> Inline styles applied to the container. |
+The <code>container</code> configuration allows you to customize the main orbit container either using inline styles or custom CSS classes.
+
+| Prop                             | Type                | Default                | Description                                                      |
+| -------------------------------- | ------------------- | ---------------------- | ---------------------------------------------------------------- |
+| <code>backgroundColor</code>     | <code>String</code> | <code>"#1a202c"</code> | The background color of the orbital container.                   |
+| <code>container.styles</code>    | <code>Object</code> | <code>{}</code>        | <code>v0.2.0</code> Inline styles applied to the container.      |
+| <code>container.customCss</code> | <code>String</code> | <code>""</code>        | <code>v0.2.0</code> Custom CSS classes applied to the container. |
+
+### Example: Custom Styles vs Custom CSS
+
+```javascript
+const config = {
+  container: {
+    styles: {
+      backgroundColor: "#ff5733",
+      border: "2px solid #000",
+      padding: "10px",
+    },
+  },
+};
+```
+
+```javascript
+const config = {
+  container: {
+    customCss: "rounded-lg shadow-md",
+  },
+};
+```
+
+:pushpin: If customCss is defined, inline styles are ignored.
 
 ### Orbits
 
