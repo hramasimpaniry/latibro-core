@@ -1,19 +1,30 @@
 class Orbital {
   constructor(container, options) {
     this.container = container;
-    this.orbits = options.orbits || [];
-    this.orbitSpacing = options.orbitSpacing || 55;
-    this.backgroundColor = options.backgroundColor || "#1a202c";
+    this.options = options || {};
+    this.orbits = this.options.orbits || [];
+    this.orbitSpacing = this.options.orbitSpacing || 55;
+    this.backgroundColor = this.options.backgroundColor || "#1a202c";
     this.init();
   }
 
-  init() {
+  init(options) {
+    // orbit-container default styles
     this.container.style.position = "relative";
     this.container.style.overflow = "hidden";
     this.container.style.display = "flex";
     this.container.style.alignItems = "center";
     this.container.style.justifyContent = "center";
     this.container.style.backgroundColor = this.backgroundColor;
+
+    // orbit-container custom styles
+    if (this.options && this.options.container) {
+      const { styles } = this.options.container;
+
+      if (styles) {
+        Object.assign(this.container.style, styles);
+      }
+    }
 
     // Add orbits
     this.orbits.forEach((orbit, orbitIndex) => {
