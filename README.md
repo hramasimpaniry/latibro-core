@@ -91,11 +91,11 @@ The styles applied to both the container and orbits follow a specific order of p
 
 The <code>container</code> configuration allows you to customize the **main orbit container** using **CSS classes** or **inline styles**.
 
-| Prop                         | Type                | Default                | Description                                                        |
-| ---------------------------- | ------------------- | ---------------------- | ------------------------------------------------------------------ |
-| <code>backgroundColor</code> | <code>String</code> | <code>"#1a202c"</code> | <code>v0.2.0</code> The background color of the orbital container. |
-| <code>customCss</code>       | <code>String</code> | <code>""</code>        | <code>v0.2.0</code> Custom CSS classes applied to the container.   |
-| <code>styles</code>          | <code>Object</code> | <code>{}</code>        | <code>v0.2.0</code> Inline styles applied to the container .       |
+| Prop                         | Type                | Default                | Description                                                                                                                |
+| ---------------------------- | ------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| <code>backgroundColor</code> | <code>String</code> | <code>"#1a202c"</code> | _<code>deprecated</code>_ The background color of the orbital container (Use <code>styles.backgroundColor</code> instead). |
+| <code>customCss</code>       | <code>String</code> | <code>""</code>        | <code>v0.2.0</code> Custom CSS classes applied to the container.                                                           |
+| <code>styles</code>          | <code>Object</code> | <code>{}</code>        | <code>v0.2.0</code> Inline styles applied to the container .                                                               |
 
 ### Example: Using Custom CSS
 
@@ -157,16 +157,16 @@ const config = {
 
 ### Orbit <code>Object</code> Properties
 
-| Prop                      | Type                | Default               | Description                                                  |
-| ------------------------- | ------------------- | --------------------- | ------------------------------------------------------------ |
-| <code>items</code>        | <code>Array</code>  | <code>[]</code>       | Array of image URLs or content to display as orbiting items. |
-| <code>customRadius</code> | <code>Number</code> | <code>75</code>       | Custom radius (in pixels) for the orbit.                     |
-| <code>borderColor</code>  | <code>String</code> | <code>"white"</code>  | The color of the orbit border.                               |
-| <code>borderStyle</code>  | <code>String</code> | <code>"dashed"</code> | The style of the orbit border (e.g., solid, dotted, dashed). |
-| <code>borderWidth</code>  | <code>Number</code> | <code>2</code>        | The width of the orbit border (in pixels).                   |
-| <code>customCss</code>    | <code>String</code> | <code>null</code>     | Custom CSS classes to apply to the orbit element.            |
-| <code>styles</code>       | <code>Object</code> | <code>{}</code>       | Inline styles (applied last, override everything).           |
-| <code>speed</code>        | <code>Number</code> | <code>10</code>       | Speed of rotation (in seconds for one full rotation).        |
+| Prop                      | Type                | Default               | Description                                                                                                        |
+| ------------------------- | ------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| <code>items</code>        | <code>Array</code>  | <code>[]</code>       | Array of image URLs or content to display as orbiting items.                                                       |
+| <code>customRadius</code> | <code>Number</code> | <code>75</code>       | Custom radius (in pixels) for the orbit.                                                                           |
+| <code>borderColor</code>  | <code>String</code> | <code>"white"</code>  | _<code>deprecated</code>_ The color of the orbit border (Use <code>styles.borderColor</code> instead).             |
+| <code>borderStyle</code>  | <code>String</code> | <code>"dashed"</code> | _<code>deprecated</code>_ The style of the orbit border (Use <code>styles.borderStyle</code> instead).             |
+| <code>borderWidth</code>  | <code>Number</code> | <code>2</code>        | _<code>deprecated</code>_ The width of the orbit border (in pixels) (Use <code>styles.borderWidth</code> instead). |
+| <code>customCss</code>    | <code>String</code> | <code>null</code>     | Custom CSS classes to apply to the orbit element.                                                                  |
+| <code>styles</code>       | <code>Object</code> | <code>{}</code>       | Inline styles (applied last, override everything).                                                                 |
+| <code>speed</code>        | <code>Number</code> | <code>10</code>       | Speed of rotation (in seconds for one full rotation).                                                              |
 
 ### Example: Custom CSS for Orbits
 

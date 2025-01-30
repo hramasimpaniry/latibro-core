@@ -4,7 +4,7 @@ class Orbital {
     this.options = options || {};
     this.orbits = this.options.orbits || [];
     this.orbitSpacing = this.options.orbitSpacing || 55;
-    this.backgroundColor = this.options.backgroundColor || "#1a202c";
+    this.backgroundColor = this.options?.styles?.backgroundColor || "#1a202c";
     this.init();
   }
 
@@ -54,9 +54,9 @@ class Orbital {
         width: ${2 * orbitRadius}px;
         height: ${2 * orbitRadius}px;
         border-radius: 50%;
-        border: ${orbit.borderWidth || 2}px ${orbit.borderStyle || "dashed"} ${
-        orbit.borderColor || "white"
-      };
+        border: ${orbit?.styles?.borderWidth || 2}px ${
+        orbit?.styles?.borderStyle || "dashed"
+      } ${orbit?.styles?.borderColor || "white"};
         animation: ${orbitAnimationName} ${
         orbit.speed || 10
       }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"};}
