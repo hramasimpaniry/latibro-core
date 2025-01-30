@@ -4,7 +4,7 @@ class Orbital {
     this.options = options || {};
     this.orbits = this.options.orbits || [];
     this.orbitSpacing = this.options.orbitSpacing || 55;
-    this.backgroundColor = this.options?.styles?.backgroundColor || "#1a202c";
+    this.backgroundColor = this.options?.styles?.backgroundColor || "#1a202c"; // <deprecated>: options.backgroundColor
     this.init();
   }
 
@@ -49,6 +49,7 @@ class Orbital {
       const orbitAnimationName = `${orbitCssRuleName}-rotation`;
 
       // default CSS
+      // <deprecated>: orbit.borderWidth, orbit.borderStyle, orbit.borderColor
       this.defineCSSRule(`.${orbitCssRuleName} {
         position: absolute;
         width: ${2 * orbitRadius}px;
