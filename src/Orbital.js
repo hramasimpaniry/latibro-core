@@ -11,7 +11,7 @@ class Orbital {
   init() {
     const containerCssRuleName = `orbital-container`;
 
-    this.addCSSRule(`.${containerCssRuleName} {
+    this.defineCSSRule(`.${containerCssRuleName} {
         width: 500px;
         height: 500px;
         position: relative;
@@ -43,13 +43,13 @@ class Orbital {
     this.orbits.forEach((orbit, orbitIndex) => {
       const orbitRadius =
         (orbit.customRadius || 75) + orbitIndex * this.orbitSpacing;
-      const orbitAnimationName = `orbit-${orbitIndex}-rotation`;
       const itemCount = orbit.items.length;
       const orbitDiv = document.createElement("div");
       const orbitCssRuleName = `orbit-${orbitIndex}`;
+      const orbitAnimationName = `${orbitCssRuleName}-rotation`;
 
       // default CSS
-      this.addCSSRule(`.${orbitCssRuleName} {
+      this.defineCSSRule(`.${orbitCssRuleName} {
         position: absolute;
         width: ${2 * orbitRadius}px;
         height: ${2 * orbitRadius}px;
@@ -62,7 +62,7 @@ class Orbital {
       }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"};}
       `);
 
-      orbitDiv.classList.add(orbitCssRuleName);
+      orbitDiv.classList.add("orbit", orbitCssRuleName);
 
       if (orbit.customCss) {
         // custom CSS
@@ -74,7 +74,7 @@ class Orbital {
         Object.assign(orbitDiv.style, orbit.styles || {});
       }
 
-      this.addCSSRule(`@keyframes ${orbitAnimationName} {
+      this.defineCSSRule(`@keyframes ${orbitAnimationName} {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
         }`);
@@ -84,38 +84,67 @@ class Orbital {
       // Add items
       orbit.items.forEach((item, itemIndex) => {
         const itemInitialOffset = (itemIndex / itemCount) * 100;
-        const itemAnimationName = `orbit-${orbitIndex}-item-${itemIndex}`;
-
-        // Create item container
+        const itemCssRuleName = `orbit-wrapper-${orbitIndex}-${itemIndex}`;
+        const itemAnimationName = `${itemCssRuleName}-anim`;
         const itemDiv = document.createElement("div");
-        itemDiv.style.position = "absolute";
-        itemDiv.style.offsetPath = `circle(${orbitRadius}px at 50% 50%)`;
-        itemDiv.style.offsetDistance = `${itemInitialOffset}%`;
-        itemDiv.style.offsetRotate = "0deg";
-        itemDiv.style.animation = `${itemAnimationName} ${
+
+        // default CSS
+        this.defineCSSRule(`.${itemCssRuleName} {
+          position: absolute;
+          offset-path: circle(${orbitRadius}px at 50% 50%);
+          offset-distance: ${itemInitialOffset}%;
+          offset-rotate: 0deg;
+          animation: ${itemAnimationName} ${
           orbit.speed || 10
-        }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"}`;
+        }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"};}
+        `);
 
-        // Create img container
+        itemDiv.classList.add("orbit-wrapper", itemCssRuleName);
+
+        // Add img div
+        const imageContainerCssRuleName = `orbit-item-${orbitIndex}-${itemIndex}`;
         const imgDiv = document.createElement("div");
-        imgDiv.style.width = "48px";
-        imgDiv.style.height = "48px";
-        imgDiv.style.borderRadius = "50%";
-        imgDiv.style.background = "white";
-        imgDiv.style.display = "flex";
-        imgDiv.style.alignItems = "center";
-        imgDiv.style.justifyContent = "center";
-        imgDiv.style.boxShadow =
-          "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)";
 
+        // default CSS
+        this.defineCSSRule(`.${imageContainerCssRuleName} {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          background: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        `);
+
+        imgDiv.classList.add("orbit-item", imageContainerCssRuleName);
+
+        if (item.customCss) {
+          // custom CSS
+          imgDiv.classList.add(...item.customCss.split(" "));
+        }
+
+        if (item.styles) {
+          // custom inline styles
+          Object.assign(imgDiv.style, item.styles || {});
+        }
+
+        // Add img
+        const itemImageCssRuleName = `orbit-img-${orbitIndex}-${itemIndex}`;
         const img = document.createElement("img");
-        img.src = item;
-        img.alt = "";
-        img.style.width = "32px";
-        img.style.height = "32px";
-        img.style.objectFit = "contain";
+        img.src = item.src ? item.src : item;
+        img.alt = item.alt ? item.alt : "";
 
-        this.addCSSRule(`@keyframes ${itemAnimationName} {
+        // default CSS
+        this.defineCSSRule(`.${itemImageCssRuleName} {
+          width: 32px;
+          height: 32px;
+          object-fit: contain;
+        `);
+
+        img.classList.add("orbit-img", itemImageCssRuleName);
+
+        this.defineCSSRule(`@keyframes ${itemAnimationName} {
               0% { offset-distance: ${itemInitialOffset}%; offset-rotate: 360deg }
               100% { offset-distance: ${
                 itemInitialOffset + 100
@@ -124,13 +153,12 @@ class Orbital {
 
         imgDiv.appendChild(img);
         itemDiv.appendChild(imgDiv);
-
         orbitDiv.appendChild(itemDiv);
       });
     });
   }
 
-  addCSSRule(cssRules) {
+  defineCSSRule(cssRules) {
     const styleId = "latibro-core";
     let styleTag = document.getElementById(styleId);
 
