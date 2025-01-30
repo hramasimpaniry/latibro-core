@@ -165,7 +165,14 @@ class Orbital {
     if (!styleTag) {
       styleTag = document.createElement("style");
       styleTag.id = styleId;
-      document.head.prepend(styleTag);
+
+      const linkTags = document.head.getElementsByTagName("link");
+
+      if (linkTags.length > 0) {
+        document.head.insertBefore(styleTag, linkTags[0]);
+      } else {
+        document.head.appendChild(styleTag);
+      }
     }
 
     const styleSheet = [...document.styleSheets].find(
