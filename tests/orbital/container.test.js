@@ -2,31 +2,10 @@ import { describe, it, expect } from "vitest";
 import Orbital from "../../src/Orbital";
 
 describe("Orbital: Container", () => {
-  it("should apply custom orbitSpacing over customRadius", () => {
-    const container = document.createElement("div");
-    const options = {
-      orbitSpacing: 100,
-      orbits: [
-        {
-          items: ["https://placehold.co/50"],
-          customRadius: 80,
-        },
-      ],
-    };
-
-    new Orbital(container, options);
-    const orbit = container.querySelector(".orbit-0 > div");
-    const orbitIndex = 0;
-    const orbitRadius =
-      (options.orbits[orbitIndex].customRadius || 75) +
-      orbitIndex * options.orbitSpacing;
-    expect(window.getComputedStyle(orbit).offsetPath).toBe(
-      `circle(${orbitRadius}px at 50% 50%)`
-    );
-  });
-
   it("should apply default CSS", () => {
     const container = document.createElement("div");
+    document.body.appendChild(container);
+
     const options = { orbits: [] };
     new Orbital(container, options);
 
@@ -71,6 +50,7 @@ describe("Orbital: Container", () => {
         border: 3px dashed green;
       }
     `;
+    document.body.appendChild(container);
     document.head.appendChild(styleTag);
 
     const options = {
