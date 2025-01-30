@@ -141,9 +141,6 @@ describe("Orbital: Orbit Spacing", () => {
   });
 });
 
-import { describe, it, expect } from "vitest";
-import Orbital from "../../src/Orbital";
-
 describe("Orbital: Custom Radius", () => {
   it("should apply the default radius if customRadius is not specified", () => {
     const container = document.createElement("div");
