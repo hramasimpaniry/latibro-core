@@ -216,6 +216,18 @@ const config = {
 Built-in CSS class (<code>.orbit-<0..n></code>) are applied automatically for each orbit.
 Some CSS props like <code>width</code>, <code>height</code> or <code>animation</code> are automatically calculated, based on the number of generated orbits.
 
+## Items Customization
+
+Each item (attached to orbit) can be customized in the same way as the container, using:
+
+1. **Default CSS** rules (applied automatically to all items).
+2. **Custom CSS** (<code>customCss</code>) (if provided, this class is added on top of the default styles).
+3. **Inline styles** (<code>styles</code>) (applied last and override all previous styles).
+
+### Item <code>Object</code> Properties
+
+...
+
 ## Examples
 
 Check the <code>/examples/</code> folder for various demos:
