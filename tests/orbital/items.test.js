@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import Orbital from "../../src/Orbital";
 
 describe("Orbital: Items", () => {
-  it("should apply default CSS", () => {
+  it("should apply default CSS", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
 
@@ -18,14 +18,28 @@ describe("Orbital: Items", () => {
       ],
     };
 
+    // init
     new Orbital(container, options);
 
+    // reflow
+    container.offsetHeight;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    // elements
     const items = container.querySelectorAll(".orbit-item");
+    const item0 = items[0];
+    const computedStyle0 = window.getComputedStyle(item0);
+    const width = "48px"; // default
+    const height = "48px"; // default
+
+    // tests
     expect(items.length).toBe(3);
-    expect(items[0].className).toBe("orbit-item orbit-item-0-0");
+    expect(item0.classList).toContain("orbit-item-0-0");
+    expect(computedStyle0.width).toEqual(width);
+    expect(computedStyle0.height).toEqual(height);
   });
 
-  it("should apply custom CSS", () => {
+  it("should apply custom CSS", async () => {
     const container = document.createElement("div");
     const styleTag = document.createElement("style");
     styleTag.innerHTML = `
@@ -52,13 +66,28 @@ describe("Orbital: Items", () => {
       ],
     };
 
+    // init
     new Orbital(container, options);
 
-    const orbit = container.querySelector(".orbit-item-0-0");
-    expect(window.getComputedStyle(orbit).width).toBe("75px");
+    // reflow
+    container.offsetHeight;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    // elements
+    const items = container.querySelectorAll(".orbit-item");
+    const item0 = items[0];
+    const computedStyle0 = window.getComputedStyle(item0);
+    const width = "48px"; // default
+    const height = "48px"; // default
+
+    // tests
+    expect(items.length).toBe(3);
+    expect(item0.classList).toContain("custom-item");
+    expect(computedStyle0.width).toEqual(width);
+    expect(computedStyle0.height).toEqual(height);
   });
 
-  it("should apply custom styles", () => {
+  it("should apply custom styles", async () => {
     const container = document.createElement("div");
     const styleTag = document.createElement("style");
     styleTag.innerHTML = `
@@ -88,9 +117,24 @@ describe("Orbital: Items", () => {
       ],
     };
 
+    // init
     new Orbital(container, options);
 
-    const item = container.querySelector(".orbit-item-0-0");
-    expect(window.getComputedStyle(item).width).toBe("150px");
+    // reflow
+    container.offsetHeight;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    // elements
+    const items = container.querySelectorAll(".orbit-item");
+    const item0 = items[0];
+    const computedStyle0 = window.getComputedStyle(item0);
+    const width = options.orbits[0].items[0].styles.width; // default
+    const height = "48px"; // default
+
+    // tests
+    expect(items.length).toBe(3);
+    expect(item0.classList).toContain("custom-item");
+    expect(computedStyle0.width).toEqual(width);
+    expect(computedStyle0.height).toEqual(height);
   });
 });

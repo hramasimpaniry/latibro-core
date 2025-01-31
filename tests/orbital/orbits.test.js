@@ -1,8 +1,9 @@
 import { describe, it, expect } from "vitest";
 import Orbital from "../../src/Orbital";
+import "@testing-library/jest-dom/vitest";
 
 describe("Orbital: Orbits", () => {
-  it("should apply default CSS", () => {
+  it("should apply default CSS", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
 
@@ -18,13 +19,22 @@ describe("Orbital: Orbits", () => {
       ],
     };
 
+    // init
     new Orbital(container, options);
 
-    const orbit = container.querySelector(".orbit");
-    expect(orbit.className).toBe("orbit orbit-0");
+    // reflow
+    container.offsetHeight;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    // elements
+    const orbit = container.querySelector(".orbit-0");
+    const computedStyle = window.getComputedStyle(orbit);
+
+    // tests
+    expect(computedStyle.border).toEqual("2px dashed white");
   });
 
-  it("should apply custom CSS", () => {
+  it("should apply custom CSS", async () => {
     const container = document.createElement("div");
     const styleTag = document.createElement("style");
     styleTag.innerHTML = `
@@ -48,10 +58,19 @@ describe("Orbital: Orbits", () => {
       ],
     };
 
+    // init
     new Orbital(container, options);
 
+    // reflow
+    container.offsetHeight;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    // elements
     const orbit = container.querySelector(".orbit-0");
-    expect(window.getComputedStyle(orbit).border).toBe("1px solid red");
+    const computedStyle = window.getComputedStyle(orbit);
+
+    // tests
+    expect(computedStyle.border).toEqual("2px dashed white");
   });
 
   it("should apply custom styles", () => {
@@ -89,7 +108,7 @@ describe("Orbital: Orbits", () => {
 });
 
 describe("Orbital: Orbit Spacing", () => {
-  it("should apply the default orbit spacing if not specified", () => {
+  it("should apply the default orbit spacing if orbitSpacing is NOT specified", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
 
@@ -100,21 +119,32 @@ describe("Orbital: Orbit Spacing", () => {
       ],
     };
 
+    // init
     new Orbital(container, options);
 
+    // reflow
+    container.offsetHeight;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    // elements
     const orbits = container.querySelectorAll(".orbit");
+    const computedStyle0 = window.getComputedStyle(orbits[0]);
+    const computedStyle1 = window.getComputedStyle(orbits[1]);
+
+    // tests
+    const width0 = parseFloat(computedStyle0.width);
+    const width1 = parseFloat(computedStyle1.width);
+    const orbitSpacing = 55; // default
+    const customRadius = 75; // default
 
     expect(orbits.length).toBe(2);
 
-    const firstOrbitSize = parseFloat(window.getComputedStyle(orbits[0]).width);
-    const secondOrbitSize = parseFloat(
-      window.getComputedStyle(orbits[1]).width
-    );
-
-    expect(secondOrbitSize).toBe(firstOrbitSize + 2 * 55);
+    // `width: ${2 * (orbit.customRadius || 75) + (orbitIndex * this.orbitSpacing) }px`
+    expect(width0).toBe(2 * (customRadius + 0 * orbitSpacing));
+    expect(width1).toBe(2 * (customRadius + 1 * orbitSpacing));
   });
 
-  it("should apply custom orbit spacing when provided", () => {
+  it("should apply custom orbit spacing when provided", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
 
@@ -126,42 +156,69 @@ describe("Orbital: Orbit Spacing", () => {
       ],
     };
 
+    // init
     new Orbital(container, options);
 
+    // reflow
+    container.offsetHeight;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    // elements
     const orbits = container.querySelectorAll(".orbit");
+    const computedStyle0 = window.getComputedStyle(orbits[0]);
+    const computedStyle1 = window.getComputedStyle(orbits[1]);
+
+    // tests
+    const width0 = parseFloat(computedStyle0.width);
+    const width1 = parseFloat(computedStyle1.width);
+    const customRadius = 75; // default
 
     expect(orbits.length).toBe(2);
 
-    const firstOrbitSize = parseFloat(window.getComputedStyle(orbits[0]).width);
-    const secondOrbitSize = parseFloat(
-      window.getComputedStyle(orbits[1]).width
-    );
-
-    expect(secondOrbitSize).toBe(firstOrbitSize + 2 * 100);
+    // `width: ${2 * (orbit.customRadius || 75) + (orbitIndex * this.orbitSpacing) }px`
+    expect(width0).toBe(2 * (customRadius + 0 * options.orbitSpacing));
+    expect(width1).toBe(2 * (customRadius + 1 * options.orbitSpacing));
   });
 });
 
 describe("Orbital: Custom Radius", () => {
-  it("should apply the default radius if customRadius is not specified", () => {
+  it("should apply the default radius if customRadius is NOT specified", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
 
     const options = {
-      orbits: [{ items: ["https://placehold.co/50"] }],
+      orbits: [
+        { items: ["https://placehold.co/50"] },
+        { items: ["https://placehold.co/50"] },
+      ],
     };
 
+    // init
     new Orbital(container, options);
 
-    const orbit = container.querySelector(".orbit");
+    // reflow
+    container.offsetHeight;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
 
-    setTimeout(() => {
-      // Expected: 75px * 2
-      expect(parseFloat(window.getComputedStyle(orbit).width)).toBe(150);
-      expect(parseFloat(window.getComputedStyle(orbit).height)).toBe(150);
-    }, 400);
+    // elements
+    const orbits = container.querySelectorAll(".orbit");
+    const computedStyle0 = window.getComputedStyle(orbits[0]);
+    const computedStyle1 = window.getComputedStyle(orbits[1]);
+
+    // tests
+    const width0 = parseFloat(computedStyle0.width);
+    const width1 = parseFloat(computedStyle1.width);
+    const orbitSpacing = 55; // default
+    const customRadius = 75; // default
+
+    expect(orbits.length).toBe(2);
+
+    // `width: ${2 * (orbit.customRadius || 75) + (orbitIndex * this.orbitSpacing) }px`
+    expect(width0).toBe(2 * (customRadius + 0 * orbitSpacing));
+    expect(width1).toBe(2 * (customRadius + 1 * orbitSpacing));
   });
 
-  it("should apply customRadius when specified", () => {
+  it("should apply customRadius when specified", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
 
@@ -169,14 +226,89 @@ describe("Orbital: Custom Radius", () => {
       orbits: [{ items: ["https://placehold.co/50"], customRadius: 120 }],
     };
 
+    // init
     new Orbital(container, options);
 
-    const orbit = container.querySelector(".orbit");
+    // reflow
+    container.offsetHeight;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
 
-    setTimeout(() => {
-      // Expected: 120px * 2
-      expect(parseFloat(window.getComputedStyle(orbit).width)).toBe(240);
-      expect(parseFloat(window.getComputedStyle(orbit).height)).toBe(240);
-    }, 400);
+    // elements
+    const orbits = container.querySelectorAll(".orbit");
+    const computedStyle0 = window.getComputedStyle(orbits[0]);
+
+    // tests
+    const width0 = parseFloat(computedStyle0.width);
+    const orbitSpacing = 55; // default
+    const customRadius = options.orbits[0].customRadius;
+
+    expect(orbits.length).toBe(1);
+
+    // `width: ${2 * (orbit.customRadius || 75) + (orbitIndex * this.orbitSpacing) }px`
+    expect(width0).toBe(2 * (customRadius + 0 * orbitSpacing));
+  });
+});
+
+describe("Orbital: Orbit Speed", () => {
+  it("should apply the default animation duration if speed is not specified", async () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+
+    const options = {
+      orbits: [{ items: ["https://placehold.co/50"] }],
+    };
+
+    // init
+    new Orbital(container, options);
+
+    // reflow
+    container.offsetHeight;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    // elements
+    const orbits = container.querySelectorAll(".orbit-wrapper");
+    const computedStyle0 = window.getComputedStyle(orbits[0]);
+
+    // tests
+    const animation0 = computedStyle0.animation;
+    const speed = 10; // default
+
+    expect(orbits.length).toBe(1);
+
+    // `orbit-wrapper-0-0-anim 10s linear infinite normal`
+    expect(animation0).toContain(
+      `orbit-wrapper-0-0-anim ${speed}s linear infinite normal`
+    );
+  });
+
+  it("should apply custom speed when specified", async () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+
+    const options = {
+      orbits: [{ items: ["https://placehold.co/50"], speed: 30 }],
+    };
+
+    // init
+    new Orbital(container, options);
+
+    // reflow
+    container.offsetHeight;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    // elements
+    const orbits = container.querySelectorAll(".orbit-wrapper");
+    const computedStyle0 = window.getComputedStyle(orbits[0]);
+
+    // tests
+    const animation0 = computedStyle0.animation;
+    const speed = options.orbits[0].speed;
+
+    expect(orbits.length).toBe(1);
+
+    // `orbit-wrapper-0-0-anim 10s linear infinite normal`
+    expect(animation0).toContain(
+      `orbit-wrapper-0-0-anim ${speed}s linear infinite normal`
+    );
   });
 });

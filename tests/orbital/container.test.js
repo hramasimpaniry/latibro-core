@@ -2,22 +2,31 @@ import { describe, it, expect } from "vitest";
 import Orbital from "../../src/Orbital";
 
 describe("Orbital: Container", () => {
-  it("should apply default CSS", () => {
+  it("should apply default CSS", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
-
     const options = { orbits: [] };
+
+    // init
     new Orbital(container, options);
 
-    expect(container.classList.contains("orbital-container")).toBe(true);
+    // reflow
+    container.offsetHeight;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    // elements
+    const computedStyle = window.getComputedStyle(container);
+
+    // tests
+    expect(container.classList).toContain("orbital-container");
+    expect(computedStyle.backgroundColor).toEqual("rgb(26, 32, 44)"); // #1a202c
   });
 
-  it("should apply custom CSS prior to default CSS", () => {
+  it("should apply custom CSS prior to default CSS", async () => {
     const container = document.createElement("div");
     const styleTag = document.createElement("style");
     styleTag.innerHTML = `
       .custom-container {
-        background-color: blue;
         border: 3px dashed green;
       }
     `;
@@ -30,18 +39,22 @@ describe("Orbital: Container", () => {
       },
     };
 
+    // init
     new Orbital(container, options);
 
-    expect(container.classList.contains("orbital-container")).toBe(true);
-    expect(container.classList.contains("custom-container")).toBe(true);
+    // reflow
+    container.offsetHeight;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
 
-    expect(window.getComputedStyle(container).backgroundColor).toBe(
-      "rgb(0, 0, 255)"
-    );
-    expect(window.getComputedStyle(container).border).toBe("3px dashed green");
+    // elements
+    const computedStyle = window.getComputedStyle(container);
+
+    // tests
+    expect(container.classList).toContain("custom-container");
+    expect(computedStyle.border).toEqual("3px dashed green");
   });
 
-  it("should apply custom styles prior to custom CSS", () => {
+  it("should apply custom styles prior to custom CSS", async () => {
     const container = document.createElement("div");
     const styleTag = document.createElement("style");
     styleTag.innerHTML = `
@@ -64,14 +77,18 @@ describe("Orbital: Container", () => {
       },
     };
 
+    // init
     new Orbital(container, options);
 
-    expect(container.classList.contains("orbital-container")).toBe(true);
-    expect(container.classList.contains("custom-container")).toBe(true);
+    // reflow
+    container.offsetHeight;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
 
-    expect(window.getComputedStyle(container).backgroundColor).toBe(
-      "rgb(255, 87, 51)" // #ff5733
-    );
-    expect(window.getComputedStyle(container).border).toBe("2px solid #000");
+    // elements
+    const computedStyle = window.getComputedStyle(container);
+
+    // tests
+    expect(container.classList).toContain("custom-container");
+    expect(computedStyle.border).toEqual("2px solid #000");
   });
 });

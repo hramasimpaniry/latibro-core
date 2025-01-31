@@ -33,6 +33,7 @@
     "access": "public"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
     "jsdom": "^26.0.0",
     "vitest": "^3.0.4"
   }
