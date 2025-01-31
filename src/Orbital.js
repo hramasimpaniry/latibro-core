@@ -12,15 +12,16 @@ class Orbital {
     const containerCssRuleName = `orbital-container`;
 
     this.defineCSSRule(`.${containerCssRuleName} {
-        width: 500px;
-        height: 500px;
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: ${this.backgroundColor};}
-      `);
+      width: 500px;
+      height: 500px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: ${this.backgroundColor};
+    }`);
+
     // default CSS
     this.container.classList.add(containerCssRuleName);
 
@@ -46,22 +47,25 @@ class Orbital {
       const itemCount = orbit.items.length;
       const orbitDiv = document.createElement("div");
       const orbitCssRuleName = `orbit-${orbitIndex}`;
-      const orbitAnimationName = `${orbitCssRuleName}-rotation`;
+      const orbitAnimationName = `${orbitCssRuleName}-animation`;
+      const orbitBorderWidth = `${orbit?.styles?.borderWidth || 2}px`;
+      const orbitBorderStyle = `${orbit?.styles?.borderStyle || "dashed"}`;
+      const orbitBorderColor = `${orbit?.styles?.borderColor || "white"}`;
+      const orbitBorder = `${orbitBorderWidth} ${orbitBorderStyle} ${orbitBorderColor}`;
+      const orbitAnimation = `${orbitAnimationName} ${
+        orbit.speed || 10
+      }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"}`;
 
       // default CSS
       // <deprecated>: orbit.borderWidth, orbit.borderStyle, orbit.borderColor
       this.defineCSSRule(`.${orbitCssRuleName} {
-        position: absolute;
-        width: ${2 * orbitRadius}px;
-        height: ${2 * orbitRadius}px;
-        border-radius: 50%;
-        border: ${orbit?.styles?.borderWidth || 2}px ${
-        orbit?.styles?.borderStyle || "dashed"
-      } ${orbit?.styles?.borderColor || "white"};
-        animation: ${orbitAnimationName} ${
-        orbit.speed || 10
-      }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"};}
-      `);
+          position: absolute;
+          width: ${2 * orbitRadius}px;
+          height: ${2 * orbitRadius}px;
+          border-radius: 50%;
+          border: ${orbitBorder};
+          animation: ${orbitAnimation};
+      }`);
 
       orbitDiv.classList.add("orbit", orbitCssRuleName);
 
@@ -97,8 +101,8 @@ class Orbital {
           offset-rotate: 0deg;
           animation: ${itemAnimationName} ${
           orbit.speed || 10
-        }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"};}
-        `);
+        }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"};
+        }`);
 
         itemDiv.classList.add("orbit-wrapper", itemCssRuleName);
 
@@ -116,7 +120,7 @@ class Orbital {
           align-items: center;
           justify-content: center;
           box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-        `);
+        }`);
 
         imgDiv.classList.add("orbit-item", imageContainerCssRuleName);
 
@@ -141,16 +145,16 @@ class Orbital {
           width: 32px;
           height: 32px;
           object-fit: contain;
-        `);
+        }`);
 
         img.classList.add("orbit-img", itemImageCssRuleName);
 
         this.defineCSSRule(`@keyframes ${itemAnimationName} {
-              0% { offset-distance: ${itemInitialOffset}%; offset-rotate: 360deg }
-              100% { offset-distance: ${
-                itemInitialOffset + 100
-              }%; offset-rotate: 0deg }
-          }`);
+          0% { offset-distance: ${itemInitialOffset}%; offset-rotate: 360deg }
+          100% { offset-distance: ${
+            itemInitialOffset + 100
+          }%; offset-rotate: 0deg }
+        }`);
 
         imgDiv.appendChild(img);
         itemDiv.appendChild(imgDiv);
@@ -161,7 +165,7 @@ class Orbital {
 
   defineCSSRule(cssRules) {
     const styleId = "latibro-core";
-    let styleTag = document.getElementById(styleId);
+    let styleTag = document.querySelector(`#${styleId}`);
 
     if (!styleTag) {
       styleTag = document.createElement("style");
@@ -176,13 +180,15 @@ class Orbital {
       }
     }
 
-    const styleSheet = [...document.styleSheets].find(
-      (sheet) => sheet.ownerNode && sheet.ownerNode.id === styleId
-    );
+    // const styleSheet = [...document.styleSheets].find(
+    // (sheet) => sheet.ownerNode && sheet.ownerNode.id === styleId
+    // );
+    //
+    // if (styleSheet) {
+    // styleSheet.insertRule(cssRules, styleSheet.cssRules.length); // Styles are NOT Visible in the DOM
+    // }
 
-    if (styleSheet) {
-      styleSheet.insertRule(cssRules, styleSheet.cssRules.length);
-    }
+    styleTag.textContent += cssRules + "\n"; // Styles are Visible in the DOM
   }
 }
 
