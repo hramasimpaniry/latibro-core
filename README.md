@@ -97,6 +97,16 @@ The <code>container</code> configuration allows you to customize the **main orbi
 | <code>customCss</code>           | <code>String</code> | <code>""</code>        | <code>v0.2.0</code> Custom CSS classes applied to the container.                                                           |
 | <code>styles</code>              | <code>Object</code> | <code>{}</code>        | <code>v0.2.0</code> Inline styles applied to the container .                                                               |
 
+## Deprecated Properties
+
+These properties are deprecated and will be removed in a future version:
+
+| Property          | Alternative                        |
+| ----------------- | ---------------------------------- |
+| `backgroundColor` | `container.styles.backgroundColor` |
+
+**Warning:** Using these properties will trigger a console warning.
+
 ### Example: Using Custom CSS
 
 ```javascript
@@ -167,6 +177,18 @@ const config = {
 | <code>customCss</code>       | <code>String</code> | <code>null</code>     | Custom CSS classes to apply to the orbit element.                                                                  |
 | <code>styles</code>          | <code>Object</code> | <code>{}</code>       | Inline styles (applied last, override everything).                                                                 |
 | <code>speed</code>           | <code>Number</code> | <code>10</code>       | Speed of rotation (in seconds for one full rotation).                                                              |
+
+### Deprecated Properties
+
+These properties are deprecated and will be removed in a future version:
+
+| Property      | Alternative                |
+| ------------- | -------------------------- |
+| `borderColor` | `orbit.styles.borderColor` |
+| `borderWidth` | `orbit.styles.borderWidth` |
+| `borderStyle` | `orbit.styles.borderStyle` |
+
+**Warning:** Using these properties will trigger a console warning.
 
 ### Example: Custom CSS for Orbits
 

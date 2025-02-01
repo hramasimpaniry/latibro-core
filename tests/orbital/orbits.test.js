@@ -312,3 +312,57 @@ describe("Orbital: Orbit Speed", () => {
     );
   });
 });
+
+describe("Orbital: Orbit Deprecated Props", () => {
+  it("should automatically migrate `borderColor`, `borderWidth`, `borderStyle` ", async () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+
+    const options = {
+      orbits: [
+        {
+          items: ["https://placehold.co/50"],
+          borderColor: "#ff5733",
+          borderWidth: 5,
+          borderStyle: "dotted",
+        },
+      ],
+    };
+
+    // init
+    let orbital = new Orbital(container, options);
+
+    // reflow
+    container.offsetHeight;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    // elements
+    const orbits = container.querySelectorAll(".orbit");
+    const computedStyle0 = window.getComputedStyle(orbits[0]);
+
+    // tests
+    const borderColor0 = computedStyle0.borderColor;
+    const receivedBorderColor0 = orbital.options.orbits[0].styles.borderColor;
+    const expectedBorderColor0 = options.orbits[0].borderColor;
+
+    const borderWidth0 = parseFloat(computedStyle0.borderWidth);
+    const receivedBorderWidth0 = parseFloat(
+      orbital.options.orbits[0].styles.borderWidth
+    );
+    const expectedBorderWidth0 = parseFloat(options.orbits[0].borderWidth);
+
+    const borderStyle0 = computedStyle0.borderStyle;
+    const receivedBorderStyle0 = orbital.options.orbits[0].styles.borderStyle;
+    const expectedBorderStyle0 = options.orbits[0].borderStyle;
+
+    expect(orbits.length).toBe(1);
+    expect(borderColor0).toBe(expectedBorderColor0);
+    expect(receivedBorderColor0).toBe(expectedBorderColor0);
+
+    expect(borderWidth0).toBe(expectedBorderWidth0);
+    expect(receivedBorderWidth0).toBe(expectedBorderWidth0);
+
+    expect(borderStyle0).toBe(expectedBorderStyle0);
+    expect(receivedBorderStyle0).toBe(expectedBorderStyle0);
+  });
+});

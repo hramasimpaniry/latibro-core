@@ -3,8 +3,38 @@ class Orbital {
     this.container = container;
     this.options = options || {};
     this.orbits = this.options.orbits || [];
+
+    // Automatic migration of deprecated orbit{} props
+    this.options.orbits.forEach((orbit) => {
+      if (orbit.borderColor || orbit.borderWidth || orbit.borderStyle) {
+        console.warn(
+          "⚠️ [latibro-core] `borderColor`, `borderWidth`, `borderStyle` are deprecated on orbit{} and will be removed in a future version. Use `styles.borderColor`, `styles.borderWidth`, and `styles.borderStyle` instead."
+        );
+
+        orbit.styles = orbit.styles || {};
+        if (orbit.borderColor) orbit.styles.borderColor = orbit.borderColor;
+        if (orbit.borderWidth) orbit.styles.borderWidth = orbit.borderWidth;
+        if (orbit.borderStyle) orbit.styles.borderStyle = orbit.borderStyle;
+      }
+    });
+
     this.orbitSpacing = this.options.orbitSpacing || 55;
-    this.backgroundColor = this.options?.styles?.backgroundColor || "#1a202c"; // <deprecated>: options.backgroundColor
+    // this.backgroundColor = this.options?.styles?.backgroundColor || "#1a202c";
+
+    // Automatic migration of deprecated container{} props
+    this.options.container = this.options.container || {};
+    this.options.container.styles = this.options.container.styles || {};
+    this.options.container.styles.backgroundColor =
+      this.options.container.styles.backgroundColor || "#1a202c";
+
+    if (this.options.backgroundColor) {
+      console.warn(
+        "⚠️ [latibro-core] `backgroundColor` is deprecated on container{} and will be removed in a future version. Use `styles.container.backgroundColor` instead."
+      );
+      this.options.container.styles.backgroundColor =
+        this.options.backgroundColor;
+    }
+
     this.init();
   }
 
@@ -19,7 +49,7 @@ class Orbital {
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: ${this.backgroundColor};
+      background-color: ${this.options.container.styles.backgroundColor};
     }`);
 
     // default CSS
