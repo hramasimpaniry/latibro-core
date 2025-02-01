@@ -94,7 +94,7 @@ describe("Orbital: Container", () => {
 });
 
 describe("Orbital: Container Deprecated Props", () => {
-  it("should automatically migrate `backgroundColor`", async () => {
+  it("should automatically migrate option `backgroundColor`", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
 
@@ -116,13 +116,10 @@ describe("Orbital: Container Deprecated Props", () => {
 
     // elements
     const computedStyle = window.getComputedStyle(container);
-    const backgroundColor = computedStyle.backgroundColor;
-    const receivedBackgroundColor =
-      orbital.options.container.styles.backgroundColor;
-    const expectedBackgroundColor = options.backgroundColor;
+    const receivedBackgroundColor = computedStyle.backgroundColor;
+    const expectedBackgroundColor = "rgb(255, 87, 51)"; // #ff5733
 
     // tests
-    expect(backgroundColor).toBe("rgb(255, 87, 51)"); // #ff5733
     expect(receivedBackgroundColor).toBe(expectedBackgroundColor);
   });
 });

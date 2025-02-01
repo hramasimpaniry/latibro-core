@@ -1,6 +1,6 @@
 declare module "latibro-core" {
   export interface OrbitItemObject {
-    src: string;
+    src: string;    
     customCss?: string;
     styles?: Partial<CSSStyleDeclaration>;
   }
@@ -26,6 +26,10 @@ declare module "latibro-core" {
   }
 
   export interface ContainerOptions {
+    /**
+     * @deprecated Use `styles.backgroundColor` instead.
+     */  
+    backgroundColor?: string;    
     customCss?: string;
     styles?: Partial<CSSStyleDeclaration>;
   }  

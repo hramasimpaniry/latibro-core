@@ -2,7 +2,17 @@ class Orbital {
   constructor(container, options) {
     this.container = container;
     this.options = options || {};
+    this.backgroundColor = "#1a202c";
     this.orbits = this.options.orbits || [];
+    this.orbitSpacing = this.options.orbitSpacing || 55;
+
+    // Automatic migration of deprecated container{} props
+    if (this.options.backgroundColor) {
+      console.warn(
+        "⚠️ [latibro-core] `backgroundColor` is deprecated on container{} and will be removed in a future version. Use `styles.container.backgroundColor` instead."
+      );
+      this.backgroundColor = this.options.backgroundColor;
+    }
 
     // Automatic migration of deprecated orbit{} props
     this.options.orbits.forEach((orbit) => {
@@ -18,23 +28,6 @@ class Orbital {
       }
     });
 
-    this.orbitSpacing = this.options.orbitSpacing || 55;
-    // this.backgroundColor = this.options?.styles?.backgroundColor || "#1a202c";
-
-    // Automatic migration of deprecated container{} props
-    this.options.container = this.options.container || {};
-    this.options.container.styles = this.options.container.styles || {};
-    this.options.container.styles.backgroundColor =
-      this.options.container.styles.backgroundColor || "#1a202c";
-
-    if (this.options.backgroundColor) {
-      console.warn(
-        "⚠️ [latibro-core] `backgroundColor` is deprecated on container{} and will be removed in a future version. Use `styles.container.backgroundColor` instead."
-      );
-      this.options.container.styles.backgroundColor =
-        this.options.backgroundColor;
-    }
-
     this.init();
   }
 
@@ -49,7 +42,7 @@ class Orbital {
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: ${this.options.container.styles.backgroundColor};
+      background-color: ${this.backgroundColor};
     }`);
 
     // default CSS
@@ -87,7 +80,6 @@ class Orbital {
       }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"}`;
 
       // default CSS
-      // <deprecated>: orbit.borderWidth, orbit.borderStyle, orbit.borderColor
       this.defineCSSRule(`.${orbitCssRuleName} {
           position: absolute;
           width: ${2 * orbitRadius}px;
@@ -209,14 +201,6 @@ class Orbital {
         document.head.appendChild(styleTag);
       }
     }
-
-    // const styleSheet = [...document.styleSheets].find(
-    // (sheet) => sheet.ownerNode && sheet.ownerNode.id === styleId
-    // );
-    //
-    // if (styleSheet) {
-    // styleSheet.insertRule(cssRules, styleSheet.cssRules.length); // Styles are NOT Visible in the DOM
-    // }
 
     styleTag.textContent += cssRules + "\n"; // Styles are Visible in the DOM
   }

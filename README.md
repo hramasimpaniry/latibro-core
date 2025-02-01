@@ -9,7 +9,7 @@ Latibro (read backwards) is a lightweight JavaScript library for creating animat
 - Dynamic circular orbit animations.
 - Supports multiple orbits with independent speeds.
 - Fully customizable:
-  - <code>v0.2.0</code> Container and Orbit customization (default CSS, custom CSS classes, inline styles).
+  - <code>v0.2.0</code> Container, Orbit and Item customization (default CSS, custom CSS classes, inline styles).
   - Orbit styles (color, thickness, etc.).
   - Element animations and spacing.
 - Designed for performance and ease of use.
@@ -22,7 +22,7 @@ npm install latibro-core
 
 ## Usage
 
-### Basic Example
+#### **Basic Example**
 
 <code>index.html</code>
 
@@ -64,7 +64,9 @@ const config = {
 new Orbital(container, config);
 ```
 
-<code>.orbital-container</code> _(Default CSS rules)_
+#### **Example: Default CSS rules**
+
+<code>.orbital-container</code>
 
 ```css
 .orbital-container {
@@ -107,7 +109,9 @@ These properties are deprecated and will be removed in a future version:
 
 **Warning:** Using these properties will trigger a console warning.
 
-### Example: Using Custom CSS
+## Examples
+
+#### **Example: Using Custom CSS**
 
 ```javascript
 const config = {
@@ -117,7 +121,7 @@ const config = {
 };
 ```
 
-### Example: Using Inline Styles
+#### **Example: Using Inline Styles**
 
 ```javascript
 const config = {
@@ -146,7 +150,7 @@ Each orbit can be customized in the same way as the container, using:
 | <code>orbits</code>       | <code>Array</code>  | <code>[]</code> | List of orbit objects. Each orbit defines items and styling options. |
 | <code>orbitSpacing</code> | <code>Number</code> | <code>55</code> | The spacing (value) between consecutive orbits.                      |
 
-### Example: Custom Orbits spacing
+#### **Example: Custom Orbits spacing**
 
 ```javascript
 const config = {
@@ -178,7 +182,7 @@ const config = {
 | <code>styles</code>          | <code>Object</code> | <code>{}</code>       | Inline styles (applied last, override everything).                                                                 |
 | <code>speed</code>           | <code>Number</code> | <code>10</code>       | Speed of rotation (in seconds for one full rotation).                                                              |
 
-### Deprecated Properties
+## Deprecated Properties
 
 These properties are deprecated and will be removed in a future version:
 
@@ -190,7 +194,9 @@ These properties are deprecated and will be removed in a future version:
 
 **Warning:** Using these properties will trigger a console warning.
 
-### Example: Custom CSS for Orbits
+## Examples
+
+#### **Example: Custom CSS for Orbits**
 
 ```javascript
 const config = {
@@ -203,7 +209,7 @@ const config = {
 };
 ```
 
-### Example: Custom Inline Styles for Orbits
+#### **Example: Custom Inline Styles for Orbits**
 
 ```javascript
 const config = {
@@ -220,7 +226,7 @@ const config = {
 };
 ```
 
-### Example: Default CSS rules
+#### **Example: Default CSS rules**
 
 <code>.orbit-0</code>
 
@@ -248,9 +254,106 @@ Each item (attached to orbit) can be customized in the same way as the container
 
 ### Item <code>Object</code> Properties
 
-...
+Each item inside an orbit can be configured using either a **string** (image URL) or an **object** with more customization options.
+
+| Prop        | Type     | Default | Description                                        |
+| ----------- | -------- | ------- | -------------------------------------------------- |
+| `src`       | `string` | `""`    | Image URL of the orbiting item.                    |
+| `customCss` | `string` | `null`  | Custom CSS classes applied to the item.            |
+| `styles`    | `Object` | `{}`    | Inline styles (applied last, override everything). |
 
 ## Examples
+
+#### **Example: Using Image URLs (string array)**
+
+```javascript
+const config = {
+  orbits: [
+    {
+      items: ["https://placehold.co/50", "https://placehold.co/50"],
+    },
+  ],
+};
+```
+
+#### **Example: Using Custom Item Objects**
+
+```javascript
+const config = {
+  orbits: [
+    {
+      items: [
+        {
+          src: "https://placehold.co/50",
+          customCss: "custom-item",
+          styles: {
+            border: "2px solid red",
+            width: "40px",
+            height: "40px",
+          },
+        },
+      ],
+    },
+  ],
+};
+```
+
+#### **Example: Default CSS rules**
+
+<code>.orbit-wrapper-0-0</code>
+
+```css
+.orbit-wrapper-0-0 {
+  position: absolute;
+  offset-path: circle(75px at 50% 50%);
+  offset-distance: 0%;
+  offset-rotate: 0deg;
+  animation: orbit-wrapper-0-0-anim 10s linear infinite normal;
+}
+```
+
+<code>.orbit-item-0-0</code>
+
+```css
+.orbit-item-0-0 {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+```
+
+<code>.orbit-img-0-0</code>
+
+```css
+.orbit-img-0-0 {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+```
+
+#### Example: Default HTML structure
+
+```html
+<div id="orbital-container" class="orbital-container">
+  <div class="orbit orbit-0">
+    <div class="orbit-wrapper orbit-wrapper-0-0">
+      <div class="orbit-item orbit-item-0-0">
+        <img
+          src="https://placehold.co/50"
+          alt=""
+          class="orbit-img orbit-img-0-0"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+```
 
 Check the <code>/examples/</code> folder for various demos:
 

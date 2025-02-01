@@ -1,12 +1,7 @@
 {
   "name": "latibro-core",
   "version": "0.2.0",
-  "deprecated": {
-    "borderColor": "Use styles.borderColor instead",
-    "borderStyle": "Use styles.borderStyle instead",
-    "borderWidth": "Use styles.borderWidth instead",
-    "backgroundColor": "Use styles.backgroundColor instead"
-  },
+  "deprecated": "The properties borderColor, borderStyle, borderWidth, and backgroundColor are deprecated and will be removed in a future version.",
   "description": "The core library for creating animated latibro (read backwards) components.",
   "main": "dist/orbital.umd.js",
   "module": "dist/orbital.es.js",
