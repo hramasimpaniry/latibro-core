@@ -1,22 +1,54 @@
 declare module "latibro-core" {
-    export interface Orbit {
-      items: string[];
-      customRadius?: number;
-      borderColor?: string;
-      borderStyle?: string;
-      borderWidth?: number;
-      customCss?: string;
-      speed?: number;
-    }
+  export interface OrbitItemObject {
+    src: string;    
+    customCss?: string;
+    styles?: Partial<CSSStyleDeclaration>;
+  }
   
-    export interface OrbitalOptions {
-      orbits: Orbit[];
-      orbitSpacing?: number;
-      backgroundColor?: string;
-    }
-  
+  export interface OrbitOptions {
+    items: (string | OrbitItemObject)[];
+    customRadius?: number;
+    /**
+     * @deprecated Use `styles.borderColor` instead.
+     */    
+    borderColor?: string;
+    /**
+     * @deprecated Use `styles.borderStyle` instead.
+     */    
+    borderStyle?: string;
+    /**
+     * @deprecated Use `styles.borderWidth` instead.
+     */    
+    borderWidth?: number;
+    customCss?: string;
+    styles?: Partial<CSSStyleDeclaration>;    
+    speed?: number;
+  }
+
+  export interface ContainerOptions {
+    /**
+     * @deprecated Use `styles.backgroundColor` instead.
+     */  
+    backgroundColor?: string;    
+    customCss?: string;
+    styles?: Partial<CSSStyleDeclaration>;
+  }  
+
+  export interface OrbitalOptions {
+    container?: ContainerOptions;
+    orbits: OrbitOptions[];
+    orbitSpacing?: number;
+    /**
+     * @deprecated Use `container.styles.backgroundColor` instead.
+     */        
+    backgroundColor?: string;
+  }    
+
     export default class Orbital {
       constructor(container: HTMLElement, options: OrbitalOptions);
-    }
+      private init(): void;
+      private createOrbits(): void;
+      private defineCSSRule(cssRules: string): void;
+    }    
   }
   

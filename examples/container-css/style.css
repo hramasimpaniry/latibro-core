@@ -1,0 +1,18 @@
+.custom-css {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(220, 38, 38);
+}
+
+.border-lg {
+  border: solid 10px rgb(0, 0, 0, 0.1);
+}
+
+.border-rounded {
+  border-radius: 0.5rem;
+}
