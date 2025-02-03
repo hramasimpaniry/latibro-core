@@ -2,32 +2,8 @@ class Orbital {
   constructor(container, options) {
     this.container = container;
     this.options = options || {};
-    this.backgroundColor = "#1a202c";
     this.orbits = this.options.orbits || [];
     this.orbitSpacing = this.options.orbitSpacing || 55;
-
-    // Automatic migration of deprecated container{} props
-    if (this.options.backgroundColor) {
-      console.warn(
-        "⚠️ [latibro-core] `backgroundColor` is deprecated on container{} and will be removed in a future version. Use `styles.container.backgroundColor` instead."
-      );
-      this.backgroundColor = this.options.backgroundColor;
-    }
-
-    // Automatic migration of deprecated orbit{} props
-    this.options.orbits.forEach((orbit) => {
-      if (orbit.borderColor || orbit.borderWidth || orbit.borderStyle) {
-        console.warn(
-          "⚠️ [latibro-core] `borderColor`, `borderWidth`, `borderStyle` are deprecated on orbit{} and will be removed in a future version. Use `styles.borderColor`, `styles.borderWidth`, and `styles.borderStyle` instead."
-        );
-
-        orbit.styles = orbit.styles || {};
-        if (orbit.borderColor) orbit.styles.borderColor = orbit.borderColor;
-        if (orbit.borderWidth) orbit.styles.borderWidth = orbit.borderWidth;
-        if (orbit.borderStyle) orbit.styles.borderStyle = orbit.borderStyle;
-      }
-    });
-
     this.init();
   }
 
@@ -42,7 +18,7 @@ class Orbital {
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: ${this.backgroundColor};
+      background-color: #1a202c;
     }`);
 
     // default CSS

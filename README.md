@@ -9,7 +9,7 @@ Latibro (read backwards) is a lightweight JavaScript library for creating animat
 - Dynamic circular orbit animations.
 - Supports multiple orbits with independent speeds.
 - Fully customizable:
-  - <code>v0.2.0</code> Container, Orbit and Item customization (default CSS, custom CSS classes, inline styles).
+  - Container, Orbit and Item customization (default CSS, custom CSS classes, inline styles).
   - Orbit styles (color, thickness, etc.).
   - Element animations and spacing.
 - Designed for performance and ease of use.
@@ -19,6 +19,15 @@ Latibro (read backwards) is a lightweight JavaScript library for creating animat
 ```bash
 npm install latibro-core
 ```
+
+## Configuration
+
+### Important Update in <code>v0.3.0</code>
+
+- `borderColor`, `borderWidth`, `borderStyle` and `backgroundColor` have been removed.
+- Use `styles.borderColor`, `styles.borderWidth`, `styles.borderStyle` and `styles.backgroundColor` instead.
+
+See [CHANGELOG.md](./CHANGELOG.md) for more details.
 
 ## Usage
 
@@ -47,20 +56,21 @@ npm install latibro-core
 ```javascript
 import Orbital from "latibro-core";
 
-const container = document.getElementById("orbital-container");
 const config = {
   orbits: [
     {
-      items: [
-        "https://placehold.co/50",
-        "https://placehold.co/50",
-        "https://placehold.co/50",
-      ],
+      items: ["https://placehold.co/50", "https://placehold.co/50"],
+      styles: {
+        borderColor: "red",
+        borderWidth: "2px",
+        borderStyle: "solid",
+      },
       speed: 10,
     },
   ],
 };
 
+const container = document.getElementById("orbital-container");
 new Orbital(container, config);
 ```
 
@@ -93,21 +103,10 @@ The styles applied to both the container and orbits follow a specific order of p
 
 The <code>container</code> configuration allows you to customize the **main orbit container** using **CSS classes** or **inline styles**.
 
-| Prop                             | Type                | Default                | Description                                                                                                                |
-| -------------------------------- | ------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| <code>_~backgroundColor~_</code> | <code>String</code> | <code>"#1a202c"</code> | _<code>deprecated</code>_ The background color of the orbital container (Use <code>styles.backgroundColor</code> instead). |
-| <code>customCss</code>           | <code>String</code> | <code>""</code>        | <code>v0.2.0</code> Custom CSS classes applied to the container.                                                           |
-| <code>styles</code>              | <code>Object</code> | <code>{}</code>        | <code>v0.2.0</code> Inline styles applied to the container .                                                               |
-
-## Deprecated Properties
-
-These properties are deprecated and will be removed in a future version:
-
-| Property          | Alternative                        |
-| ----------------- | ---------------------------------- |
-| `backgroundColor` | `container.styles.backgroundColor` |
-
-**Warning:** Using these properties will trigger a console warning.
+| Prop                   | Type                | Default         | Description                                  |
+| ---------------------- | ------------------- | --------------- | -------------------------------------------- |
+| <code>customCss</code> | <code>String</code> | <code>""</code> | Custom CSS classes applied to the container. |
+| <code>styles</code>    | <code>Object</code> | <code>{}</code> | Inline styles applied to the container .     |
 
 ## Examples
 
@@ -171,28 +170,13 @@ const config = {
 
 ### Orbit <code>Object</code> Properties
 
-| Prop                         | Type                | Default               | Description                                                                                                        |
-| ---------------------------- | ------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| <code>items</code>           | <code>Array</code>  | <code>[]</code>       | Array of image URLs or content to display as orbiting items.                                                       |
-| <code>customRadius</code>    | <code>Number</code> | <code>75</code>       | Custom radius (value) for the orbit.                                                                               |
-| <code>_~borderColor~_</code> | <code>String</code> | <code>"white"</code>  | _<code>deprecated</code>_ The color of the orbit border (Use <code>styles.borderColor</code> instead).             |
-| <code>_~borderStyle~_</code> | <code>String</code> | <code>"dashed"</code> | _<code>deprecated</code>_ The style of the orbit border (Use <code>styles.borderStyle</code> instead).             |
-| <code>_~borderWidth~_</code> | <code>Number</code> | <code>2</code>        | _<code>deprecated</code>_ The width of the orbit border (in pixels) (Use <code>styles.borderWidth</code> instead). |
-| <code>customCss</code>       | <code>String</code> | <code>null</code>     | Custom CSS classes to apply to the orbit element.                                                                  |
-| <code>styles</code>          | <code>Object</code> | <code>{}</code>       | Inline styles (applied last, override everything).                                                                 |
-| <code>speed</code>           | <code>Number</code> | <code>10</code>       | Speed of rotation (in seconds for one full rotation).                                                              |
-
-## Deprecated Properties
-
-These properties are deprecated and will be removed in a future version:
-
-| Property      | Alternative                |
-| ------------- | -------------------------- |
-| `borderColor` | `orbit.styles.borderColor` |
-| `borderWidth` | `orbit.styles.borderWidth` |
-| `borderStyle` | `orbit.styles.borderStyle` |
-
-**Warning:** Using these properties will trigger a console warning.
+| Prop                      | Type                | Default           | Description                                                  |
+| ------------------------- | ------------------- | ----------------- | ------------------------------------------------------------ |
+| <code>items</code>        | <code>Array</code>  | <code>[]</code>   | Array of image URLs or content to display as orbiting items. |
+| <code>customRadius</code> | <code>Number</code> | <code>75</code>   | Custom radius (value) for the orbit.                         |
+| <code>customCss</code>    | <code>String</code> | <code>null</code> | Custom CSS classes to apply to the orbit element.            |
+| <code>styles</code>       | <code>Object</code> | <code>{}</code>   | Inline styles (applied last, override everything).           |
+| <code>speed</code>        | <code>Number</code> | <code>10</code>   | Speed of rotation (in seconds for one full rotation).        |
 
 ## Examples
 

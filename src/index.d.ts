@@ -7,29 +7,14 @@ declare module "latibro-core" {
   
   export interface OrbitOptions {
     items: (string | OrbitItemObject)[];
-    customRadius?: number;
-    /**
-     * @deprecated Use `styles.borderColor` instead.
-     */    
-    borderColor?: string;
-    /**
-     * @deprecated Use `styles.borderStyle` instead.
-     */    
-    borderStyle?: string;
-    /**
-     * @deprecated Use `styles.borderWidth` instead.
-     */    
+    customRadius?: number;  
     borderWidth?: number;
     customCss?: string;
     styles?: Partial<CSSStyleDeclaration>;    
     speed?: number;
   }
 
-  export interface ContainerOptions {
-    /**
-     * @deprecated Use `styles.backgroundColor` instead.
-     */  
-    backgroundColor?: string;    
+  export interface ContainerOptions {   
     customCss?: string;
     styles?: Partial<CSSStyleDeclaration>;
   }  
@@ -38,10 +23,6 @@ declare module "latibro-core" {
     container?: ContainerOptions;
     orbits: OrbitOptions[];
     orbitSpacing?: number;
-    /**
-     * @deprecated Use `container.styles.backgroundColor` instead.
-     */        
-    backgroundColor?: string;
   }    
 
     export default class Orbital {

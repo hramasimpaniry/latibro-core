@@ -92,34 +92,3 @@ describe("Orbital: Container", () => {
     expect(computedStyle.border).toEqual("2px solid #000");
   });
 });
-
-describe("Orbital: Container Deprecated Props", () => {
-  it("should automatically migrate option `backgroundColor`", async () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
-    const options = {
-      orbits: [
-        {
-          items: ["https://placehold.co/50"],
-        },
-      ],
-      backgroundColor: "#ff5733",
-    };
-
-    // init
-    let orbital = new Orbital(container, options);
-
-    // reflow
-    container.offsetHeight;
-    await new Promise((resolve) => requestAnimationFrame(resolve));
-
-    // elements
-    const computedStyle = window.getComputedStyle(container);
-    const receivedBackgroundColor = computedStyle.backgroundColor;
-    const expectedBackgroundColor = "rgb(255, 87, 51)"; // #ff5733
-
-    // tests
-    expect(receivedBackgroundColor).toBe(expectedBackgroundColor);
-  });
-});
