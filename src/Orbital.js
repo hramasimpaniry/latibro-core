@@ -5,7 +5,9 @@ class Orbital {
     this.orbits = this.options.orbits || [];
     this.orbitSpacing = this.options.orbitSpacing || 55;
     this.options.interactive = this.options.interactive !== false;
-    this.orbitElements = [];
+    this.options.mouseLeaveDelay = this.options.mouseLeaveDelay || 400;
+    this.orbitItems = [];
+    this.itemCursor = this.options.interactive ? "pointer" : "default";
     this.init();
   }
 
@@ -39,7 +41,6 @@ class Orbital {
     }
 
     this.createOrbits();
-    this.setupInteractivity();
   }
 
   createOrbits() {
@@ -68,10 +69,10 @@ class Orbital {
           border: ${orbitBorder};
           animation: ${orbitAnimation};
           z-index: ${orbitZIndex};
+          transition: animation-play-state 0.5s ease-in-out;
       }`);
 
       orbitDiv.classList.add("orbit", orbitCssRuleName);
-      this.orbitElements.push(orbitDiv);
 
       if (orbit.customCss) {
         // custom CSS
@@ -82,10 +83,6 @@ class Orbital {
         // custom inline styles
         Object.assign(orbitDiv.style, orbit.styles || {});
       }
-
-      this.defineCSSRule(`.orbit {
-          transition: animation-play-state 0.3s ease;
-        }`);
 
       this.defineCSSRule(`@keyframes ${orbitAnimationName} {
           0% { transform: rotate(0deg); }
@@ -110,6 +107,8 @@ class Orbital {
           animation: ${itemAnimationName} ${
           orbit.speed || 10
         }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"};
+          transition: animation-play-state 0.5s ease-in-out;
+          cursor : ${this.itemCursor};
         }`);
 
         itemDiv.classList.add("orbit-wrapper", itemCssRuleName);
@@ -164,6 +163,15 @@ class Orbital {
           }%; offset-rotate: 0deg }
         }`);
 
+        const itemData = {
+          parent: orbitDiv,
+          element: imgDiv,
+          resumeTimeout: null,
+        };
+
+        this.orbitItems.push(itemData);
+        this.setupItemInteractivity(itemData);
+
         imgDiv.appendChild(img);
         itemDiv.appendChild(imgDiv);
         orbitDiv.appendChild(itemDiv);
@@ -171,34 +179,54 @@ class Orbital {
     });
   }
 
-  setupInteractivity() {
+  setupItemInteractivity(itemData) {
     if (!this.options.interactive) return;
 
+    let { parent, element } = itemData; // parent : orbit, element : item
+
     const handleMouseEnter = () => {
-      const elements = this.container.querySelectorAll(
-        ".orbit, .orbit-wrapper"
-      );
-      elements.forEach((el) => {
+      if (itemData.resumeTimeout) {
+        clearTimeout(itemData.resumeTimeout);
+        itemData.resumeTimeout = null;
+      }
+
+      parent.style.setProperty("animation-play-state", "paused", "important");
+
+      const items = parent.querySelectorAll(".orbit-wrapper");
+      items.forEach((el) => {
         el.style.setProperty("animation-play-state", "paused", "important");
       });
     };
 
     const handleMouseLeave = () => {
-      const elements = this.container.querySelectorAll(
-        ".orbit, .orbit-wrapper"
-      );
-      elements.forEach((el) => {
-        el.style.setProperty("animation-play-state", "running", "important");
-      });
+      itemData.resumeTimeout = setTimeout(() => {
+        parent.style.setProperty(
+          "animation-play-state",
+          "running",
+          "important"
+        );
+        const items = parent.querySelectorAll(".orbit-wrapper");
+        items.forEach((el) => {
+          el.style.setProperty("animation-play-state", "running", "important");
+        });
+      }, this.options.mouseLeaveDelay);
     };
 
-    this.container.addEventListener("mouseenter", handleMouseEnter);
-    this.container.addEventListener("mouseleave", handleMouseLeave);
+    element.addEventListener("mouseenter", handleMouseEnter);
+    element.addEventListener("mouseleave", handleMouseLeave);
 
-    this.cleanupInteractivity = () => {
-      this.container.removeEventListener("mouseenter", handleMouseEnter);
-      this.container.removeEventListener("mouseleave", handleMouseLeave);
+    itemData.cleanupInteractivity = () => {
+      element.removeEventListener("mouseenter", handleMouseEnter);
+      element.removeEventListener("mouseleave", handleMouseLeave);
     };
+  }
+
+  cleanupInteractivity() {
+    this.orbitItems.forEach((el) => {
+      if (el.cleanupInteractivity) {
+        el.cleanupInteractivity();
+      }
+    });
   }
 
   defineCSSRule(cssRules) {

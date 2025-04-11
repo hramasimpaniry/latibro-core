@@ -10,7 +10,7 @@ const config = {
         "https://placehold.co/50",
         "https://placehold.co/50",
       ],
-      speed: 8,
+      speed: 100,
     },
     {
       items: [
@@ -18,7 +18,7 @@ const config = {
         "https://placehold.co/50",
         "https://placehold.co/50",
       ],
-      speed: 12,
+      speed: 100,
       customRadius: 80,
     },
     {
@@ -27,7 +27,7 @@ const config = {
         "https://placehold.co/50",
         "https://placehold.co/50",
       ],
-      speed: 16,
+      speed: 100,
       customRadius: 100,
     },
   ],
