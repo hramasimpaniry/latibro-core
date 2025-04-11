@@ -4,6 +4,8 @@ class Orbital {
     this.options = options || {};
     this.orbits = this.options.orbits || [];
     this.orbitSpacing = this.options.orbitSpacing || 55;
+    this.options.interactive = this.options.interactive !== false;
+    this.orbitElements = [];
     this.init();
   }
 
@@ -37,6 +39,7 @@ class Orbital {
     }
 
     this.createOrbits();
+    this.setupInteractivity();
   }
 
   createOrbits() {
@@ -66,6 +69,7 @@ class Orbital {
       }`);
 
       orbitDiv.classList.add("orbit", orbitCssRuleName);
+      this.orbitElements.push(orbitDiv);
 
       if (orbit.customCss) {
         // custom CSS
@@ -76,6 +80,10 @@ class Orbital {
         // custom inline styles
         Object.assign(orbitDiv.style, orbit.styles || {});
       }
+
+      this.defineCSSRule(`.orbit {
+          transition: animation-play-state 0.3s ease;
+        }`);
 
       this.defineCSSRule(`@keyframes ${orbitAnimationName} {
           0% { transform: rotate(0deg); }
@@ -161,6 +169,36 @@ class Orbital {
     });
   }
 
+  setupInteractivity() {
+    if (!this.options.interactive) return;
+
+    const handleMouseEnter = () => {
+      const elements = this.container.querySelectorAll(
+        ".orbit, .orbit-wrapper"
+      );
+      elements.forEach((el) => {
+        el.style.setProperty("animation-play-state", "paused", "important");
+      });
+    };
+
+    const handleMouseLeave = () => {
+      const elements = this.container.querySelectorAll(
+        ".orbit, .orbit-wrapper"
+      );
+      elements.forEach((el) => {
+        el.style.setProperty("animation-play-state", "running", "important");
+      });
+    };
+
+    this.container.addEventListener("mouseenter", handleMouseEnter);
+    this.container.addEventListener("mouseleave", handleMouseLeave);
+
+    this.cleanupInteractivity = () => {
+      this.container.removeEventListener("mouseenter", handleMouseEnter);
+      this.container.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }
+
   defineCSSRule(cssRules) {
     const styleId = "latibro-core";
     let styleTag = document.querySelector(`#${styleId}`);
@@ -179,6 +217,12 @@ class Orbital {
     }
 
     styleTag.textContent += cssRules + "\n"; // Styles are Visible in the DOM
+  }
+
+  destroy() {
+    if (this.cleanupInteractivity) {
+      this.cleanupInteractivity();
+    }
   }
 }
 
