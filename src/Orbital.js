@@ -57,6 +57,7 @@ class Orbital {
       const orbitAnimation = `${orbitAnimationName} ${
         orbit.speed || 10
       }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"}`;
+      const orbitZIndex = 1000 + (this.orbits.length - orbitIndex);
 
       // default CSS
       this.defineCSSRule(`.${orbitCssRuleName} {
@@ -66,6 +67,7 @@ class Orbital {
           border-radius: 50%;
           border: ${orbitBorder};
           animation: ${orbitAnimation};
+          z-index: ${orbitZIndex};
       }`);
 
       orbitDiv.classList.add("orbit", orbitCssRuleName);
