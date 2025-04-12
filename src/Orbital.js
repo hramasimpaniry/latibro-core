@@ -184,6 +184,8 @@ class Orbital {
 
     let { parent, element } = itemData; // parent : orbit, element : item
 
+    element.addEventListener("click", () => this.handleItemClick(itemData));
+
     const handleMouseEnter = () => {
       if (itemData.resumeTimeout) {
         clearTimeout(itemData.resumeTimeout);
@@ -221,11 +223,106 @@ class Orbital {
     };
   }
 
+  handleItemClick(itemData) {
+    if (this.isPanelOpen) return;
+    this.currentItem = itemData;
+    this.openPanel();
+  }
+
+  openPanel() {
+    const { element } = this.currentItem;
+    this.isPanelOpen = true;
+
+    const panel = element.cloneNode(true);
+    panel.id = "orbital-active-item";
+
+    const itemRect = element.getBoundingClientRect();
+    const orbitalRect = this.container.getBoundingClientRect();
+
+    panel.style.position = "fixed";
+    panel.style.left = `${itemRect.left}px`;
+    panel.style.top = `${itemRect.top}px`;
+    panel.style.width = `${itemRect.width}px`;
+    panel.style.height = `${itemRect.height}px`;
+    panel.style.transition = "all 0.4s cubic-bezier(0.2, 0.8, 0.3, 1.2)";
+    panel.style.zIndex = 1000 + this.orbits.length + 1;
+    document.body.appendChild(panel);
+
+    const centerX =
+      orbitalRect.left + orbitalRect.width / 2 - itemRect.width / 2;
+    const centerY =
+      orbitalRect.top + orbitalRect.height / 2 - itemRect.height / 2;
+
+    const initialWidth = itemRect.width;
+    const finalWidth = orbitalRect.width - 30;
+    const initialHeight = itemRect.height;
+    const finalHeight = (orbitalRect.height * 3) / 4;
+
+    this.animateSequentially(panel, [
+      {
+        duration: 400,
+        properties: {
+          left: { to: `${centerX}px` },
+          top: { to: `${centerY}px` },
+        },
+      },
+      {
+        duration: 800,
+        properties: {
+          borderRadius: { from: `50%`, to: `4px` },
+          width: { from: `${initialWidth}px`, to: `${finalWidth}px` },
+          height: { from: `${initialHeight}px`, to: `${finalHeight}px` },
+          transform: {
+            from: "translate(0, 0)",
+            to: `translate(-${(finalWidth - initialWidth) / 2}px, -${
+              (finalHeight - initialHeight) / 2
+            }px)`,
+          },
+        },
+      },
+    ]);
+  }
+
   cleanupInteractivity() {
     this.orbitItems.forEach((el) => {
       if (el.cleanupInteractivity) {
         el.cleanupInteractivity();
       }
+    });
+  }
+
+  async animateSequentially(element, sequences) {
+    for (const sequence of sequences) {
+      element.style.transformOrigin = "center";
+      await this.animateMultipleProperties(
+        element,
+        sequence.properties,
+        sequence.duration
+      );
+    }
+  }
+
+  animateMultipleProperties(element, properties, duration) {
+    return new Promise((resolve) => {
+      const transitions = [];
+
+      // Préparer les transitions et valeurs initiales
+      for (const prop in properties) {
+        transitions.push(`${prop} ${duration}ms`);
+        element.style[prop] = properties[prop].from;
+      }
+
+      element.style.transition = transitions.join(", ");
+
+      // Forcer le repaint pour démarrer l'animation
+      void element.offsetWidth;
+
+      // Appliquer les valeurs finales
+      for (const prop in properties) {
+        element.style[prop] = properties[prop].to;
+      }
+
+      setTimeout(resolve, duration);
     });
   }
 
