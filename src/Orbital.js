@@ -5,7 +5,7 @@ class Orbital {
     this.orbits = this.options.orbits || [];
     this.orbitSpacing = this.options.orbitSpacing || 55;
     this.options.interactive = this.options.interactive !== false;
-    this.options.mouseLeaveDelay = this.options.mouseLeaveDelay || 400;
+    this.options.mouseLeaveDelay = this.options.mouseLeaveDelay || 0;
     this.orbitItems = [];
     this.itemCursor = this.options.interactive ? "pointer" : "default";
     this.init();
