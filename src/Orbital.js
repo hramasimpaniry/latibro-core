@@ -15,7 +15,6 @@ class Orbital {
     this.options.panel.offset.height = this.options.panel.offset.height || 15;
 
     // internal objects
-    this.itemCursor = this.options.interactive ? "pointer" : "default";
     this.orbitItems = [];
     this.panel = null;
     this.currentItem = null;
@@ -122,7 +121,6 @@ class Orbital {
           orbit.speed || 10
         }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"};
           transition: animation-play-state 0.5s ease-in-out;
-          cursor : ${this.itemCursor};
         }`);
 
         itemDiv.classList.add("orbit-wrapper", itemCssRuleName);
@@ -196,9 +194,11 @@ class Orbital {
   createInteractivityCssRules() {
     if (!this.options.interactive) return;
 
-    const cssName = "orbital-panel";
+    this.defineCSSRule(`.orbit-wrapper {
+      cursor : pointer;
+    }`);
 
-    this.defineCSSRule(`#${cssName}-overlay {
+    this.defineCSSRule(`#orbital-panel-overlay {
       position: absolute;
       top: 0;
       left: 0;
