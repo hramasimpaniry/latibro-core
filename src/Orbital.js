@@ -237,12 +237,12 @@ class Orbital {
         clearTimeout(itemData.resumeTimeout);
         itemData.resumeTimeout = null;
       }
-      pauseOrbitCssAnimation(parent);
+      this.pauseOrbitCssAnimation(parent);
     };
 
     const handleMouseLeave = () => {
       itemData.resumeTimeout = setTimeout(() => {
-        playOrbitCssAnimation(parent);
+        this.playOrbitCssAnimation(parent);
       }, this.options.mouseLeaveDelay);
     };
 
