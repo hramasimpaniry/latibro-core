@@ -216,6 +216,21 @@ class Orbital {
       justify-content: center;
       box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     }`);
+
+    this.defineCSSRule(`.orbital-panel-close {
+      position: absolute;
+      top: 4px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      opacity: .55;
+    }`);
+
+    this.defineCSSRule(`.orbital-panel-close:hover {
+      opacity: .80;
+    }`);
   }
 
   pauseOrbitCssAnimation(orbitElement) {
@@ -297,16 +312,22 @@ class Orbital {
     panel.style.zIndex = 1000 + this.options.orbits.length + 2;
     this.options.panel.container.appendChild(panel);
 
+    const closeButton = document.createElement("button");
+    closeButton.className = "orbital-panel-close";
+    closeButton.innerHTML = "×";
+    closeButton.style.display = "none";
+    panel.appendChild(closeButton);
+
     overlay.addEventListener("click", () => {
       this.closePanel();
     });
 
     // Fermeture du panel
-    panel.querySelector(".orbital-panel-close")?.addEventListener("click", () => {
+    closeButton.addEventListener("click", () => {
       this.closePanel();
     });
 
-    this.panel = { overlay, panel };
+    this.panel = { overlay, panel, closeButton };
 
     const centerX = containerRect.left + containerRect.width / 2 - itemRect.width / 2;
     const centerY = containerRect.top + containerRect.height / 2 - itemRect.height / 2;
@@ -335,13 +356,16 @@ class Orbital {
             to: `translate(-${(finalWidth - initialWidth) / 2}px, -${(finalHeight - initialHeight) / 2}px)`,
           },
         },
+        after: function () {
+          closeButton.style.display = "block";
+        },
       },
     ]);
   }
 
   closePanel() {
     const { parent, element } = this.currentItem;
-    const { overlay, panel } = this.panel;
+    const { overlay, panel, closeButton } = this.panel;
 
     const itemRect = element.getBoundingClientRect();
     const containerRect = this.options.panel.container.getBoundingClientRect();
@@ -366,6 +390,9 @@ class Orbital {
             from: `translate(-${(finalWidth - initialWidth) / 2}px, -${(finalHeight - initialHeight) / 2}px)`,
             to: "translate(0, 0)",
           },
+        },
+        before: function () {
+          closeButton.style.display = "none";
         },
       },
       {
@@ -399,13 +426,23 @@ class Orbital {
   async animate(element, sequences) {
     for (const sequence of sequences) {
       element.style.transformOrigin = "center";
-      await this._animateMultipleProperties(element, sequence.properties, sequence.duration);
+      await this._animateMultipleProperties(
+        element,
+        sequence.properties,
+        sequence.duration,
+        sequence.before,
+        sequence.after
+      );
     }
   }
 
-  _animateMultipleProperties(element, properties, duration) {
+  _animateMultipleProperties(element, properties, duration, before, after) {
     return new Promise((resolve) => {
       const transitions = [];
+
+      if (typeof before == "function") {
+        before();
+      }
 
       // Préparer les transitions et valeurs initiales
       for (const prop in properties) {
@@ -424,6 +461,10 @@ class Orbital {
       }
 
       setTimeout(resolve, duration);
+
+      if (typeof after == "function") {
+        setTimeout(after, duration);
+      }
     });
   }
 
