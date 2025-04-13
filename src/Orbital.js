@@ -1,29 +1,26 @@
 class Orbital {
   constructor(container, options) {
     this.container = container;
+
+    // options
     this.options = options || {};
     this.orbits = this.options.orbits || [];
     this.orbitSpacing = this.options.orbitSpacing || 55;
     this.options.interactive = this.options.interactive !== false;
     this.options.mouseLeaveDelay = this.options.mouseLeaveDelay || 0;
     this.options.panel = options.panel || {};
+    this.options.panel.container = this.options.panel.container || this.container;
+    this.options.panel.offset = this.options.panel.offset || {};
+    this.options.panel.offset.width = this.options.panel.offset.width || 15;
+    this.options.panel.offset.height = this.options.panel.offset.height || 15;
 
-    const optionsPanelDefaults = {
-      container: document.body,
-      offset: {
-        width: 15,
-        height: 15,
-      },
-    };
-
-    Object.assign(
-      this.options.panel,
-      optionsPanelDefaults,
-      options.panel || {}
-    );
-
+    // internal objects
     this.itemCursor = this.options.interactive ? "pointer" : "default";
     this.orbitItems = [];
+    this.panel = null;
+    this.currentItem = null;
+    this.isPanelOpen = false;
+
     this.init();
   }
 
@@ -290,6 +287,19 @@ class Orbital {
     panel.style.zIndex = 1000 + this.orbits.length + 2;
     this.options.panel.container.appendChild(panel);
 
+    overlay.addEventListener("click", () => {
+      this.closePanel();
+    });
+
+    // Fermeture du panel
+    panel
+      .querySelector(".orbital-panel-close")
+      ?.addEventListener("click", () => {
+        this.closePanel();
+      });
+
+    this.panel = { overlay, panel };
+
     const centerX =
       containerRect.left + containerRect.width / 2 - itemRect.width / 2;
     const centerY =
@@ -300,7 +310,7 @@ class Orbital {
     const initialHeight = itemRect.height;
     const finalHeight = containerRect.height - this.options.panel.offset.height;
 
-    this.animateSequentially(panel, [
+    this.animate(panel, [
       {
         duration: 400,
         properties: {
@@ -325,6 +335,56 @@ class Orbital {
     ]);
   }
 
+  closePanel() {
+    const { element } = this.currentItem;
+    const { overlay, panel } = this.panel;
+
+    const itemRect = element.getBoundingClientRect();
+    const containerRect = this.options.panel.container.getBoundingClientRect();
+
+    const centerX =
+      containerRect.left + containerRect.width / 2 - itemRect.width / 2;
+    const centerY =
+      containerRect.top + containerRect.height / 2 - itemRect.height / 2;
+
+    const initialWidth = itemRect.width;
+    const finalWidth = containerRect.width - this.options.panel.offset.width;
+    const initialHeight = itemRect.height;
+    const finalHeight = containerRect.height - this.options.panel.offset.height;
+
+    this.animate(panel, [
+      {
+        duration: 800,
+        properties: {
+          width: { from: `${finalWidth}px`, to: `${initialWidth}px` },
+          height: { from: `${finalHeight}px`, to: `${initialHeight}px` },
+          transform: {
+            from: `translate(-${(finalWidth - initialWidth) / 2}px, -${
+              (finalHeight - initialHeight) / 2
+            }px)`,
+            to: "translate(0, 0)",
+          },
+        },
+      },
+      {
+        duration: 400,
+        properties: {
+          opacity: { from: 1, to: 0 },
+          borderRadius: { from: `4px`, to: `50%` },
+          left: { to: `${itemRect.left}px` },
+          top: { to: `${itemRect.top}px` },
+        },
+      },
+    ]);
+
+    setTimeout(() => {
+      panel.remove();
+      overlay.remove();
+    }, 1200);
+
+    this.isPanelOpen = false;
+  }
+
   cleanupInteractivity() {
     this.orbitItems.forEach((el) => {
       if (el.cleanupInteractivity) {
@@ -333,10 +393,10 @@ class Orbital {
     });
   }
 
-  async animateSequentially(element, sequences) {
+  async animate(element, sequences) {
     for (const sequence of sequences) {
       element.style.transformOrigin = "center";
-      await this.animateMultipleProperties(
+      await this._animateMultipleProperties(
         element,
         sequence.properties,
         sequence.duration
@@ -344,7 +404,7 @@ class Orbital {
     }
   }
 
-  animateMultipleProperties(element, properties, duration) {
+  _animateMultipleProperties(element, properties, duration) {
     return new Promise((resolve) => {
       const transitions = [];
 

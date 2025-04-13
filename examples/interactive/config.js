@@ -3,6 +3,9 @@ import Orbital from "../../src/Orbital"; // 'latibro-core'
 const container = document.getElementById("orbital-container");
 const config = {
   interactive: true,
+  panel: {
+    container: container,
+  },
   orbits: [
     {
       items: [
