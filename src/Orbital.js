@@ -205,6 +205,17 @@ class Orbital {
       align-items: flex-start;
       z-index: 2000;
     }`);
+
+    this.defineCSSRule(`.orbital-panel {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;      
+      background: white;
+      display: flex ;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }`);
   }
 
   pauseOrbitCssAnimation(orbitElement) {
@@ -276,7 +287,7 @@ class Orbital {
 
     // opened panel
     const panel = element.cloneNode(true);
-    panel.id = "orbital-active-item";
+    panel.className = "orbital-panel";
     panel.style.position = "fixed";
     panel.style.left = `${itemRect.left}px`;
     panel.style.top = `${itemRect.top}px`;
