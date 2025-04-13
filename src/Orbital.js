@@ -4,8 +4,8 @@ class Orbital {
 
     // options
     this.options = options || {};
-    this.orbits = this.options.orbits || [];
-    this.orbitSpacing = this.options.orbitSpacing || 55;
+    this.options.orbits = this.options.orbits || [];
+    this.options.orbitSpacing = this.options.orbitSpacing || 55;
     this.options.interactive = this.options.interactive !== false;
     this.options.mouseLeaveDelay = this.options.mouseLeaveDelay || 0;
     this.options.panel = options.panel || {};
@@ -57,9 +57,9 @@ class Orbital {
   }
 
   createOrbits() {
-    this.orbits.forEach((orbit, orbitIndex) => {
+    this.options.orbits.forEach((orbit, orbitIndex) => {
       const orbitRadius =
-        (orbit.customRadius || 75) + orbitIndex * this.orbitSpacing;
+        (orbit.customRadius || 75) + orbitIndex * this.options.orbitSpacing;
       const itemCount = orbit.items.length;
       const orbitDiv = document.createElement("div");
       const orbitCssRuleName = `orbit-${orbitIndex}`;
@@ -71,7 +71,7 @@ class Orbital {
       const orbitAnimation = `${orbitAnimationName} ${
         orbit.speed || 10
       }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"}`;
-      const orbitZIndex = 1000 + (this.orbits.length - orbitIndex);
+      const orbitZIndex = 1000 + (this.options.orbits.length - orbitIndex);
 
       // default CSS
       this.defineCSSRule(`.${orbitCssRuleName} {
@@ -269,7 +269,7 @@ class Orbital {
     // backdrop overlay
     const overlay = document.createElement("div");
     overlay.id = "orbital-panel-overlay";
-    overlay.style.zIndex = 1000 + this.orbits.length + 1;
+    overlay.style.zIndex = 1000 + this.options.orbits.length + 1;
     this.options.panel.container.appendChild(overlay);
 
     const itemRect = element.getBoundingClientRect();
@@ -284,7 +284,7 @@ class Orbital {
     panel.style.width = `${itemRect.width}px`;
     panel.style.height = `${itemRect.height}px`;
     panel.style.transition = "all 0.4s cubic-bezier(0.2, 0.8, 0.3, 1.2)";
-    panel.style.zIndex = 1000 + this.orbits.length + 2;
+    panel.style.zIndex = 1000 + this.options.orbits.length + 2;
     this.options.panel.container.appendChild(panel);
 
     overlay.addEventListener("click", () => {
