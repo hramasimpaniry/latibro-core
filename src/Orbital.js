@@ -42,9 +42,7 @@ class Orbital {
 
     if (this.options?.container?.customCss) {
       // custom CSS
-      this.container.classList.add(
-        ...this.options.container.customCss.split(" ")
-      );
+      this.container.classList.add(...this.options.container.customCss.split(" "));
     }
 
     if (this.options?.container?.styles) {
@@ -58,8 +56,7 @@ class Orbital {
 
   createOrbits() {
     this.options.orbits.forEach((orbit, orbitIndex) => {
-      const orbitRadius =
-        (orbit.customRadius || 75) + orbitIndex * this.options.orbitSpacing;
+      const orbitRadius = (orbit.customRadius || 75) + orbitIndex * this.options.orbitSpacing;
       const itemCount = orbit.items.length;
       const orbitDiv = document.createElement("div");
       const orbitCssRuleName = `orbit-${orbitIndex}`;
@@ -68,9 +65,9 @@ class Orbital {
       const orbitBorderStyle = `${orbit?.styles?.borderStyle || "dashed"}`;
       const orbitBorderColor = `${orbit?.styles?.borderColor || "white"}`;
       const orbitBorder = `${orbitBorderWidth} ${orbitBorderStyle} ${orbitBorderColor}`;
-      const orbitAnimation = `${orbitAnimationName} ${
-        orbit.speed || 10
-      }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"}`;
+      const orbitAnimation = `${orbitAnimationName} ${orbit.speed || 10}s linear infinite ${
+        orbitIndex % 2 === 0 ? "normal" : "reverse"
+      }`;
       const orbitZIndex = 1000 + (this.options.orbits.length - orbitIndex);
 
       // default CSS
@@ -117,9 +114,9 @@ class Orbital {
           offset-path: circle(${orbitRadius}px at 50% 50%);
           offset-distance: ${itemInitialOffset}%;
           offset-rotate: 0deg;
-          animation: ${itemAnimationName} ${
-          orbit.speed || 10
-        }s linear infinite ${orbitIndex % 2 === 0 ? "normal" : "reverse"};
+          animation: ${itemAnimationName} ${orbit.speed || 10}s linear infinite ${
+          orbitIndex % 2 === 0 ? "normal" : "reverse"
+        };
           transition: animation-play-state 0.5s ease-in-out;
         }`);
 
@@ -170,9 +167,7 @@ class Orbital {
 
         this.defineCSSRule(`@keyframes ${itemAnimationName} {
           0% { offset-distance: ${itemInitialOffset}%; offset-rotate: 360deg }
-          100% { offset-distance: ${
-            itemInitialOffset + 100
-          }%; offset-rotate: 0deg }
+          100% { offset-distance: ${itemInitialOffset + 100}%; offset-rotate: 0deg }
         }`);
 
         const itemData = {
@@ -218,7 +213,7 @@ class Orbital {
     const items = orbitElement.querySelectorAll(".orbit-wrapper");
     items.forEach((el) => {
       el.style.setProperty("animation-play-state", "paused", "important");
-    });  
+    });
   }
 
   playOrbitCssAnimation(orbitElement) {
@@ -227,7 +222,7 @@ class Orbital {
     const items = orbitElement.querySelectorAll(".orbit-wrapper");
     items.forEach((el) => {
       el.style.setProperty("animation-play-state", "running", "important");
-    });   
+    });
   }
 
   setupItemInteractivity(itemData) {
@@ -296,18 +291,14 @@ class Orbital {
     });
 
     // Fermeture du panel
-    panel
-      .querySelector(".orbital-panel-close")
-      ?.addEventListener("click", () => {
-        this.closePanel();
-      });
+    panel.querySelector(".orbital-panel-close")?.addEventListener("click", () => {
+      this.closePanel();
+    });
 
     this.panel = { overlay, panel };
 
-    const centerX =
-      containerRect.left + containerRect.width / 2 - itemRect.width / 2;
-    const centerY =
-      containerRect.top + containerRect.height / 2 - itemRect.height / 2;
+    const centerX = containerRect.left + containerRect.width / 2 - itemRect.width / 2;
+    const centerY = containerRect.top + containerRect.height / 2 - itemRect.height / 2;
 
     const initialWidth = itemRect.width;
     const finalWidth = containerRect.width - this.options.panel.offset.width;
@@ -330,9 +321,7 @@ class Orbital {
           height: { from: `${initialHeight}px`, to: `${finalHeight}px` },
           transform: {
             from: "translate(0, 0)",
-            to: `translate(-${(finalWidth - initialWidth) / 2}px, -${
-              (finalHeight - initialHeight) / 2
-            }px)`,
+            to: `translate(-${(finalWidth - initialWidth) / 2}px, -${(finalHeight - initialHeight) / 2}px)`,
           },
         },
       },
@@ -346,10 +335,8 @@ class Orbital {
     const itemRect = element.getBoundingClientRect();
     const containerRect = this.options.panel.container.getBoundingClientRect();
 
-    const centerX =
-      containerRect.left + containerRect.width / 2 - itemRect.width / 2;
-    const centerY =
-      containerRect.top + containerRect.height / 2 - itemRect.height / 2;
+    const centerX = containerRect.left + containerRect.width / 2 - itemRect.width / 2;
+    const centerY = containerRect.top + containerRect.height / 2 - itemRect.height / 2;
 
     const initialWidth = itemRect.width;
     const finalWidth = containerRect.width - this.options.panel.offset.width;
@@ -365,9 +352,7 @@ class Orbital {
           width: { from: `${finalWidth}px`, to: `${initialWidth}px` },
           height: { from: `${finalHeight}px`, to: `${initialHeight}px` },
           transform: {
-            from: `translate(-${(finalWidth - initialWidth) / 2}px, -${
-              (finalHeight - initialHeight) / 2
-            }px)`,
+            from: `translate(-${(finalWidth - initialWidth) / 2}px, -${(finalHeight - initialHeight) / 2}px)`,
             to: "translate(0, 0)",
           },
         },
@@ -403,11 +388,7 @@ class Orbital {
   async animate(element, sequences) {
     for (const sequence of sequences) {
       element.style.transformOrigin = "center";
-      await this._animateMultipleProperties(
-        element,
-        sequence.properties,
-        sequence.duration
-      );
+      await this._animateMultipleProperties(element, sequence.properties, sequence.duration);
     }
   }
 
