@@ -13,6 +13,9 @@ class Orbital {
     this.options.panel.offset = this.options.panel.offset || {};
     this.options.panel.offset.width = this.options.panel.offset.width || 15;
     this.options.panel.offset.height = this.options.panel.offset.height || 15;
+    this.options.panel.close = this.options.panel.close || {};
+    this.options.panel.close.label = this.options.panel.label || "×";
+    this.options.panel.close.title = this.options.panel.title || "Close this panel";
 
     // internal objects
     this.orbitItems = [];
@@ -314,7 +317,8 @@ class Orbital {
 
     const closeButton = document.createElement("button");
     closeButton.className = "orbital-panel-close";
-    closeButton.innerHTML = "×";
+    closeButton.title = this.options.panel.close.title;
+    closeButton.innerHTML = this.options.panel.close.label;
     closeButton.style.display = "none";
     panel.appendChild(closeButton);
 
