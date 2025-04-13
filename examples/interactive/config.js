@@ -4,7 +4,7 @@ const container = document.getElementById("orbital-container");
 const config = {
   interactive: true,
   panel: {
-    container: container,
+    container: document.body,
   },
   orbits: [
     {

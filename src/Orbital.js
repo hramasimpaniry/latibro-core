@@ -212,6 +212,24 @@ class Orbital {
     }`);
   }
 
+  pauseOrbitCssAnimation(orbitElement) {
+    orbitElement.style.setProperty("animation-play-state", "paused", "important");
+
+    const items = orbitElement.querySelectorAll(".orbit-wrapper");
+    items.forEach((el) => {
+      el.style.setProperty("animation-play-state", "paused", "important");
+    });  
+  }
+
+  playOrbitCssAnimation(orbitElement) {
+    orbitElement.style.setProperty("animation-play-state", "running", "important");
+
+    const items = orbitElement.querySelectorAll(".orbit-wrapper");
+    items.forEach((el) => {
+      el.style.setProperty("animation-play-state", "running", "important");
+    });   
+  }
+
   setupItemInteractivity(itemData) {
     if (!this.options.interactive) return;
 
@@ -224,26 +242,12 @@ class Orbital {
         clearTimeout(itemData.resumeTimeout);
         itemData.resumeTimeout = null;
       }
-
-      parent.style.setProperty("animation-play-state", "paused", "important");
-
-      const items = parent.querySelectorAll(".orbit-wrapper");
-      items.forEach((el) => {
-        el.style.setProperty("animation-play-state", "paused", "important");
-      });
+      pauseOrbitCssAnimation(parent);
     };
 
     const handleMouseLeave = () => {
       itemData.resumeTimeout = setTimeout(() => {
-        parent.style.setProperty(
-          "animation-play-state",
-          "running",
-          "important"
-        );
-        const items = parent.querySelectorAll(".orbit-wrapper");
-        items.forEach((el) => {
-          el.style.setProperty("animation-play-state", "running", "important");
-        });
+        playOrbitCssAnimation(parent);
       }, this.options.mouseLeaveDelay);
     };
 
@@ -336,7 +340,7 @@ class Orbital {
   }
 
   closePanel() {
-    const { element } = this.currentItem;
+    const { parent, element } = this.currentItem;
     const { overlay, panel } = this.panel;
 
     const itemRect = element.getBoundingClientRect();
@@ -351,6 +355,8 @@ class Orbital {
     const finalWidth = containerRect.width - this.options.panel.offset.width;
     const initialHeight = itemRect.height;
     const finalHeight = containerRect.height - this.options.panel.offset.height;
+
+    this.pauseOrbitCssAnimation(parent);
 
     this.animate(panel, [
       {
@@ -380,6 +386,7 @@ class Orbital {
     setTimeout(() => {
       panel.remove();
       overlay.remove();
+      this.playOrbitCssAnimation(parent);
     }, 1200);
 
     this.isPanelOpen = false;
