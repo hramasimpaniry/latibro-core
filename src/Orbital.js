@@ -6,8 +6,24 @@ class Orbital {
     this.orbitSpacing = this.options.orbitSpacing || 55;
     this.options.interactive = this.options.interactive !== false;
     this.options.mouseLeaveDelay = this.options.mouseLeaveDelay || 0;
-    this.orbitItems = [];
+    this.options.panel = options.panel || {};
+
+    const optionsPanelDefaults = {
+      container: document.body,
+      offset: {
+        width: 15,
+        height: 15,
+      },
+    };
+
+    Object.assign(
+      this.options.panel,
+      optionsPanelDefaults,
+      options.panel || {}
+    );
+
     this.itemCursor = this.options.interactive ? "pointer" : "default";
+    this.orbitItems = [];
     this.init();
   }
 
@@ -41,6 +57,7 @@ class Orbital {
     }
 
     this.createOrbits();
+    this.createInteractivityCssRules();
   }
 
   createOrbits() {
@@ -179,6 +196,25 @@ class Orbital {
     });
   }
 
+  createInteractivityCssRules() {
+    if (!this.options.interactive) return;
+
+    const cssName = "orbital-panel";
+
+    this.defineCSSRule(`#${cssName}-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      z-index: 2000;
+    }`);
+  }
+
   setupItemInteractivity(itemData) {
     if (!this.options.interactive) return;
 
@@ -233,30 +269,36 @@ class Orbital {
     const { element } = this.currentItem;
     this.isPanelOpen = true;
 
-    const panel = element.cloneNode(true);
-    panel.id = "orbital-active-item";
+    // backdrop overlay
+    const overlay = document.createElement("div");
+    overlay.id = "orbital-panel-overlay";
+    overlay.style.zIndex = 1000 + this.orbits.length + 1;
+    this.options.panel.container.appendChild(overlay);
 
     const itemRect = element.getBoundingClientRect();
-    const orbitalRect = this.container.getBoundingClientRect();
+    const containerRect = this.options.panel.container.getBoundingClientRect();
 
+    // opened panel
+    const panel = element.cloneNode(true);
+    panel.id = "orbital-active-item";
     panel.style.position = "fixed";
     panel.style.left = `${itemRect.left}px`;
     panel.style.top = `${itemRect.top}px`;
     panel.style.width = `${itemRect.width}px`;
     panel.style.height = `${itemRect.height}px`;
     panel.style.transition = "all 0.4s cubic-bezier(0.2, 0.8, 0.3, 1.2)";
-    panel.style.zIndex = 1000 + this.orbits.length + 1;
-    document.body.appendChild(panel);
+    panel.style.zIndex = 1000 + this.orbits.length + 2;
+    this.options.panel.container.appendChild(panel);
 
     const centerX =
-      orbitalRect.left + orbitalRect.width / 2 - itemRect.width / 2;
+      containerRect.left + containerRect.width / 2 - itemRect.width / 2;
     const centerY =
-      orbitalRect.top + orbitalRect.height / 2 - itemRect.height / 2;
+      containerRect.top + containerRect.height / 2 - itemRect.height / 2;
 
     const initialWidth = itemRect.width;
-    const finalWidth = orbitalRect.width - 30;
+    const finalWidth = containerRect.width - this.options.panel.offset.width;
     const initialHeight = itemRect.height;
-    const finalHeight = (orbitalRect.height * 3) / 4;
+    const finalHeight = containerRect.height - this.options.panel.offset.height;
 
     this.animateSequentially(panel, [
       {
