@@ -27,7 +27,7 @@ class Orbital {
   }
 
   init() {
-    const containerCssRuleName = `orbital-container`;
+    const containerCssRuleName = `orbit-container`;
 
     this.defineCSSRule(`.${containerCssRuleName} {
       width: 500px;
@@ -199,7 +199,7 @@ class Orbital {
       cursor : pointer;
     }`);
 
-    this.defineCSSRule(`#orbital-panel-overlay {
+    this.defineCSSRule(`#orbit-panel-overlay {
       position: absolute;
       top: 0;
       left: 0;
@@ -212,7 +212,7 @@ class Orbital {
       z-index: 2000;
     }`);
 
-    this.defineCSSRule(`.orbital-panel {
+    this.defineCSSRule(`.orbit-panel {
       width: 48px;
       height: 48px;
       border-radius: 50%;      
@@ -223,7 +223,7 @@ class Orbital {
       box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     }`);
 
-    this.defineCSSRule(`.orbital-panel-close {
+    this.defineCSSRule(`.orbit-panel-close {
       position: absolute;
       top: 4px;
       right: 10px;
@@ -234,7 +234,7 @@ class Orbital {
       opacity: .55;
     }`);
 
-    this.defineCSSRule(`.orbital-panel-close:hover {
+    this.defineCSSRule(`.orbit-panel-close:hover {
       opacity: .80;
     }`);
   }
@@ -299,7 +299,7 @@ class Orbital {
 
     // backdrop overlay
     const overlay = document.createElement("div");
-    overlay.id = "orbital-panel-overlay";
+    overlay.id = "orbit-panel-overlay";
     overlay.style.zIndex = 1000 + this.options.orbits.length + 1;
     this.options.panel.container.appendChild(overlay);
 
@@ -308,7 +308,7 @@ class Orbital {
 
     // panel
     const panel = element.cloneNode(true);
-    panel.className = "orbital-panel";
+    panel.className = "orbit-panel";
     panel.style.position = "fixed";
     panel.style.left = `${itemRect.left}px`;
     panel.style.top = `${itemRect.top}px`;
@@ -323,7 +323,7 @@ class Orbital {
 
     // panel-close
     const panelClose = document.createElement("button");
-    panelClose.className = "orbital-panel-close";
+    panelClose.className = "orbit-panel-close";
     panelClose.title = this.options.panel.close.title;
     panelClose.innerHTML = this.options.panel.close.label;
     panelClose.style.display = "none";
@@ -339,7 +339,7 @@ class Orbital {
 
     // panel-content
     const panelContent = document.createElement("div");
-    panelContent.className = "orbital-panel-content";
+    panelContent.className = "orbit-panel-content";
     panelContent.innerHTML = this.currentItem.content;
     panelContent.style.display = "none";
     panel.appendChild(panelContent);
@@ -465,7 +465,6 @@ class Orbital {
         setTimeout(before, 0);
       }
 
-      // Préparer les transitions et valeurs initiales
       for (const prop in properties) {
         transitions.push(`${prop} ${duration}ms`);
         element.style[prop] = properties[prop].from;
@@ -473,10 +472,8 @@ class Orbital {
 
       element.style.transition = transitions.join(", ");
 
-      // Forcer le repaint pour démarrer l'animation
       void element.offsetWidth;
 
-      // Appliquer les valeurs finales
       for (const prop in properties) {
         element.style[prop] = properties[prop].to;
       }
