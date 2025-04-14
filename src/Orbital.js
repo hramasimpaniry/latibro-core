@@ -22,7 +22,11 @@ class Orbital {
     this.panel = null;
     this.currentItem = null;
     this.isPanelOpen = false;
-
+    this.defaultPanelContent = `
+    <div class="orbit-panel-header"></div>
+    <div class="orbit-panel-body"></div>
+    <div class="orbit-panel-footer"></div>
+    `;
     this.init();
   }
 
@@ -173,7 +177,7 @@ class Orbital {
           100% { offset-distance: ${itemInitialOffset + 100}%; offset-rotate: 0deg }
         }`);
 
-        const itemContent = orbit.items.content || "default panel content";
+        const itemContent = orbit.items.content || this.defaultPanelContent;
 
         const itemData = {
           parent: orbitDiv,
@@ -236,6 +240,26 @@ class Orbital {
 
     this.defineCSSRule(`.orbit-panel-close:hover {
       opacity: .80;
+    }`);
+
+    this.defineCSSRule(`.orbit-panel-content {
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+      gap: 15px;
+      width: -webkit-fill-available;
+      height: -webkit-fill-available; 
+    }`);
+
+    this.defineCSSRule(`.orbit-panel-header {
+      margin-right: 30px;
+    }`);
+
+    this.defineCSSRule(`.orbit-panel-body {
+      flex: 1;
+    }`);
+
+    this.defineCSSRule(`.orbit-panel-footer {
     }`);
   }
 
