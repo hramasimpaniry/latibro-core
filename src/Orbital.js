@@ -353,12 +353,12 @@ class Orbital {
     panelClose.style.display = "none";
     panel.appendChild(panelClose);
 
-    overlay.addEventListener("click", () => {
+    panelClose.addEventListener("click", () => {
       this.closePanel();
     });
 
-    panelClose.addEventListener("click", () => {
-      this.closePanel();
+    overlay.addEventListener("click", () => {
+      self.closePanel();
     });
 
     // panel-content
@@ -370,8 +370,6 @@ class Orbital {
 
     this.panel = { overlay, panel, panelThumbnail, panelClose, panelContent };
 
-    // open panel animation
-
     const centerX = containerRect.left + containerRect.width / 2 - itemRect.width / 2;
     const centerY = containerRect.top + containerRect.height / 2 - itemRect.height / 2;
 
@@ -380,8 +378,15 @@ class Orbital {
     const initialHeight = itemRect.height;
     const finalHeight = containerRect.height - this.options.panel.offset.height;
 
+    const self = this;
+
+    // open panel animation
+
     this.animate(panel, [
       {
+        before: function (el) {
+          overlay.style.pointerEvents = "none";
+        },
         duration: 400,
         properties: {
           left: { to: `${centerX}px` },
@@ -403,13 +408,13 @@ class Orbital {
           panelThumbnail.style.display = "none";
           panelContent.style.display = "";
           panelClose.style.display = "";
+          overlay.style.pointerEvents = "";
         },
       },
     ]);
   }
 
   closePanel() {
-    // close panel animation
     const { parent, element } = this.currentItem;
     const { overlay, panel, panelThumbnail, panelClose, panelContent } = this.panel;
 
@@ -426,8 +431,16 @@ class Orbital {
 
     const self = this;
 
+    // close panel animation
+
     this.animate(panel, [
       {
+        before: function (el) {
+          overlay.style.pointerEvents = "none";
+          panelThumbnail.style.display = "";
+          panelContent.style.display = "none";
+          panelClose.style.display = "none";
+        },
         duration: 800,
         properties: {
           width: { from: `${finalWidth}px`, to: `${initialWidth}px` },
@@ -437,13 +450,11 @@ class Orbital {
             to: "translate(0, 0)",
           },
         },
-        before: function (el) {
-          panelThumbnail.style.display = "";
-          panelContent.style.display = "none";
-          panelClose.style.display = "none";
-        },
       },
       {
+        before: function (el) {
+          self.pauseOrbitCssAnimation(parent);
+        },
         duration: 400,
         properties: {
           opacity: { from: 1, to: 0 },
@@ -451,10 +462,8 @@ class Orbital {
           left: { to: `${itemRect.left}px` },
           top: { to: `${itemRect.top}px` },
         },
-        before: function (el) {
-          self.pauseOrbitCssAnimation(parent);
-        },
         after: function (el) {
+          overlay.style.pointerEvents = "";
           panel.remove();
           overlay.remove();
           self.playOrbitCssAnimation(parent);
