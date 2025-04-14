@@ -294,7 +294,7 @@ class Orbital {
   }
 
   openPanel() {
-    const { element, content } = this.currentItem;
+    const { parent, element } = this.currentItem;
     this.isPanelOpen = true;
 
     // backdrop overlay
@@ -346,6 +346,8 @@ class Orbital {
 
     this.panel = { overlay, panel, panelThumbnail, panelClose, panelContent };
 
+    // open panel animation
+
     const centerX = containerRect.left + containerRect.width / 2 - itemRect.width / 2;
     const centerY = containerRect.top + containerRect.height / 2 - itemRect.height / 2;
 
@@ -373,7 +375,7 @@ class Orbital {
             to: `translate(-${(finalWidth - initialWidth) / 2}px, -${(finalHeight - initialHeight) / 2}px)`,
           },
         },
-        after: function () {
+        after: function (el) {
           panelThumbnail.style.display = "none";
           panelContent.style.display = "";
           panelClose.style.display = "";
@@ -383,6 +385,7 @@ class Orbital {
   }
 
   closePanel() {
+    // close panel animation
     const { parent, element } = this.currentItem;
     const { overlay, panel, panelThumbnail, panelClose, panelContent } = this.panel;
 
@@ -397,7 +400,7 @@ class Orbital {
     const initialHeight = itemRect.height;
     const finalHeight = containerRect.height - this.options.panel.offset.height;
 
-    this.pauseOrbitCssAnimation(parent);
+    const self = this;
 
     this.animate(panel, [
       {
@@ -410,7 +413,7 @@ class Orbital {
             to: "translate(0, 0)",
           },
         },
-        before: function () {
+        before: function (el) {
           panelThumbnail.style.display = "";
           panelContent.style.display = "none";
           panelClose.style.display = "none";
@@ -424,14 +427,16 @@ class Orbital {
           left: { to: `${itemRect.left}px` },
           top: { to: `${itemRect.top}px` },
         },
+        before: function (el) {
+          self.pauseOrbitCssAnimation(parent);
+        },
+        after: function (el) {
+          panel.remove();
+          overlay.remove();
+          self.playOrbitCssAnimation(parent);
+        },
       },
     ]);
-
-    setTimeout(() => {
-      panel.remove();
-      overlay.remove();
-      this.playOrbitCssAnimation(parent);
-    }, 1200);
 
     this.isPanelOpen = false;
   }
@@ -461,8 +466,8 @@ class Orbital {
     return new Promise((resolve) => {
       const transitions = [];
 
-      if (typeof before == "function") {
-        setTimeout(before, 0);
+      if (typeof before === "function") {
+        before(element, properties);
       }
 
       for (const prop in properties) {
@@ -478,11 +483,12 @@ class Orbital {
         element.style[prop] = properties[prop].to;
       }
 
-      setTimeout(resolve, duration);
-
-      if (typeof after == "function") {
-        setTimeout(after, duration);
-      }
+      setTimeout(() => {
+        if (typeof after === "function") {
+          after(element, properties);
+        }
+        resolve();
+      }, duration);
     });
   }
 
