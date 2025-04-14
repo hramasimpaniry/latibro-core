@@ -303,8 +303,6 @@ class Orbital {
     overlay.style.zIndex = 1000 + this.options.orbits.length + 1;
     this.options.panel.container.appendChild(overlay);
 
-    // panel-thumbnail
-
     const itemRect = element.getBoundingClientRect();
     const containerRect = this.options.panel.container.getBoundingClientRect();
 
@@ -319,6 +317,9 @@ class Orbital {
     panel.style.transition = "all 0.4s cubic-bezier(0.2, 0.8, 0.3, 1.2)";
     panel.style.zIndex = 1000 + this.options.orbits.length + 2;
     this.options.panel.container.appendChild(panel);
+
+    // panel-thumbnail
+    const panelThumbnail = panel.querySelector(".orbit-img");
 
     // panel-close
     const panelClose = document.createElement("button");
@@ -343,7 +344,7 @@ class Orbital {
     panelContent.style.display = "none";
     panel.appendChild(panelContent);
 
-    this.panel = { overlay, panel, panelClose, panelContent };
+    this.panel = { overlay, panel, panelThumbnail, panelClose, panelContent };
 
     const centerX = containerRect.left + containerRect.width / 2 - itemRect.width / 2;
     const centerY = containerRect.top + containerRect.height / 2 - itemRect.height / 2;
@@ -373,9 +374,9 @@ class Orbital {
           },
         },
         after: function () {
+          panelThumbnail.style.display = "none";
           panelContent.style.display = "";
           panelClose.style.display = "";
-          panel.querySelector(".orbit-img").style.display = "none";
         },
       },
     ]);
@@ -383,7 +384,7 @@ class Orbital {
 
   closePanel() {
     const { parent, element } = this.currentItem;
-    const { overlay, panel, panelClose, panelContent } = this.panel;
+    const { overlay, panel, panelThumbnail, panelClose, panelContent } = this.panel;
 
     const itemRect = element.getBoundingClientRect();
     const containerRect = this.options.panel.container.getBoundingClientRect();
@@ -410,9 +411,9 @@ class Orbital {
           },
         },
         before: function () {
+          panelThumbnail.style.display = "";
           panelContent.style.display = "none";
           panelClose.style.display = "none";
-          panel.querySelector(".orbit-img").style.display = "";
         },
       },
       {
