@@ -168,6 +168,11 @@ class Orbital {
           width: 32px;
           height: 32px;
           object-fit: contain;
+          -moz-user-select: -moz-none;
+          -khtml-user-select: none;
+          -webkit-user-select: none;
+          -ms-user-select: none;
+          user-select: none;   
         }`);
 
         img.classList.add("orbit-img", itemImageCssRuleName);
