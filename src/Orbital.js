@@ -173,9 +173,12 @@ class Orbital {
           100% { offset-distance: ${itemInitialOffset + 100}%; offset-rotate: 0deg }
         }`);
 
+        const itemContent = orbit.items.content || "default panel content";
+
         const itemData = {
           parent: orbitDiv,
           element: imgDiv,
+          content: itemContent,
           resumeTimeout: null,
         };
 
@@ -291,7 +294,7 @@ class Orbital {
   }
 
   openPanel() {
-    const { element } = this.currentItem;
+    const { element, content } = this.currentItem;
     this.isPanelOpen = true;
 
     // backdrop overlay
@@ -300,10 +303,12 @@ class Orbital {
     overlay.style.zIndex = 1000 + this.options.orbits.length + 1;
     this.options.panel.container.appendChild(overlay);
 
+    // panel-thumbnail
+
     const itemRect = element.getBoundingClientRect();
     const containerRect = this.options.panel.container.getBoundingClientRect();
 
-    // opened panel
+    // panel
     const panel = element.cloneNode(true);
     panel.className = "orbital-panel";
     panel.style.position = "fixed";
@@ -315,23 +320,30 @@ class Orbital {
     panel.style.zIndex = 1000 + this.options.orbits.length + 2;
     this.options.panel.container.appendChild(panel);
 
-    const closeButton = document.createElement("button");
-    closeButton.className = "orbital-panel-close";
-    closeButton.title = this.options.panel.close.title;
-    closeButton.innerHTML = this.options.panel.close.label;
-    closeButton.style.display = "none";
-    panel.appendChild(closeButton);
+    // panel-close
+    const panelClose = document.createElement("button");
+    panelClose.className = "orbital-panel-close";
+    panelClose.title = this.options.panel.close.title;
+    panelClose.innerHTML = this.options.panel.close.label;
+    panelClose.style.display = "none";
+    panel.appendChild(panelClose);
 
     overlay.addEventListener("click", () => {
       this.closePanel();
     });
 
-    // Fermeture du panel
-    closeButton.addEventListener("click", () => {
+    panelClose.addEventListener("click", () => {
       this.closePanel();
     });
 
-    this.panel = { overlay, panel, closeButton };
+    // panel-content
+    const panelContent = document.createElement("div");
+    panelContent.className = "orbital-panel-content";
+    panelContent.innerHTML = this.currentItem.content;
+    panelContent.style.display = "none";
+    panel.appendChild(panelContent);
+
+    this.panel = { overlay, panel, panelClose, panelContent };
 
     const centerX = containerRect.left + containerRect.width / 2 - itemRect.width / 2;
     const centerY = containerRect.top + containerRect.height / 2 - itemRect.height / 2;
@@ -361,7 +373,9 @@ class Orbital {
           },
         },
         after: function () {
-          closeButton.style.display = "block";
+          panelContent.style.display = "";
+          panelClose.style.display = "";
+          panel.querySelector(".orbit-img").style.display = "none";
         },
       },
     ]);
@@ -369,7 +383,7 @@ class Orbital {
 
   closePanel() {
     const { parent, element } = this.currentItem;
-    const { overlay, panel, closeButton } = this.panel;
+    const { overlay, panel, panelClose, panelContent } = this.panel;
 
     const itemRect = element.getBoundingClientRect();
     const containerRect = this.options.panel.container.getBoundingClientRect();
@@ -396,7 +410,9 @@ class Orbital {
           },
         },
         before: function () {
-          closeButton.style.display = "none";
+          panelContent.style.display = "none";
+          panelClose.style.display = "none";
+          panel.querySelector(".orbit-img").style.display = "";
         },
       },
       {
@@ -445,7 +461,7 @@ class Orbital {
       const transitions = [];
 
       if (typeof before == "function") {
-        before();
+        setTimeout(before, 0);
       }
 
       // Préparer les transitions et valeurs initiales
