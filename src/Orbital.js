@@ -31,7 +31,7 @@ class Orbital {
   }
 
   init() {
-    const containerCssRuleName = `orbit-container`;
+    const containerCssRuleName = `orbital-container`;
 
     this.defineCSSRule(`.${containerCssRuleName} {
       width: 500px;
