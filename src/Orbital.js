@@ -269,20 +269,20 @@ class Orbital {
   }
 
   pauseOrbitCssAnimation(orbitElement) {
-    orbitElement.style.setProperty("animation-play-state", "paused", "important");
+    orbitElement.style.animationPlayState = "paused";
 
     const items = orbitElement.querySelectorAll(".orbit-wrapper");
     items.forEach((el) => {
-      el.style.setProperty("animation-play-state", "paused", "important");
+      el.style.animationPlayState = "paused";
     });
   }
 
   playOrbitCssAnimation(orbitElement) {
-    orbitElement.style.setProperty("animation-play-state", "running", "important");
+    orbitElement.style.animationPlayState = "";
 
     const items = orbitElement.querySelectorAll(".orbit-wrapper");
     items.forEach((el) => {
-      el.style.setProperty("animation-play-state", "running", "important");
+      el.style.animationPlayState = "";
     });
   }
 
