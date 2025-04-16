@@ -17,13 +17,6 @@ class Orbital {
       interactivity: {
         mouseLeaveDelay: 0,
       },
-      panel: {
-        content: `
-        <div class="orbit-panel-header"></div>
-        <div class="orbit-panel-body"></div>
-        <div class="orbit-panel-footer"></div>
-        `,
-      },
     };
 
     // options
@@ -150,6 +143,12 @@ class Orbital {
 
         itemDiv.classList.add("orbit-wrapper", itemCssRuleName);
 
+        const itemContent = item.panel?.content;
+
+        if (itemContent) {
+          itemDiv.classList.add("hasContent", itemCssRuleName);
+        }
+
         // Add img div
         const imageContainerCssRuleName = `orbit-item-${orbitIndex}-${itemIndex}`;
         const imgDiv = document.createElement("div");
@@ -203,8 +202,6 @@ class Orbital {
           100% { offset-distance: ${itemInitialOffset + 100}%; offset-rotate: 0deg }
         }`);
 
-        const itemContent = orbit.items.content || this.defaults.panel.content;
-
         const itemData = {
           parent: orbitDiv,
           element: imgDiv,
@@ -225,7 +222,7 @@ class Orbital {
   createInteractivityCssRules() {
     if (!this.options.interactivity) return;
 
-    this.defineCSSRule(`.orbit-wrapper {
+    this.defineCSSRule(`.orbit-wrapper.hasContent {
       cursor : pointer;
     }`);
 
@@ -311,6 +308,9 @@ class Orbital {
 
   setupItemInteractivity(itemData) {
     if (!this.options.interactivity) return;
+    if (!itemData.content) {
+      return;
+    }
 
     let { parent, element } = itemData; // parent : orbit, element : item
 
