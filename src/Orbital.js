@@ -3,19 +3,23 @@ class Orbital {
     this.container = container;
 
     // default values
-    this.defaultOrbitSpacing = 55;
-    this.defaultOrbitRadius = 75;
-    this.defaultOrbitSpeed = 10;
-    this.defaultPanelContent = `
-    <div class="orbit-panel-header"></div>
-    <div class="orbit-panel-body"></div>
-    <div class="orbit-panel-footer"></div>
-    `;
+    this.defaults = {
+      orbitSpacing: 55,
+      orbitRadius: 75,
+      orbitSpeed: 10,
+      panel: {
+        content: `
+        <div class="orbit-panel-header"></div>
+        <div class="orbit-panel-body"></div>
+        <div class="orbit-panel-footer"></div>
+        `,
+      },
+    };
 
     // options
     this.options = options || {};
     this.options.orbits = this.options.orbits || [];
-    this.options.orbitSpacing = this.options.orbitSpacing || this.defaultOrbitSpacing;
+    this.options.orbitSpacing = this.options.orbitSpacing || this.defaults.orbitSpacing;
     this.options.interactive = this.options.interactive !== false;
     this.options.mouseLeaveDelay = this.options.mouseLeaveDelay || 0;
     this.options.panel = this.options.panel || {};
@@ -68,7 +72,7 @@ class Orbital {
 
   createOrbits() {
     this.options.orbits.forEach((orbit, orbitIndex) => {
-      const orbitRadius = (orbit.customRadius || this.defaultOrbitRadius) + orbitIndex * this.options.orbitSpacing;
+      const orbitRadius = (orbit.customRadius || this.defaults.orbitRadius) + orbitIndex * this.options.orbitSpacing;
       const itemCount = orbit.items.length;
       const orbitDiv = document.createElement("div");
       const orbitCssRuleName = `orbit-${orbitIndex}`;
@@ -77,7 +81,7 @@ class Orbital {
       const orbitBorderStyle = `${orbit?.styles?.borderStyle || "dashed"}`;
       const orbitBorderColor = `${orbit?.styles?.borderColor || "white"}`;
       const orbitBorder = `${orbitBorderWidth} ${orbitBorderStyle} ${orbitBorderColor}`;
-      const orbitAnimation = `${orbitAnimationName} ${orbit.speed || this.defaultOrbitSpeed}s linear infinite ${
+      const orbitAnimation = `${orbitAnimationName} ${orbit.speed || this.defaults.orbitSpeed}s linear infinite ${
         orbitIndex % 2 === 0 ? "normal" : "reverse"
       }`;
       const orbitZIndex = 1000 + (this.options.orbits.length - orbitIndex);
@@ -126,7 +130,7 @@ class Orbital {
           offset-path: circle(${orbitRadius}px at 50% 50%);
           offset-distance: ${itemInitialOffset}%;
           offset-rotate: 0deg;
-          animation: ${itemAnimationName} ${orbit.speed || this.defaultOrbitSpeed}s linear infinite ${
+          animation: ${itemAnimationName} ${orbit.speed || this.defaults.orbitSpeed}s linear infinite ${
           orbitIndex % 2 === 0 ? "normal" : "reverse"
         };
           transition: animation-play-state 0.5s ease-in-out;
@@ -187,7 +191,7 @@ class Orbital {
           100% { offset-distance: ${itemInitialOffset + 100}%; offset-rotate: 0deg }
         }`);
 
-        const itemContent = orbit.items.content || this.defaultPanelContent;
+        const itemContent = orbit.items.content || this.defaults.panel.content;
 
         const itemData = {
           parent: orbitDiv,
