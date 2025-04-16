@@ -33,8 +33,8 @@ class Orbital {
 
     // internal objects
     this.orbitItems = [];
-    this.panel = null;
     this.currentItem = null;
+    this.panel = null;
     this.isPanelOpen = false;
     this.init();
   }
