@@ -30,7 +30,7 @@ class Orbital {
     this.options = options || {};
     this.options.orbits = this.options.orbits || [];
     this.options.orbitSpacing = this.options.orbitSpacing || this.defaults.orbitSpacing;
-    this.options.interactive = this.options.interactive !== false;
+    this.options.interactivity = this.options.interactivity !== false;
     this.options.mouseLeaveDelay = this.options.mouseLeaveDelay || this.defaults.interactivity.mouseLeaveDelay;
     this.options.panel = this.options.panel || {};
     this.options.panel.container = this.options.panel.container || this.container;
@@ -223,7 +223,7 @@ class Orbital {
   }
 
   createInteractivityCssRules() {
-    if (!this.options.interactive) return;
+    if (!this.options.interactivity) return;
 
     this.defineCSSRule(`.orbit-wrapper {
       cursor : pointer;
@@ -310,7 +310,7 @@ class Orbital {
   }
 
   setupItemInteractivity(itemData) {
-    if (!this.options.interactive) return;
+    if (!this.options.interactivity) return;
 
     let { parent, element } = itemData; // parent : orbit, element : item
 
