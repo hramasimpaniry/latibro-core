@@ -23,6 +23,7 @@ describe("Orbital: Container", () => {
 
     // tests
     await expect.element(container).toHaveClass("orbital-container");
+    await expect.element(container).toHaveStyle("background-color: #1a202c;");
   });
 
   it("should apply custom CSS prior to default CSS", async () => {
@@ -37,7 +38,7 @@ describe("Orbital: Container", () => {
     const options = {
       orbits: [],
       container: {
-        customCss: "custom-container",
+        customCss: "custom-container", // custom CSS
       },
     };
 
@@ -45,7 +46,8 @@ describe("Orbital: Container", () => {
     orbital = new Orbital(container, options);
 
     // tests
-    await expect.element(container).toHaveClass("custom-container");
+    await expect.element(container).toHaveClass("orbital-container");
+    await expect.element(container).toHaveStyle("border: 3px dashed green");
   });
 
   it("should apply custom styles prior to custom CSS", async () => {
@@ -61,11 +63,12 @@ describe("Orbital: Container", () => {
     const options = {
       orbits: [],
       container: {
+        // custom styles
         styles: {
           backgroundColor: "#ff5733",
           border: "2px solid #000",
         },
-        customCss: "custom-container",
+        customCss: "custom-container", // custom CSS
       },
     };
 
@@ -73,7 +76,10 @@ describe("Orbital: Container", () => {
     orbital = new Orbital(container, options);
 
     // tests
-    await expect.element(container).toHaveClass("custom-container");
-    await expect.element(container).toHaveStyle("border: 2px solid #000");
+    await expect.element(container).toHaveClass("orbital-container custom-container");
+    await expect.element(container).toHaveStyle({
+      backgroundColor: "#ff5733",
+      border: "2px solid #000",
+    });
   });
 });
