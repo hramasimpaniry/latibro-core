@@ -291,6 +291,7 @@ class Orbital {
 
   pauseOrbitCssAnimation(orbitElement) {
     orbitElement.style.animationPlayState = "paused";
+    orbitElement.classList.add("orbit-paused");
 
     const items = orbitElement.querySelectorAll(".orbit-wrapper");
     items.forEach((el) => {
@@ -300,6 +301,7 @@ class Orbital {
 
   playOrbitCssAnimation(orbitElement) {
     orbitElement.style.animationPlayState = "";
+    orbitElement.classList.remove("orbit-paused");
 
     const items = orbitElement.querySelectorAll(".orbit-wrapper");
     items.forEach((el) => {
