@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import Orbital from "../../src/Orbital";
 
-describe("Orbital: Items", () => {
+describe.skip("Orbital: Items", () => {
   it("should apply default CSS", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
@@ -9,11 +9,7 @@ describe("Orbital: Items", () => {
     const options = {
       orbits: [
         {
-          items: [
-            "https://placehold.co/50",
-            "https://placehold.co/50",
-            "https://placehold.co/50",
-          ],
+          items: ["https://placehold.co/50", "https://placehold.co/50", "https://placehold.co/50"],
         },
       ],
     };

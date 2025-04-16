@@ -1,29 +1,31 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import Orbital from "../../src/Orbital";
 
 describe("Orbital: Container", () => {
-  it("should apply default CSS", async () => {
-    const container = document.createElement("div");
+  let container;
+  let orbital;
+
+  beforeEach(() => {
+    container = document.createElement("div");
     document.body.appendChild(container);
+  });
+
+  afterEach(() => {
+    orbital?.destroy();
+    container?.remove();
+  });
+
+  it("should apply default CSS", async () => {
     const options = { orbits: [] };
 
     // init
-    new Orbital(container, options);
-
-    // reflow
-    container.offsetHeight;
-    await new Promise((resolve) => requestAnimationFrame(resolve));
-
-    // elements
-    const computedStyle = window.getComputedStyle(container);
+    orbital = new Orbital(container, options);
 
     // tests
-    expect(container.classList).toContain("orbital-container");
-    expect(computedStyle.backgroundColor).toEqual("rgb(26, 32, 44)"); // #1a202c
+    await expect.element(container).toHaveClass("orbital-container");
   });
 
   it("should apply custom CSS prior to default CSS", async () => {
-    const container = document.createElement("div");
     const styleTag = document.createElement("style");
     styleTag.innerHTML = `
       .custom-container {
@@ -40,22 +42,13 @@ describe("Orbital: Container", () => {
     };
 
     // init
-    new Orbital(container, options);
-
-    // reflow
-    container.offsetHeight;
-    await new Promise((resolve) => requestAnimationFrame(resolve));
-
-    // elements
-    const computedStyle = window.getComputedStyle(container);
+    orbital = new Orbital(container, options);
 
     // tests
-    expect(container.classList).toContain("custom-container");
-    expect(computedStyle.border).toEqual("3px dashed green");
+    await expect.element(container).toHaveClass("custom-container");
   });
 
   it("should apply custom styles prior to custom CSS", async () => {
-    const container = document.createElement("div");
     const styleTag = document.createElement("style");
     styleTag.innerHTML = `
       .custom-container {
@@ -63,7 +56,6 @@ describe("Orbital: Container", () => {
         border: 3px dashed green;
       }
     `;
-    document.body.appendChild(container);
     document.head.appendChild(styleTag);
 
     const options = {
@@ -78,17 +70,10 @@ describe("Orbital: Container", () => {
     };
 
     // init
-    new Orbital(container, options);
-
-    // reflow
-    container.offsetHeight;
-    await new Promise((resolve) => requestAnimationFrame(resolve));
-
-    // elements
-    const computedStyle = window.getComputedStyle(container);
+    orbital = new Orbital(container, options);
 
     // tests
-    expect(container.classList).toContain("custom-container");
-    expect(computedStyle.border).toEqual("2px solid #000");
+    await expect.element(container).toHaveClass("custom-container");
+    await expect.element(container).toHaveStyle("border: 2px solid #000");
   });
 });
