@@ -1,12 +1,22 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import Orbital from "../../src/Orbital";
-import "@testing-library/jest-dom/vitest";
 
-describe.skip("Orbital: Orbits", () => {
+let container;
+let orbital;
+
+beforeEach(() => {
+  container = document.createElement("div");
+  document.body.appendChild(container);
+});
+
+afterEach(() => {
+  orbital?.destroy();
+  container?.remove();
+});
+
+describe("Orbital: Orbits", () => {
   it("should apply default CSS", async () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
+    // options
     const options = {
       orbits: [
         {
@@ -16,31 +26,18 @@ describe.skip("Orbital: Orbits", () => {
     };
 
     // init
-    new Orbital(container, options);
-
-    // reflow
-    container.offsetHeight;
-    await new Promise((resolve) => requestAnimationFrame(resolve));
+    orbital = new Orbital(container, options);
 
     // elements
     const orbit = container.querySelector(".orbit-0");
-    const computedStyle = window.getComputedStyle(orbit);
 
     // tests
-    expect(computedStyle.border).toEqual("2px dashed white");
+    await expect.element(orbit).toHaveClass("orbit orbit-0");
+    await expect.element(orbit).toHaveStyle({ border: "2px dashed white" });
   });
 
   it("should apply custom CSS", async () => {
-    const container = document.createElement("div");
-    const styleTag = document.createElement("style");
-    styleTag.innerHTML = `
-      .custom-orbit {
-        border: solid 1px red;
-      }
-    `;
-    document.body.appendChild(container);
-    document.head.appendChild(styleTag);
-
+    // options
     const options = {
       orbits: [
         {
@@ -50,32 +47,27 @@ describe.skip("Orbital: Orbits", () => {
       ],
     };
 
-    // init
-    new Orbital(container, options);
-
-    // reflow
-    container.offsetHeight;
-    await new Promise((resolve) => requestAnimationFrame(resolve));
-
-    // elements
-    const orbit = container.querySelector(".orbit-0");
-    const computedStyle = window.getComputedStyle(orbit);
-
-    // tests
-    expect(computedStyle.border).toEqual("2px dashed white");
-  });
-
-  it("should apply custom styles", () => {
-    const container = document.createElement("div");
+    // style
     const styleTag = document.createElement("style");
     styleTag.innerHTML = `
       .custom-orbit {
-        border-style: solid;
+        border: solid 1px red;
       }
     `;
-    document.body.appendChild(container);
     document.head.appendChild(styleTag);
 
+    // init
+    orbital = new Orbital(container, options);
+
+    // elements
+    const orbit = container.querySelector(".orbit-0");
+
+    // tests
+    await expect.element(orbit).toHaveStyle({ border: "solid 1px red" });
+  });
+
+  it("should apply custom styles", async () => {
+    // options
     const options = {
       orbits: [
         {
@@ -88,202 +80,128 @@ describe.skip("Orbital: Orbits", () => {
       ],
     };
 
-    new Orbital(container, options);
+    // style
+    const styleTag = document.createElement("style");
+    styleTag.innerHTML = `
+      .custom-orbit {
+        border-style: solid;
+      }
+    `;
+    document.head.appendChild(styleTag);
 
+    // init
+    orbital = new Orbital(container, options);
+
+    // elements
     const orbit = container.querySelector(".orbit-0");
-    expect(window.getComputedStyle(orbit).borderStyle).toBe("dotted");
+
+    // tests
+    await expect.element(orbit).toHaveStyle({ borderStyle: "dotted" });
   });
 });
 
-describe.skip("Orbital: Orbit Spacing", () => {
+describe("Orbital: Orbit Spacing", () => {
   it("should apply the default orbit spacing if orbitSpacing is NOT specified", async () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
+    // options
     const options = {
       orbits: [{ items: ["https://placehold.co/50"] }, { items: ["https://placehold.co/50"] }],
     };
 
     // init
-    new Orbital(container, options);
-
-    // reflow
-    container.offsetHeight;
-    await new Promise((resolve) => requestAnimationFrame(resolve));
+    orbital = new Orbital(container, options);
 
     // elements
     const orbits = container.querySelectorAll(".orbit");
-    const computedStyle0 = window.getComputedStyle(orbits[0]);
-    const computedStyle1 = window.getComputedStyle(orbits[1]);
 
     // tests
-    const width0 = parseFloat(computedStyle0.width);
-    const width1 = parseFloat(computedStyle1.width);
-    const orbitSpacing = 55; // default
-    const customRadius = 75; // default
 
-    expect(orbits.length).toBe(2);
-
-    // `width: ${2 * (orbit.customRadius || 75) + (orbitIndex * this.orbitSpacing) }px`
-    expect(width0).toBe(2 * (customRadius + 0 * orbitSpacing));
-    expect(width1).toBe(2 * (customRadius + 1 * orbitSpacing));
+    await expect.element(orbits[0]).toHaveStyle({ width: "150px" });
+    await expect.element(orbits[1]).toHaveStyle({ width: "260px" });
   });
 
   it("should apply custom orbit spacing when provided", async () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
+    // options
     const options = {
       orbitSpacing: 100,
       orbits: [{ items: ["https://placehold.co/50"] }, { items: ["https://placehold.co/50"] }],
     };
 
     // init
-    new Orbital(container, options);
-
-    // reflow
-    container.offsetHeight;
-    await new Promise((resolve) => requestAnimationFrame(resolve));
+    orbital = new Orbital(container, options);
 
     // elements
     const orbits = container.querySelectorAll(".orbit");
-    const computedStyle0 = window.getComputedStyle(orbits[0]);
-    const computedStyle1 = window.getComputedStyle(orbits[1]);
 
     // tests
-    const width0 = parseFloat(computedStyle0.width);
-    const width1 = parseFloat(computedStyle1.width);
-    const customRadius = 75; // default
-
-    expect(orbits.length).toBe(2);
-
-    // `width: ${2 * (orbit.customRadius || 75) + (orbitIndex * this.orbitSpacing) }px`
-    expect(width0).toBe(2 * (customRadius + 0 * options.orbitSpacing));
-    expect(width1).toBe(2 * (customRadius + 1 * options.orbitSpacing));
+    await expect.element(orbits[0]).toHaveStyle({ width: "150px" });
+    await expect.element(orbits[1]).toHaveStyle({ width: "350px" });
   });
 });
 
-describe.skip("Orbital: Custom Radius", () => {
+describe("Orbital: Custom Radius", () => {
   it("should apply the default radius if customRadius is NOT specified", async () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
+    // options
     const options = {
       orbits: [{ items: ["https://placehold.co/50"] }, { items: ["https://placehold.co/50"] }],
     };
 
     // init
-    new Orbital(container, options);
-
-    // reflow
-    container.offsetHeight;
-    await new Promise((resolve) => requestAnimationFrame(resolve));
+    orbital = new Orbital(container, options);
 
     // elements
     const orbits = container.querySelectorAll(".orbit");
-    const computedStyle0 = window.getComputedStyle(orbits[0]);
-    const computedStyle1 = window.getComputedStyle(orbits[1]);
 
     // tests
-    const width0 = parseFloat(computedStyle0.width);
-    const width1 = parseFloat(computedStyle1.width);
-    const orbitSpacing = 55; // default
-    const customRadius = 75; // default
-
-    expect(orbits.length).toBe(2);
-
-    // `width: ${2 * (orbit.customRadius || 75) + (orbitIndex * this.orbitSpacing) }px`
-    expect(width0).toBe(2 * (customRadius + 0 * orbitSpacing));
-    expect(width1).toBe(2 * (customRadius + 1 * orbitSpacing));
+    await expect.element(orbits[0]).toHaveStyle({ width: "150px" });
+    await expect.element(orbits[1]).toHaveStyle({ width: "260px" });
   });
 
   it("should apply customRadius when specified", async () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
+    // options
     const options = {
       orbits: [{ items: ["https://placehold.co/50"], customRadius: 120 }],
     };
 
     // init
-    new Orbital(container, options);
-
-    // reflow
-    container.offsetHeight;
-    await new Promise((resolve) => requestAnimationFrame(resolve));
+    orbital = new Orbital(container, options);
 
     // elements
     const orbits = container.querySelectorAll(".orbit");
-    const computedStyle0 = window.getComputedStyle(orbits[0]);
 
     // tests
-    const width0 = parseFloat(computedStyle0.width);
-    const orbitSpacing = 55; // default
-    const customRadius = options.orbits[0].customRadius;
-
-    expect(orbits.length).toBe(1);
-
-    // `width: ${2 * (orbit.customRadius || 75) + (orbitIndex * this.orbitSpacing) }px`
-    expect(width0).toBe(2 * (customRadius + 0 * orbitSpacing));
+    await expect.element(orbits[0]).toHaveStyle({ width: "240px" });
   });
 });
 
-describe.skip("Orbital: Orbit Speed", () => {
-  it("should apply the default animation duration if speed is not specified", async () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
+describe("Orbital: Orbit Speed", () => {
+  it("should apply the default animation duration if speed is NOT specified", async () => {
+    // options
     const options = {
       orbits: [{ items: ["https://placehold.co/50"] }],
     };
 
     // init
-    new Orbital(container, options);
-
-    // reflow
-    container.offsetHeight;
-    await new Promise((resolve) => requestAnimationFrame(resolve));
+    orbital = new Orbital(container, options);
 
     // elements
-    const orbits = container.querySelectorAll(".orbit-wrapper");
-    const computedStyle0 = window.getComputedStyle(orbits[0]);
+    const orbits = container.querySelectorAll(".orbit");
 
     // tests
-    const animation0 = computedStyle0.animation;
-    const speed = 10; // default
-
-    expect(orbits.length).toBe(1);
-
-    // `orbit-wrapper-0-0-anim 10s linear infinite normal`
-    expect(animation0).toContain(`orbit-wrapper-0-0-anim ${speed}s linear infinite normal`);
+    await expect.element(orbits[0]).toHaveStyle({ animationDuration: "10s" });
   });
 
   it("should apply custom speed when specified", async () => {
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-
     const options = {
       orbits: [{ items: ["https://placehold.co/50"], speed: 30 }],
     };
 
     // init
-    new Orbital(container, options);
-
-    // reflow
-    container.offsetHeight;
-    await new Promise((resolve) => requestAnimationFrame(resolve));
+    orbital = new Orbital(container, options);
 
     // elements
-    const orbits = container.querySelectorAll(".orbit-wrapper");
-    const computedStyle0 = window.getComputedStyle(orbits[0]);
+    const orbits = container.querySelectorAll(".orbit");
 
     // tests
-    const animation0 = computedStyle0.animation;
-    const speed = options.orbits[0].speed;
-
-    expect(orbits.length).toBe(1);
-
-    // `orbit-wrapper-0-0-anim 10s linear infinite normal`
-    expect(animation0).toContain(`orbit-wrapper-0-0-anim ${speed}s linear infinite normal`);
+    await expect.element(orbits[0]).toHaveStyle({ animationDuration: "30s" });
   });
 });
