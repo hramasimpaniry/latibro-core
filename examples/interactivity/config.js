@@ -8,7 +8,16 @@ const config = {
   },
   orbits: [
     {
-      items: ["https://placehold.co/50", "https://placehold.co/50", "https://placehold.co/50"],
+      items: [
+        {
+          src: "https://placehold.co/50",
+          panel: {
+            content: "<h1>This Orbit1 Item 1</h1>",
+          },
+        },
+        "https://placehold.co/50",
+        "https://placehold.co/50",
+      ],
       speed: 100,
     },
     {
@@ -17,7 +26,16 @@ const config = {
       customRadius: 80,
     },
     {
-      items: ["https://placehold.co/50", "https://placehold.co/50", "https://placehold.co/50"],
+      items: [
+        "https://placehold.co/50",
+        "https://placehold.co/50",
+        {
+          src: "https://placehold.co/50",
+          panel: {
+            content: "<h1>This Orbit 3 Item 1</h1>",
+          },
+        },
+      ],
       speed: 100,
       customRadius: 100,
     },
