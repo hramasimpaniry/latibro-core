@@ -35,7 +35,7 @@ declare module "latibro-core" {
     container?: ContainerOptions;
     orbits: OrbitOptions[];
     orbitSpacing?: number;
-    interactive?: boolean;
+    interactivity?: boolean;
     panel?: PanelOptions;
     mouseLeaveDelay?: number;
   }
