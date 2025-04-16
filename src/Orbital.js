@@ -7,6 +7,16 @@ class Orbital {
       orbitSpacing: 55,
       orbitRadius: 75,
       orbitSpeed: 10,
+      orbit: {
+        styles: {
+          borderWidth: 2,
+          borderStyle: "dashed",
+          borderColor: "white",
+        },
+      },
+      interactivity: {
+        mouseLeaveDelay: 0,
+      },
       panel: {
         content: `
         <div class="orbit-panel-header"></div>
@@ -21,7 +31,7 @@ class Orbital {
     this.options.orbits = this.options.orbits || [];
     this.options.orbitSpacing = this.options.orbitSpacing || this.defaults.orbitSpacing;
     this.options.interactive = this.options.interactive !== false;
-    this.options.mouseLeaveDelay = this.options.mouseLeaveDelay || 0;
+    this.options.mouseLeaveDelay = this.options.mouseLeaveDelay || this.defaults.interactivity.mouseLeaveDelay;
     this.options.panel = this.options.panel || {};
     this.options.panel.container = this.options.panel.container || this.container;
     this.options.panel.offset = this.options.panel.offset || {};
@@ -79,9 +89,9 @@ class Orbital {
       const orbitDiv = document.createElement("div");
       const orbitCssRuleName = `orbit-${orbitIndex}`;
       const orbitAnimationName = `${orbitCssRuleName}-animation`;
-      const orbitBorderWidth = `${orbit?.styles?.borderWidth || 2}px`;
-      const orbitBorderStyle = `${orbit?.styles?.borderStyle || "dashed"}`;
-      const orbitBorderColor = `${orbit?.styles?.borderColor || "white"}`;
+      const orbitBorderWidth = `${orbit?.styles?.borderWidth || this.defaults.orbit.styles.borderWidth}px`;
+      const orbitBorderStyle = `${orbit?.styles?.borderStyle || this.defaults.orbit.styles.borderStyle}`;
+      const orbitBorderColor = `${orbit?.styles?.borderColor || this.defaults.orbit.styles.borderColor}`;
       const orbitBorder = `${orbitBorderWidth} ${orbitBorderStyle} ${orbitBorderColor}`;
       const orbitAnimation = `${orbitAnimationName} ${orbit.speed || this.defaults.orbitSpeed}s linear infinite ${
         orbitIndex % 2 === 0 ? "normal" : "reverse"
