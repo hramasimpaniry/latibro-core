@@ -36,6 +36,8 @@ class Orbital {
     this.currentItem = null;
     this.panel = null;
     this.isPanelOpen = false;
+
+    // init
     this.init();
   }
 
