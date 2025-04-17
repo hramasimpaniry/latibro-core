@@ -4,14 +4,53 @@ class Orbital {
 
     // default values
     this.defaults = {
-      orbitSpacing: 55,
-      orbitRadius: 75,
-      orbitSpeed: 10,
+      container: {
+        styles: {
+          width: "500px",
+          height: "500px",
+          backgroundColor: "#1a202c",
+        },
+      },
       orbit: {
+        spacing: 55,
+        radius: 75,
+        speed: 10,
         styles: {
           borderWidth: 2,
           borderStyle: "dashed",
           borderColor: "white",
+          borderRadius: "50%",
+        },
+      },
+      item: {
+        styles: {
+          width: "48px",
+          height: "48px",
+          borderRadius: "50%",
+          backgroundColor: "white",
+        },
+      },
+      thumbnail: {
+        styles: {
+          width: "32px",
+          height: "32px",
+        },
+      },
+      panel: {
+        close: {
+          label: "×",
+          title: "Click to close this panel",
+        },
+        overlay: {
+          styles: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+        },
+        animate: {
+          borderRadius: {
+            from: "50%",
+            to: "4px",
+          },
         },
       },
       interactivity: {
@@ -22,7 +61,7 @@ class Orbital {
     // options
     this.options = options || {};
     this.options.orbits = this.options.orbits || [];
-    this.options.orbitSpacing = this.options.orbitSpacing || this.defaults.orbitSpacing;
+    this.options.orbitSpacing = this.options.orbitSpacing || this.defaults.orbit.spacing;
     this.options.interactivity = this.options.interactivity !== false;
     this.options.mouseLeaveDelay = this.options.mouseLeaveDelay || this.defaults.interactivity.mouseLeaveDelay;
     this.options.panel = this.options.panel || {};
@@ -31,8 +70,8 @@ class Orbital {
     this.options.panel.offset.width = this.options.panel.offset.width || 15;
     this.options.panel.offset.height = this.options.panel.offset.height || 15;
     this.options.panel.close = this.options.panel.close || {};
-    this.options.panel.close.label = this.options.panel.label || "×";
-    this.options.panel.close.title = this.options.panel.title || "Close this panel";
+    this.options.panel.close.label = this.options.panel.label || this.defaults.panel.close.label;
+    this.options.panel.close.title = this.options.panel.title || this.defaults.panel.close.title;
 
     // internal objects
     this.orbitItems = [];
@@ -48,14 +87,14 @@ class Orbital {
     const containerCssRuleName = `orbital-container`;
 
     this.defineCSSRule(`.${containerCssRuleName} {
-      width: 500px;
-      height: 500px;
+      width: ${this.defaults.container.styles.width};
+      height: ${this.defaults.container.styles.height};
+      background-color:${this.defaults.container.styles.backgroundColor};
       position: relative;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: #1a202c;
     }`);
 
     // default CSS
@@ -77,7 +116,7 @@ class Orbital {
 
   createOrbits() {
     this.options.orbits.forEach((orbit, orbitIndex) => {
-      const orbitRadius = (orbit.customRadius || this.defaults.orbitRadius) + orbitIndex * this.options.orbitSpacing;
+      const orbitRadius = (orbit.customRadius || this.defaults.orbit.radius) + orbitIndex * this.options.orbitSpacing;
       const itemCount = orbit.items.length;
       const orbitDiv = document.createElement("div");
       const orbitCssRuleName = `orbit-${orbitIndex}`;
@@ -85,8 +124,9 @@ class Orbital {
       const orbitBorderWidth = `${orbit?.styles?.borderWidth || this.defaults.orbit.styles.borderWidth}px`;
       const orbitBorderStyle = `${orbit?.styles?.borderStyle || this.defaults.orbit.styles.borderStyle}`;
       const orbitBorderColor = `${orbit?.styles?.borderColor || this.defaults.orbit.styles.borderColor}`;
+      const orbitBorderRadius = `${orbit?.styles?.borderRadius || this.defaults.orbit.styles.borderRadius}`;
       const orbitBorder = `${orbitBorderWidth} ${orbitBorderStyle} ${orbitBorderColor}`;
-      const orbitAnimation = `${orbitAnimationName} ${orbit.speed || this.defaults.orbitSpeed}s linear infinite ${
+      const orbitAnimation = `${orbitAnimationName} ${orbit.speed || this.defaults.orbit.speed}s linear infinite ${
         orbitIndex % 2 === 0 ? "normal" : "reverse"
       }`;
       const orbitZIndex = 1000 + (this.options.orbits.length - orbitIndex);
@@ -96,7 +136,7 @@ class Orbital {
           position: absolute;
           width: ${2 * orbitRadius}px;
           height: ${2 * orbitRadius}px;
-          border-radius: 50%;
+          border-radius: ${orbitBorderRadius};
           border: ${orbitBorder};
           animation: ${orbitAnimation};
           z-index: ${orbitZIndex};
@@ -135,7 +175,7 @@ class Orbital {
           offset-path: circle(${orbitRadius}px at 50% 50%);
           offset-distance: ${itemInitialOffset}%;
           offset-rotate: 0deg;
-          animation: ${itemAnimationName} ${orbit.speed || this.defaults.orbitSpeed}s linear infinite ${
+          animation: ${itemAnimationName} ${orbit.speed || this.defaults.orbit.speed}s linear infinite ${
           orbitIndex % 2 === 0 ? "normal" : "reverse"
         };
           transition: animation-play-state 0.5s ease-in-out;
@@ -155,10 +195,10 @@ class Orbital {
 
         // default CSS
         this.defineCSSRule(`.${imageContainerCssRuleName} {
-          width: 48px;
-          height: 48px;
-          border-radius: 50%;
-          background: white;
+          width: ${this.defaults.item.styles.width};
+          height: ${this.defaults.item.styles.height};
+          border-radius: ${this.defaults.item.styles.borderRadius};
+          background-color: ${this.defaults.item.styles.backgroundColor};
           display: flex;
           align-items: center;
           justify-content: center;
@@ -185,8 +225,8 @@ class Orbital {
 
         // default CSS
         this.defineCSSRule(`.${itemImageCssRuleName} {
-          width: 32px;
-          height: 32px;
+          width: ${this.defaults.thumbnail.styles.width};
+          height: ${this.defaults.thumbnail.styles.height};
           object-fit: contain;
           -moz-user-select: -moz-none;
           -khtml-user-select: none;
@@ -232,18 +272,17 @@ class Orbital {
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.5);
+      background-color: ${this.defaults.panel.overlay.styles.backgroundColor};
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      z-index: 2000;
     }`);
 
     this.defineCSSRule(`.orbit-panel {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;      
-      background: white;
+      width: ${this.defaults.item.styles.width};
+      height: ${this.defaults.item.styles.height};
+      border-radius: ${this.defaults.item.styles.borderRadius};      
+      background: ${this.defaults.item.styles.backgroundColor};
       display: flex ;
       align-items: center;
       justify-content: center;
@@ -424,7 +463,10 @@ class Orbital {
       {
         duration: 800,
         properties: {
-          borderRadius: { from: `50%`, to: `4px` },
+          borderRadius: {
+            from: `${this.defaults.panel.animate.borderRadius.from}`,
+            to: `${this.defaults.panel.animate.borderRadius.to}`,
+          },
           width: { from: `${initialWidth}px`, to: `${finalWidth}px` },
           height: { from: `${initialHeight}px`, to: `${finalHeight}px` },
           transform: {
@@ -448,9 +490,6 @@ class Orbital {
 
     const itemRect = element.getBoundingClientRect();
     const containerRect = this.options.panel.container.getBoundingClientRect();
-
-    const centerX = containerRect.left + containerRect.width / 2 - itemRect.width / 2;
-    const centerY = containerRect.top + containerRect.height / 2 - itemRect.height / 2;
 
     const initialWidth = itemRect.width;
     const finalWidth = containerRect.width - this.options.panel.offset.width;
@@ -486,7 +525,10 @@ class Orbital {
         duration: 400,
         properties: {
           opacity: { from: 1, to: 0 },
-          borderRadius: { from: `4px`, to: `50%` },
+          borderRadius: {
+            from: `${this.defaults.panel.animate.borderRadius.to}`,
+            to: `${this.defaults.panel.animate.borderRadius.from}`,
+          },
           left: { to: `${itemRect.left}px` },
           top: { to: `${itemRect.top}px` },
         },
@@ -513,17 +555,11 @@ class Orbital {
   async animate(element, sequences) {
     for (const sequence of sequences) {
       element.style.transformOrigin = "center";
-      await this._animateMultipleProperties(
-        element,
-        sequence.properties,
-        sequence.duration,
-        sequence.before,
-        sequence.after
-      );
+      await this._animate(element, sequence.properties, sequence.duration, sequence.before, sequence.after);
     }
   }
 
-  _animateMultipleProperties(element, properties, duration, before, after) {
+  _animate(element, properties, duration, before, after) {
     return new Promise((resolve) => {
       const transitions = [];
 
