@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Interactivity</title>
     <style>
-      .hasContent .orbit-item::before {
+      .hasContent .orbit-item::before,
+      .orbit-panel.animation-moving::before {
         content: "";
         position: absolute;
         border: solid 4px #0f465a;
@@ -16,7 +17,8 @@
         border-radius: 50%;
         transition: all 0.3s ease-in-out;
       }
-      .hasContent .orbit-item::after {
+      .hasContent .orbit-item::after,
+      .orbit-panel.animation-moving::after {
         content: "";
         position: absolute;
         border: solid 4px rgba(1, 186, 253, 0.5);
@@ -33,7 +35,8 @@
         animation: pulse 2s infinite ease-in-out;
       }
 
-      .hasContent:hover .orbit-item::before {
+      .hasContent:hover .orbit-item::before,
+      .orbit-panel.animation-moving::before {
         width: 54px;
         height: 54px;
         left: -7px;
@@ -43,7 +46,8 @@
         animation: spin-reverse 3s linear infinite;
       }
 
-      .hasContent:hover .orbit-item::after {
+      .hasContent:hover .orbit-item::after,
+      .orbit-panel.animation-moving::after {
         width: 54px;
         height: 54px;
         left: -7px;
