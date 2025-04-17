@@ -12,7 +12,7 @@ const config = {
         {
           src: "https://placehold.co/50",
           panel: {
-            content: "<h1>This Orbit 1 Item 1</h1>",
+            content: "<h1>Orbit 1, Item 1</h1>",
           },
         },
         "https://placehold.co/50",
@@ -32,7 +32,7 @@ const config = {
         {
           src: "https://placehold.co/50",
           panel: {
-            content: "<h1>This Orbit 3 Item 1</h1>",
+            content: "<h1>Orbit 3, Item 1</h1>",
           },
         },
       ],
