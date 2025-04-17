@@ -15,6 +15,10 @@ class Orbital {
         spacing: 55,
         radius: 75,
         speed: 10,
+        factor: {
+          width: 2,
+          height: 2,
+        },
         styles: {
           borderWidth: 2,
           borderStyle: "dashed",
@@ -41,15 +45,28 @@ class Orbital {
           label: "×",
           title: "Click to close this panel",
         },
+        offset: {
+          width: 15,
+          height: 15,
+        },
         overlay: {
           styles: {
             backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
         },
-        animate: {
+        animation: {
           borderRadius: {
             from: "50%",
             to: "4px",
+          },
+          moving: {
+            duration: 400,
+          },
+          opening: {
+            duration: 800,
+          },
+          closing: {
+            duration: 800,
           },
         },
       },
@@ -67,8 +84,8 @@ class Orbital {
     this.options.panel = this.options.panel || {};
     this.options.panel.container = this.options.panel.container || this.container;
     this.options.panel.offset = this.options.panel.offset || {};
-    this.options.panel.offset.width = this.options.panel.offset.width || 15;
-    this.options.panel.offset.height = this.options.panel.offset.height || 15;
+    this.options.panel.offset.width = this.options.panel.offset.width || this.defaults.panel.offset.width;
+    this.options.panel.offset.height = this.options.panel.offset.height || this.defaults.panel.offset.height;
     this.options.panel.close = this.options.panel.close || {};
     this.options.panel.close.label = this.options.panel.label || this.defaults.panel.close.label;
     this.options.panel.close.title = this.options.panel.title || this.defaults.panel.close.title;
@@ -134,8 +151,8 @@ class Orbital {
       // default CSS
       this.defineCSSRule(`.${orbitCssRuleName} {
           position: absolute;
-          width: ${2 * orbitRadius}px;
-          height: ${2 * orbitRadius}px;
+          width: ${this.defaults.orbit.factor.width * orbitRadius}px;
+          height: ${this.defaults.orbit.factor.height * orbitRadius}px;
           border-radius: ${orbitBorderRadius};
           border: ${orbitBorder};
           animation: ${orbitAnimation};
@@ -451,21 +468,23 @@ class Orbital {
 
     this.animate(panel, [
       {
+        // move to center
         before: function (el) {
           overlay.style.pointerEvents = "none";
         },
-        duration: 400,
+        duration: this.defaults.panel.animation.moving.duration,
         properties: {
           left: { to: `${centerX}px` },
           top: { to: `${centerY}px` },
         },
       },
       {
-        duration: 800,
+        // scale up
+        duration: this.defaults.panel.animation.opening.duration,
         properties: {
           borderRadius: {
-            from: `${this.defaults.panel.animate.borderRadius.from}`,
-            to: `${this.defaults.panel.animate.borderRadius.to}`,
+            from: `${this.defaults.panel.animation.borderRadius.from}`,
+            to: `${this.defaults.panel.animation.borderRadius.to}`,
           },
           width: { from: `${initialWidth}px`, to: `${finalWidth}px` },
           height: { from: `${initialHeight}px`, to: `${finalHeight}px` },
@@ -502,13 +521,14 @@ class Orbital {
 
     this.animate(panel, [
       {
+        // scale down
         before: function (el) {
           overlay.style.pointerEvents = "none";
           panelThumbnail.style.display = "";
           panelContent.style.display = "none";
           panelClose.style.display = "none";
         },
-        duration: 800,
+        duration: this.defaults.panel.animation.closing.duration,
         properties: {
           width: { from: `${finalWidth}px`, to: `${initialWidth}px` },
           height: { from: `${finalHeight}px`, to: `${initialHeight}px` },
@@ -519,15 +539,16 @@ class Orbital {
         },
       },
       {
+        // move to item
         before: function (el) {
           self.pauseOrbitCssAnimation(parent);
         },
-        duration: 400,
+        duration: this.defaults.panel.animation.moving.duration,
         properties: {
           opacity: { from: 1, to: 0 },
           borderRadius: {
-            from: `${this.defaults.panel.animate.borderRadius.to}`,
-            to: `${this.defaults.panel.animate.borderRadius.from}`,
+            from: `${this.defaults.panel.animation.borderRadius.to}`,
+            to: `${this.defaults.panel.animation.borderRadius.from}`,
           },
           left: { to: `${itemRect.left}px` },
           top: { to: `${itemRect.top}px` },
