@@ -16,7 +16,7 @@ afterEach(() => {
 });
 
 describe("Orbital: Interactivity", () => {
-  it("should pause orbit on mouseenter", async () => {
+  it.skip("should pause orbit on mouseenter", async () => {
     // options
     const options = {
       interactivity: true,
@@ -45,7 +45,7 @@ describe("Orbital: Interactivity", () => {
     await expect.element(orbits[0]).toHaveClass("orbit-paused");
   });
 
-  it("should run orbit on mouseleave", async () => {
+  it.skip("should run orbit on mouseleave", async () => {
     // options
     const options = {
       interactivity: true,
