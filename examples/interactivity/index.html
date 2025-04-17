@@ -30,7 +30,8 @@
         transition: all 0.15s ease-in-out;
       }
 
-      .hasContent:hover .orbit-item {
+      .hasContent:hover .orbit-item,
+      .orbit-panel.animation-moving {
         box-shadow: 0 0 12px 12px rgba(1, 186, 253, 0.65);
         animation: pulse 2s infinite ease-in-out;
       }
@@ -43,7 +44,7 @@
         top: -7px;
         border-color: rgba(1, 186, 253, 0.8);
         border-top-color: transparent;
-        animation: spin-reverse 3s linear infinite;
+        animation: spin-reverse 0.5s linear infinite;
       }
 
       .hasContent:hover .orbit-item::after,
