@@ -25,6 +25,7 @@ class Orbital {
           borderStyle: "dashed",
           borderColor: "white",
           borderRadius: "50%",
+          transition: "animation-play-state 0.5s ease-in-out",
         },
       },
       item: {
@@ -157,7 +158,7 @@ class Orbital {
           border: ${orbitBorder};
           animation: ${orbitAnimation};
           z-index: ${this.defaults.orbit.zIndexStart + (this.options.orbits.length - orbitIndex)};
-          transition: animation-play-state 0.5s ease-in-out;
+          transition: ${this.defaults.orbit.styles.transition};
       }`);
 
       orbitDiv.classList.add("orbit", orbitCssRuleName);
@@ -195,7 +196,7 @@ class Orbital {
           animation: ${itemAnimationName} ${orbit.speed || this.defaults.orbit.speed}s linear infinite ${
           orbitIndex % 2 === 0 ? "normal" : "reverse"
         };
-          transition: animation-play-state 0.5s ease-in-out;
+          transition: ${this.defaults.orbit.styles.transition};
         }`);
 
         itemDiv.classList.add("orbit-wrapper", itemCssRuleName);
