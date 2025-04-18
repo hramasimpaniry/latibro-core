@@ -403,19 +403,25 @@ class Orbital {
 
   openPanel(isFullScreen) {
     const { parent, element } = this.currentItem;
+    const isPanelContainerBody = this.options.panel.container === document.body;
     this.isPanelOpen = true;
 
     // backdrop overlay
     const overlay = document.createElement("div");
     overlay.id = "orbit-panel-overlay";
     overlay.style.zIndex = 1000 + this.options.orbits.length + 1;
+    overlay.style.position = isPanelContainerBody ? "fixed" : "absolute";
     this.options.panel.container.appendChild(overlay);
 
     const itemRect = element.getBoundingClientRect();
-    const containerRect =
-      this.options.panel.container === document.body
-        ? { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight }
-        : this.options.panel.container.getBoundingClientRect();
+    const containerRect = isPanelContainerBody
+      ? {
+          top: 0,
+          left: 0,
+          width: document.documentElement.clientWidth,
+          height: document.documentElement.clientHeight,
+        }
+      : this.options.panel.container.getBoundingClientRect();
 
     // panel
     const panel = element.cloneNode(true);

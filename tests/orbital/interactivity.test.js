@@ -155,9 +155,11 @@ describe("Orbital: Interactivity", () => {
     // panel
     const panel = document.querySelector(".orbit-panel");
     const panelRect = {
-      width: window.innerWidth - orbital.options.panel.offset.width,
-      height: window.innerHeight - orbital.options.panel.offset.height,
+      width: document.documentElement.clientWidth - orbital.options.panel.offset.width,
+      height: document.documentElement.clientHeight - orbital.options.panel.offset.height,
     };
+
+    console.log(panelRect);
 
     // tests
     await expect.element(panel).not.toBeNull();
