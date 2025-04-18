@@ -34,6 +34,7 @@ class Orbital {
           height: "48px",
           borderRadius: "50%",
           backgroundColor: "white",
+          boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
         },
       },
       thumbnail: {
@@ -217,10 +218,10 @@ class Orbital {
           height: ${this.defaults.item.styles.height};
           border-radius: ${this.defaults.item.styles.borderRadius};
           background-color: ${this.defaults.item.styles.backgroundColor};
+          box-shadow: ${this.defaults.item.styles.boxShadow};
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
         }`);
 
         imgDiv.classList.add("orbit-item", imageContainerCssRuleName);
@@ -301,10 +302,10 @@ class Orbital {
       height: ${this.defaults.item.styles.height};
       border-radius: ${this.defaults.item.styles.borderRadius};      
       background: ${this.defaults.item.styles.backgroundColor};
+      box-shadow: ${this.defaults.item.styles.boxShadow};
       display: flex ;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     }`);
 
     this.defineCSSRule(`.orbit-panel-close {
