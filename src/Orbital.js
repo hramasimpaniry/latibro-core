@@ -5,7 +5,7 @@ class Orbital {
     // default values
     this.defaults = {
       container: {
-        styles: {
+        style: {
           width: "500px",
           height: "500px",
           backgroundColor: "#1a202c",
@@ -20,7 +20,7 @@ class Orbital {
           width: 2,
           height: 2,
         },
-        styles: {
+        style: {
           borderWidth: 2,
           borderStyle: "dashed",
           borderColor: "white",
@@ -29,7 +29,7 @@ class Orbital {
         },
       },
       item: {
-        styles: {
+        style: {
           width: "48px",
           height: "48px",
           borderRadius: "50%",
@@ -38,7 +38,7 @@ class Orbital {
         },
       },
       thumbnail: {
-        styles: {
+        style: {
           width: "32px",
           height: "32px",
         },
@@ -53,7 +53,7 @@ class Orbital {
           height: 15,
         },
         overlay: {
-          styles: {
+          style: {
             backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
         },
@@ -107,9 +107,9 @@ class Orbital {
     const containerCssRuleName = `orbital-container`;
 
     this.defineCSSRule(`.${containerCssRuleName} {
-      width: ${this.defaults.container.styles.width};
-      height: ${this.defaults.container.styles.height};
-      background-color:${this.defaults.container.styles.backgroundColor};
+      width: ${this.defaults.container.style.width};
+      height: ${this.defaults.container.style.height};
+      background-color:${this.defaults.container.style.backgroundColor};
       position: relative;
       overflow: hidden;
       display: flex;
@@ -141,10 +141,10 @@ class Orbital {
       const orbitDiv = document.createElement("div");
       const orbitCssRuleName = `orbit-${orbitIndex}`;
       const orbitAnimationName = `${orbitCssRuleName}-animation`;
-      const orbitBorderWidth = `${orbit?.styles?.borderWidth || this.defaults.orbit.styles.borderWidth}px`;
-      const orbitBorderStyle = `${orbit?.styles?.borderStyle || this.defaults.orbit.styles.borderStyle}`;
-      const orbitBorderColor = `${orbit?.styles?.borderColor || this.defaults.orbit.styles.borderColor}`;
-      const orbitBorderRadius = `${orbit?.styles?.borderRadius || this.defaults.orbit.styles.borderRadius}`;
+      const orbitBorderWidth = `${orbit?.styles?.borderWidth || this.defaults.orbit.style.borderWidth}px`;
+      const orbitBorderStyle = `${orbit?.styles?.borderStyle || this.defaults.orbit.style.borderStyle}`;
+      const orbitBorderColor = `${orbit?.styles?.borderColor || this.defaults.orbit.style.borderColor}`;
+      const orbitBorderRadius = `${orbit?.styles?.borderRadius || this.defaults.orbit.style.borderRadius}`;
       const orbitBorder = `${orbitBorderWidth} ${orbitBorderStyle} ${orbitBorderColor}`;
       const orbitAnimation = `${orbitAnimationName} ${orbit.speed || this.defaults.orbit.speed}s linear infinite ${
         orbitIndex % 2 === 0 ? "normal" : "reverse"
@@ -159,7 +159,7 @@ class Orbital {
           border: ${orbitBorder};
           animation: ${orbitAnimation};
           z-index: ${this.defaults.orbit.zIndexStart + (this.options.orbits.length - orbitIndex)};
-          transition: ${this.defaults.orbit.styles.transition};
+          transition: ${this.defaults.orbit.style.transition};
       }`);
 
       orbitDiv.classList.add("orbit", orbitCssRuleName);
@@ -197,7 +197,7 @@ class Orbital {
           animation: ${itemAnimationName} ${orbit.speed || this.defaults.orbit.speed}s linear infinite ${
           orbitIndex % 2 === 0 ? "normal" : "reverse"
         };
-          transition: ${this.defaults.orbit.styles.transition};
+          transition: ${this.defaults.orbit.style.transition};
         }`);
 
         itemDiv.classList.add("orbit-wrapper", itemCssRuleName);
@@ -214,11 +214,11 @@ class Orbital {
 
         // default CSS
         this.defineCSSRule(`.${imageContainerCssRuleName} {
-          width: ${this.defaults.item.styles.width};
-          height: ${this.defaults.item.styles.height};
-          border-radius: ${this.defaults.item.styles.borderRadius};
-          background-color: ${this.defaults.item.styles.backgroundColor};
-          box-shadow: ${this.defaults.item.styles.boxShadow};
+          width: ${this.defaults.item.style.width};
+          height: ${this.defaults.item.style.height};
+          border-radius: ${this.defaults.item.style.borderRadius};
+          background-color: ${this.defaults.item.style.backgroundColor};
+          box-shadow: ${this.defaults.item.style.boxShadow};
           display: flex;
           align-items: center;
           justify-content: center;
@@ -244,8 +244,8 @@ class Orbital {
 
         // default CSS
         this.defineCSSRule(`.${itemImageCssRuleName} {
-          width: ${this.defaults.thumbnail.styles.width};
-          height: ${this.defaults.thumbnail.styles.height};
+          width: ${this.defaults.thumbnail.style.width};
+          height: ${this.defaults.thumbnail.style.height};
           object-fit: contain;
           -moz-user-select: -moz-none;
           -khtml-user-select: none;
@@ -291,18 +291,18 @@ class Orbital {
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: ${this.defaults.panel.overlay.styles.backgroundColor};
+      background-color: ${this.defaults.panel.overlay.style.backgroundColor};
       display: flex;
       justify-content: center;
       align-items: flex-start;
     }`);
 
     this.defineCSSRule(`.orbit-panel {
-      width: ${this.defaults.item.styles.width};
-      height: ${this.defaults.item.styles.height};
-      border-radius: ${this.defaults.item.styles.borderRadius};      
-      background: ${this.defaults.item.styles.backgroundColor};
-      box-shadow: ${this.defaults.item.styles.boxShadow};
+      width: ${this.defaults.item.style.width};
+      height: ${this.defaults.item.style.height};
+      border-radius: ${this.defaults.item.style.borderRadius};      
+      background: ${this.defaults.item.style.backgroundColor};
+      box-shadow: ${this.defaults.item.style.boxShadow};
       display: flex ;
       align-items: center;
       justify-content: center;
