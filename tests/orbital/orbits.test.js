@@ -204,4 +204,21 @@ describe("Orbital: Orbit Speed", () => {
     // tests
     await expect.element(orbits[0]).toHaveStyle({ animationDuration: "30s" });
   });
+
+  it("should stop animation when speed is set to <= 0", async () => {
+    const options = {
+      orbits: [{ items: ["https://placehold.co/50"], speed: -1 }],
+    };
+
+    // init
+    orbital = new Orbital(container, options);
+
+    // elements
+    const orbits = container.querySelectorAll(".orbit");
+    const items = container.querySelectorAll(".orbit-wrapper");
+
+    // tests
+    await expect.element(orbits[0]).toHaveStyle({ animation: "none" });
+    await expect.element(items[0]).toHaveStyle({ animation: "none" });
+  });
 });

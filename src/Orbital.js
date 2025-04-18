@@ -157,7 +157,7 @@ class Orbital {
           height: ${this.defaults.orbit.factor.height * orbitRadius}px;
           border-radius: ${orbitBorderRadius};
           border: ${orbitBorder};
-          animation: ${orbitAnimation};
+          animation: ${orbit?.speed <= 0 ? "none" : orbitAnimation};
           z-index: ${this.defaults.orbit.zIndexStart + (this.options.orbits.length - orbitIndex)};
           transition: ${this.defaults.orbit.style.transition};
       }`);
@@ -187,6 +187,9 @@ class Orbital {
         const itemCssRuleName = `orbit-wrapper-${orbitIndex}-${itemIndex}`;
         const itemAnimationName = `${itemCssRuleName}-anim`;
         const itemDiv = document.createElement("div");
+        const itemAnimation = `${itemAnimationName} ${orbit.speed || this.defaults.orbit.speed}s linear infinite ${
+          orbitIndex % 2 === 0 ? "normal" : "reverse"
+        }`;
 
         // default CSS
         this.defineCSSRule(`.${itemCssRuleName} {
@@ -194,9 +197,7 @@ class Orbital {
           offset-path: circle(${orbitRadius}px at 50% 50%);
           offset-distance: ${itemInitialOffset}%;
           offset-rotate: 0deg;
-          animation: ${itemAnimationName} ${orbit.speed || this.defaults.orbit.speed}s linear infinite ${
-          orbitIndex % 2 === 0 ? "normal" : "reverse"
-        };
+          animation: ${orbit?.speed <= 0 ? "none" : itemAnimation};
           transition: ${this.defaults.orbit.style.transition};
         }`);
 
