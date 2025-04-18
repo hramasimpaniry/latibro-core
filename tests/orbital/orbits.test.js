@@ -73,7 +73,7 @@ describe("Orbital: Orbits", () => {
         {
           items: ["https://placehold.co/50", "https://placehold.co/50", "https://placehold.co/50"],
           customCss: "custom-orbit",
-          styles: {
+          style: {
             borderStyle: "dotted",
           },
         },

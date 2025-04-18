@@ -2,7 +2,7 @@ declare module "latibro-core" {
   export interface OrbitItemObject {
     src: string;    
     customCss?: string;
-    styles?: Partial<CSSStyleDeclaration>;
+    style?: Partial<CSSStyleDeclaration>;
   }
   
   export interface OrbitOptions {
@@ -10,13 +10,13 @@ declare module "latibro-core" {
     customRadius?: number;  
     borderWidth?: number;
     customCss?: string;
-    styles?: Partial<CSSStyleDeclaration>;    
+    style?: Partial<CSSStyleDeclaration>;    
     speed?: number;
   }
 
   export interface ContainerOptions {   
     customCss?: string;
-    styles?: Partial<CSSStyleDeclaration>;
+    style?: Partial<CSSStyleDeclaration>;
   } 
   
   export interface PanelOptions {

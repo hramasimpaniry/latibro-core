@@ -64,7 +64,7 @@ describe("Orbital: Container", () => {
       orbits: [],
       container: {
         // custom styles
-        styles: {
+        style: {
           backgroundColor: "#ff5733",
           border: "2px solid #000",
         },

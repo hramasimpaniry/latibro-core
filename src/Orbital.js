@@ -125,9 +125,9 @@ class Orbital {
       this.container.classList.add(...this.options.container.customCss.split(" "));
     }
 
-    if (this.options?.container?.styles) {
+    if (this.options?.container?.style) {
       // custom inline styles
-      Object.assign(this.container.style, this.options.container.styles || {});
+      Object.assign(this.container.style, this.options.container.style || {});
     }
 
     this.createOrbits();
@@ -141,10 +141,10 @@ class Orbital {
       const orbitDiv = document.createElement("div");
       const orbitCssRuleName = `orbit-${orbitIndex}`;
       const orbitAnimationName = `${orbitCssRuleName}-animation`;
-      const orbitBorderWidth = `${orbit?.styles?.borderWidth || this.defaults.orbit.style.borderWidth}px`;
-      const orbitBorderStyle = `${orbit?.styles?.borderStyle || this.defaults.orbit.style.borderStyle}`;
-      const orbitBorderColor = `${orbit?.styles?.borderColor || this.defaults.orbit.style.borderColor}`;
-      const orbitBorderRadius = `${orbit?.styles?.borderRadius || this.defaults.orbit.style.borderRadius}`;
+      const orbitBorderWidth = `${orbit?.style?.borderWidth || this.defaults.orbit.style.borderWidth}px`;
+      const orbitBorderStyle = `${orbit?.style?.borderStyle || this.defaults.orbit.style.borderStyle}`;
+      const orbitBorderColor = `${orbit?.style?.borderColor || this.defaults.orbit.style.borderColor}`;
+      const orbitBorderRadius = `${orbit?.style?.borderRadius || this.defaults.orbit.style.borderRadius}`;
       const orbitBorder = `${orbitBorderWidth} ${orbitBorderStyle} ${orbitBorderColor}`;
       const orbitAnimation = `${orbitAnimationName} ${orbit.speed || this.defaults.orbit.speed}s linear infinite ${
         orbitIndex % 2 === 0 ? "normal" : "reverse"
@@ -169,9 +169,9 @@ class Orbital {
         orbitDiv.classList.add(...orbit.customCss.split(" "));
       }
 
-      if (orbit.styles) {
+      if (orbit.style) {
         // custom inline styles
-        Object.assign(orbitDiv.style, orbit.styles || {});
+        Object.assign(orbitDiv.style, orbit.style || {});
       }
 
       this.defineCSSRule(`@keyframes ${orbitAnimationName} {
@@ -231,9 +231,9 @@ class Orbital {
           imgDiv.classList.add(...item.customCss.split(" "));
         }
 
-        if (item.styles) {
+        if (item.style) {
           // custom inline styles
-          Object.assign(imgDiv.style, item.styles || {});
+          Object.assign(imgDiv.style, item.style || {});
         }
 
         // Add img

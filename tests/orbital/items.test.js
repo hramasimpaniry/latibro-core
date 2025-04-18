@@ -83,7 +83,7 @@ describe("Orbital: Items", () => {
             {
               src: "https://placehold.co/50",
               customCss: "custom-item",
-              styles: {
+              style: {
                 width: "150px",
               },
             },
