@@ -326,8 +326,8 @@ class Orbital {
       flex-direction: column;
       padding: 15px;
       gap: 15px;
-      width: -webkit-fill-available;
-      height: -webkit-fill-available; 
+      width: 100%;
+      height: 100%; 
     }`);
 
     this.defineCSSRule(`.orbit-panel-header {
@@ -401,7 +401,7 @@ class Orbital {
     this.openPanel();
   }
 
-  openPanel() {
+  openPanel(isFullScreen) {
     const { parent, element } = this.currentItem;
     this.isPanelOpen = true;
 
@@ -412,7 +412,10 @@ class Orbital {
     this.options.panel.container.appendChild(overlay);
 
     const itemRect = element.getBoundingClientRect();
-    const containerRect = this.options.panel.container.getBoundingClientRect();
+    const containerRect =
+      this.options.panel.container === document.body
+        ? { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight }
+        : this.options.panel.container.getBoundingClientRect();
 
     // panel
     const panel = element.cloneNode(true);
