@@ -401,8 +401,8 @@ class Orbital {
     this.openPanel();
   }
 
-  openPanel(isFullScreen) {
-    const { parent, element } = this.currentItem;
+  openPanel() {
+    const { element } = this.currentItem;
     const isPanelContainerBody = this.options.panel.container === document.body;
     this.isPanelOpen = true;
 
