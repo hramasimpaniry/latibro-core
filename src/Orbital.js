@@ -15,6 +15,7 @@ class Orbital {
         spacing: 55,
         radius: 75,
         speed: 10,
+        zIndexStart: 1000,
         factor: {
           width: 2,
           height: 2,
@@ -146,7 +147,6 @@ class Orbital {
       const orbitAnimation = `${orbitAnimationName} ${orbit.speed || this.defaults.orbit.speed}s linear infinite ${
         orbitIndex % 2 === 0 ? "normal" : "reverse"
       }`;
-      const orbitZIndex = 1000 + (this.options.orbits.length - orbitIndex);
 
       // default CSS
       this.defineCSSRule(`.${orbitCssRuleName} {
@@ -156,7 +156,7 @@ class Orbital {
           border-radius: ${orbitBorderRadius};
           border: ${orbitBorder};
           animation: ${orbitAnimation};
-          z-index: ${orbitZIndex};
+          z-index: ${this.defaults.orbit.zIndexStart + (this.options.orbits.length - orbitIndex)};
           transition: animation-play-state 0.5s ease-in-out;
       }`);
 
@@ -409,7 +409,7 @@ class Orbital {
     // backdrop overlay
     const overlay = document.createElement("div");
     overlay.id = "orbit-panel-overlay";
-    overlay.style.zIndex = 1000 + this.options.orbits.length + 1;
+    overlay.style.zIndex = this.defaults.orbit.zIndexStart + this.options.orbits.length + 1;
     overlay.style.position = isPanelContainerBody ? "fixed" : "absolute";
     this.options.panel.container.appendChild(overlay);
 
@@ -432,7 +432,7 @@ class Orbital {
     panel.style.width = `${itemRect.width}px`;
     panel.style.height = `${itemRect.height}px`;
     panel.style.transition = "all 0.4s cubic-bezier(0.2, 0.8, 0.3, 1.2)";
-    panel.style.zIndex = 1000 + this.options.orbits.length + 2;
+    panel.style.zIndex = this.defaults.orbit.zIndexStart + this.options.orbits.length + 2;
     this.options.panel.container.appendChild(panel);
 
     // panel-thumbnail
