@@ -72,6 +72,7 @@ class Orbital {
             duration: 800,
           },
         },
+        backdrop: true,
       },
       interactivity: {
         mouseLeaveDelay: 0,
@@ -91,6 +92,7 @@ class Orbital {
     this.options.panel.close = this.options.panel.close || {};
     this.options.panel.close.label = this.options.panel.label || this.defaults.panel.close.label;
     this.options.panel.close.title = this.options.panel.title || this.defaults.panel.close.title;
+    this.options.panel.backdrop = this.options.panel.backdrop || this.defaults.panel.backdrop;
 
     // internal objects
     this.orbitItems = [];
@@ -456,9 +458,11 @@ class Orbital {
       this.closePanel();
     });
 
-    overlay.addEventListener("click", () => {
-      self.closePanel();
-    });
+    if (this.options.panel.backdrop) {
+      overlay.addEventListener("click", () => {
+        self.closePanel();
+      });
+    }
 
     // panel-content
     const panelContent = document.createElement("div");
