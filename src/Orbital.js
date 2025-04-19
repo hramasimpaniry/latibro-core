@@ -75,6 +75,7 @@ class Orbital {
         backdrop: true,
       },
       interactivity: {
+        enabled: false,
         mouseLeaveDelay: 0,
       },
     };
@@ -83,8 +84,10 @@ class Orbital {
     this.options = options || {};
     this.options.orbits = this.options.orbits || [];
     this.options.orbitSpacing = this.options.orbitSpacing || this.defaults.orbit.spacing;
-    this.options.interactivity = this.options.interactivity !== false;
-    this.options.mouseLeaveDelay = this.options.mouseLeaveDelay || this.defaults.interactivity.mouseLeaveDelay;
+    this.options.interactivity = this.options.interactivity || {};
+    this.options.interactivity.enabled = this.options.interactivity?.enabled || this.defaults.interactivity.enabled;
+    this.options.interactivity.mouseLeaveDelay =
+      this.options.interactivity.mouseLeaveDelay || this.defaults.interactivity.mouseLeaveDelay;
     this.options.panel = this.options.panel || {};
     this.options.panel.offset = this.options.panel.offset || {};
     this.options.panel.offset.width = this.options.panel.offset.width || this.defaults.panel.offset.width;
@@ -279,7 +282,7 @@ class Orbital {
   }
 
   createInteractivityCssRules() {
-    if (!this.options.interactivity) return;
+    if (!this.options.interactivity?.enabled) return;
 
     this.defineCSSRule(`.orbit-wrapper.hasContent {
       cursor : pointer;
@@ -365,7 +368,7 @@ class Orbital {
   }
 
   setupItemInteractivity(itemData) {
-    if (!this.options.interactivity) return;
+    if (!this.options.interactivity?.enabled) return;
     if (!itemData.options?.panel?.content) {
       return;
     }

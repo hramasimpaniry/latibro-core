@@ -20,7 +20,9 @@ describe("Orbital: Interactivity", () => {
   it("should pause orbit on mouseenter", async () => {
     // options
     const options = {
-      interactivity: true,
+      interactivity: {
+        enabled: true,
+      },
       orbits: [
         {
           items: [

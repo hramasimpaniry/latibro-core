@@ -2,7 +2,9 @@ import Orbital from "../../src/Orbital"; // 'latibro-core'
 
 const container = document.getElementById("orbital-container");
 const config = {
-  interactivity: true,
+  interactivity: {
+    enabled: true,
+  },
   panel: {
     style: {
       top: document.documentElement.clientHeight / 2,
