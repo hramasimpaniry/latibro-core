@@ -487,7 +487,6 @@ class Orbital {
       {
         // move to center
         before: function (el) {
-          // overlay.style.pointerEvents = "none";
           el.classList.add("animation-moving");
         },
         duration: this.defaults.panel.animation.moving.duration,
@@ -535,7 +534,6 @@ class Orbital {
           panelThumbnail.style.display = "none";
           panelContent.style.display = "";
           panelClose.style.display = "";
-          // overlay.style.pointerEvents = "";
           el.classList.remove("animation-opening");
           self.isPanelBusy = false;
         },
@@ -559,7 +557,6 @@ class Orbital {
       {
         // scale down
         before: function (el) {
-          // overlay.style.pointerEvents = "none";
           panelThumbnail.style.display = "";
           panelContent.style.display = "none";
           panelClose.style.display = "none";
@@ -570,6 +567,7 @@ class Orbital {
           width: { to: `${itemRect.width}px` },
           height: { to: `${itemRect.height}px` },
           transform: {
+            from: "translate(0, 0)",
             to: "translate(0, 0)",
           },
         },
@@ -598,9 +596,12 @@ class Orbital {
           },
           left: { from: `${itemRect.left}px`, to: `${finalPosition.left}px` },
           top: { from: `${itemRect.top}px`, to: `${finalPosition.top}px` },
+          transform: {
+            from: "translate(0, 0)",
+            to: "translate(0, 0)",
+          },
         },
         after: function (el) {
-          // overlay.style.pointerEvents = "";
           panel.remove();
           overlay.remove();
           self.playOrbitCssAnimation(parent);
