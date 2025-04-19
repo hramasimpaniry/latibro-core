@@ -16,7 +16,7 @@ class Orbital {
         radius: 75,
         speed: 10,
         zIndexStart: 1000,
-        factor: {
+        scale: {
           width: 2,
           height: 2,
         },
@@ -157,8 +157,8 @@ class Orbital {
       // default CSS
       this.defineCSSRule(`.${orbitCssRuleName} {
           position: absolute;
-          width: ${this.defaults.orbit.factor.width * orbitRadius}px;
-          height: ${this.defaults.orbit.factor.height * orbitRadius}px;
+          width: ${this.defaults.orbit.scale.width * orbitRadius}px;
+          height: ${this.defaults.orbit.scale.height * orbitRadius}px;
           border-radius: ${orbitBorderRadius};
           border: ${orbitBorder};
           animation: ${orbit?.speed <= 0 ? "none" : orbitAnimation};
