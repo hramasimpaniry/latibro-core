@@ -545,7 +545,7 @@ class Orbital {
           },
           transform: {
             from: `translate(${centerX}, ${centerY})`,
-            to: "translate(-50%, -50%)",
+            to: `translate(-${finalPosition.width / 2}px, -${finalPosition.height / 2}px)`,
           },
         },
         after: function (el) {
