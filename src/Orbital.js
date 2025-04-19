@@ -44,6 +44,12 @@ class Orbital {
         },
       },
       panel: {
+        style: {
+          top: document.documentElement.clientHeight / 2,
+          left: document.documentElement.clientWidth / 2,
+          width: document.documentElement.clientWidth - 30,
+          height: document.documentElement.clientHeight - 30,
+        },
         close: {
           label: "×",
           title: "Click to close this panel",
@@ -89,9 +95,6 @@ class Orbital {
     this.options.interactivity.mouseLeaveDelay =
       this.options.interactivity.mouseLeaveDelay || this.defaults.interactivity.mouseLeaveDelay;
     this.options.panel = this.options.panel || {};
-    this.options.panel.offset = this.options.panel.offset || {};
-    this.options.panel.offset.width = this.options.panel.offset.width || this.defaults.panel.offset.width;
-    this.options.panel.offset.height = this.options.panel.offset.height || this.defaults.panel.offset.height;
     this.options.panel.close = this.options.panel.close || {};
     this.options.panel.close.label = this.options.panel.label || this.defaults.panel.close.label;
     this.options.panel.close.title = this.options.panel.title || this.defaults.panel.close.title;
@@ -269,6 +272,8 @@ class Orbital {
           element: imgDiv,
           options: item,
           resumeTimeout: null,
+          orbitIndex,
+          itemIndex,
         };
 
         this.orbitItems.push(itemData);
@@ -414,6 +419,7 @@ class Orbital {
 
     // merge props
     const panelStyle = {
+      ...this.defaults.panel.style,
       ...globalPanelStyle,
       ...itemPanelStyle,
     };
@@ -426,13 +432,6 @@ class Orbital {
     document.body.appendChild(overlay);
 
     const itemRect = element.getBoundingClientRect();
-
-    const finalPosition = {
-      top: panelStyle.top !== undefined ? panelStyle.top : 0,
-      left: panelStyle.left !== undefined ? panelStyle.left : 0,
-      width: panelStyle.width !== undefined ? panelStyle.width : document.documentElement.clientWidth,
-      height: panelStyle.height !== undefined ? panelStyle.height : document.documentElement.clientHeight,
-    };
 
     // panel
     const panel = element.cloneNode(true);
@@ -476,9 +475,8 @@ class Orbital {
 
     this.panel = { overlay, panel, panelThumbnail, panelClose, panelContent };
 
-    const centerX = panelStyle.left !== undefined ? parseFloat(panelStyle.left) : document.documentElement.clientWidth;
-
-    const centerY = panelStyle.top !== undefined ? parseFloat(panelStyle.top) : document.documentElement.clientHeight;
+    const centerX = parseFloat(panelStyle.left);
+    const centerY = parseFloat(panelStyle.top);
 
     const self = this;
 
@@ -513,23 +511,23 @@ class Orbital {
           },
           width: {
             from: `${itemRect.width}px`,
-            to: typeof finalPosition.width === "number" ? `${finalPosition.width}px` : finalPosition.width,
+            to: typeof panelStyle.width === "number" ? `${panelStyle.width}px` : panelStyle.width,
           },
           height: {
             from: `${itemRect.height}px`,
-            to: typeof finalPosition.height === "number" ? `${finalPosition.height}px` : finalPosition.height,
+            to: typeof panelStyle.height === "number" ? `${panelStyle.height}px` : panelStyle.height,
           },
           left: {
-            from: -1 * (typeof finalPosition.left === "number" ? `${finalPosition.left}px` : finalPosition.left),
-            to: typeof finalPosition.left === "number" ? `${finalPosition.left}px` : finalPosition.left,
+            from: -1 * (typeof panelStyle.left === "number" ? `${panelStyle.left}px` : panelStyle.left),
+            to: typeof panelStyle.left === "number" ? `${panelStyle.left}px` : panelStyle.left,
           },
           top: {
-            from: -1 * (typeof finalPosition.top === "number" ? `${finalPosition.top}px` : finalPosition.top),
-            to: typeof finalPosition.top === "number" ? `${finalPosition.top}px` : finalPosition.top,
+            from: -1 * (typeof panelStyle.top === "number" ? `${panelStyle.top}px` : panelStyle.top),
+            to: typeof panelStyle.top === "number" ? `${panelStyle.top}px` : panelStyle.top,
           },
           transform: {
             from: `translate(${centerX}, ${centerY})`,
-            to: `translate(-${finalPosition.width / 2}px, -${finalPosition.height / 2}px)`,
+            to: `translate(-${panelStyle.width / 2}px, -${panelStyle.height / 2}px)`,
           },
         },
         after: function (el) {
@@ -544,18 +542,11 @@ class Orbital {
   }
 
   closePanel() {
-    const { parent, element } = this.currentItem;
-    const { overlay, panel, panelThumbnail, panelClose, panelContent } = this.panel;
-
-    const itemRect = element.getBoundingClientRect();
-    const containerRect = document.body.getBoundingClientRect();
-
-    const initialWidth = itemRect.width;
-    const finalWidth = containerRect.width - this.options.panel.offset.width;
-    const initialHeight = itemRect.height;
-    const finalHeight = containerRect.height - this.options.panel.offset.height;
-
     const self = this;
+    const { parent, element, orbitIndex, itemIndex } = this.currentItem;
+    const { overlay, panel, panelThumbnail, panelClose, panelContent } = this.panel;
+    const itemRect = element.getBoundingClientRect();
+    let finalPosition = {};
 
     // close panel animation
 
@@ -571,32 +562,37 @@ class Orbital {
         },
         duration: this.defaults.panel.animation.closing.duration,
         properties: {
-          width: { from: `${finalWidth}px`, to: `${initialWidth}px` },
-          height: { from: `${finalHeight}px`, to: `${initialHeight}px` },
+          width: { to: `${itemRect.width}px` },
+          height: { to: `${itemRect.height}px` },
           transform: {
-            from: `translate(-${(finalWidth - initialWidth) / 2}px, -${(finalHeight - initialHeight) / 2}px)`,
             to: "translate(0, 0)",
           },
         },
         after: function (el) {
           el.classList.remove("animation-closing");
+          self.pauseOrbitCssAnimation(parent);
         },
       },
       {
         // move to item
         before: function (el) {
-          self.pauseOrbitCssAnimation(parent);
           el.classList.add("animation-moving");
+
+          const { top, left } = document
+            .querySelector(`.orbit-wrapper-${orbitIndex}-${itemIndex}`)
+            .getBoundingClientRect();
+          finalPosition.top = top;
+          finalPosition.left = left;
         },
         duration: this.defaults.panel.animation.moving.duration,
         properties: {
-          opacity: { from: 1, to: 0 },
+          opacity: { from: 100, to: 0 },
           borderRadius: {
             from: `${this.defaults.panel.animation.borderRadius.to}`,
             to: `${this.defaults.panel.animation.borderRadius.from}`,
           },
-          left: { to: `${itemRect.left}px` },
-          top: { to: `${itemRect.top}px` },
+          left: { from: `${itemRect.left}px`, to: `${finalPosition.left}px` },
+          top: { from: `${itemRect.top}px`, to: `${finalPosition.top}px` },
         },
         after: function (el) {
           overlay.style.pointerEvents = "";

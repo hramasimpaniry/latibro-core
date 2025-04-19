@@ -5,14 +5,14 @@ const config = {
   interactivity: {
     enabled: true,
   },
-  panel: {
-    style: {
-      top: document.documentElement.clientHeight / 2,
-      left: document.documentElement.clientWidth / 2,
-      width: 400,
-      height: 600,
-    },
-  },
+  // panel: {
+  //   style: {
+  //     top: document.documentElement.clientHeight / 2,
+  //     left: document.documentElement.clientWidth / 2,
+  //     width: 400,
+  //     height: 600,
+  //   },
+  // },
   orbits: [
     {
       items: [
