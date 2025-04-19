@@ -4,6 +4,7 @@ import Orbital from "../../src/Orbital";
 
 let container;
 let orbital;
+const delay = 2000;
 
 beforeEach(() => {
   container = document.createElement("div");
@@ -15,15 +16,24 @@ afterEach(() => {
   container?.remove();
 });
 
-describe.skip("Orbital: Interactivity", () => {
+describe("Orbital: Interactivity", () => {
   it("should pause orbit on mouseenter", async () => {
     // options
     const options = {
       interactivity: true,
       orbits: [
         {
-          items: ["https://placehold.co/50", "https://placehold.co/50", "https://placehold.co/50"],
-          speed: 10,
+          items: [
+            {
+              src: "https://placehold.co/50",
+              panel: {
+                content: "Hello from Item 1",
+              },
+            },
+            "https://placehold.co/50",
+            "https://placehold.co/50",
+          ],
+          speed: 0,
         },
       ],
     };
@@ -39,7 +49,7 @@ describe.skip("Orbital: Interactivity", () => {
     await userEvent.hover(item, { force: true });
 
     // wait
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, delay));
 
     // tests
     await expect.element(orbits[0]).toHaveClass("orbit-paused");
@@ -51,8 +61,17 @@ describe.skip("Orbital: Interactivity", () => {
       interactivity: true,
       orbits: [
         {
-          items: ["https://placehold.co/50", "https://placehold.co/50", "https://placehold.co/50"],
-          speed: 10,
+          items: [
+            {
+              src: "https://placehold.co/50",
+              panel: {
+                content: "Hello from Item 1",
+              },
+            },
+            "https://placehold.co/50",
+            "https://placehold.co/50",
+          ],
+          speed: 0,
         },
       ],
     };
@@ -65,10 +84,16 @@ describe.skip("Orbital: Interactivity", () => {
     const item = container.querySelector(".orbit .orbit-item");
 
     // interactivity
-    await userEvent.unhover(item, { force: true });
+    await userEvent.hover(item, { force: true });
+
+    // tests
+    await expect.element(orbits[0]).toHaveClass("orbit-paused");
 
     // wait
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, delay));
+
+    // interactivity
+    await userEvent.unhover(item, { force: true });
 
     // tests
     await expect.element(orbits[0]).not.toHaveClass("orbit-paused");
@@ -106,7 +131,7 @@ describe.skip("Orbital: Interactivity", () => {
     await userEvent.click(item, { force: true });
 
     // wait
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+    await new Promise((resolve) => setTimeout(resolve, delay));
 
     // panel
     const panel = document.querySelector(".orbit-panel");
@@ -143,14 +168,13 @@ describe.skip("Orbital: Interactivity", () => {
     orbital = new Orbital(container, options);
 
     // elements
-    const orbits = container.querySelectorAll(".orbit");
     const item = container.querySelector(".orbit .orbit-item");
 
     // interactivity
     await userEvent.click(item, { force: true });
 
     // wait
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+    await new Promise((resolve) => setTimeout(resolve, delay));
 
     // panel
     const panel = document.querySelector(".orbit-panel");
@@ -159,10 +183,63 @@ describe.skip("Orbital: Interactivity", () => {
       height: document.documentElement.clientHeight - orbital.options.panel.offset.height,
     };
 
-    console.log(panelRect);
-
     // tests
     await expect.element(panel).not.toBeNull();
     await expect.element(panel).toHaveStyle({ width: `${panelRect.width}px`, height: `${panelRect.height}px` });
+  });
+
+  it("should close the panel when close button is clicked", async () => {
+    // options
+    const options = {
+      interactivity: true,
+      panel: {
+        container: document.body,
+      },
+      orbits: [
+        {
+          items: [
+            {
+              src: "https://placehold.co/50",
+              panel: {
+                content: "Hello from Item 1",
+              },
+            },
+            "https://placehold.co/50",
+            "https://placehold.co/50",
+          ],
+          speed: 10,
+        },
+      ],
+    };
+
+    // init
+    orbital = new Orbital(container, options);
+
+    // elements
+    const item = container.querySelector(".orbit .orbit-item");
+
+    // interactivity
+    await userEvent.click(item, { force: true });
+
+    // wait
+    await new Promise((resolve) => setTimeout(resolve, delay));
+
+    // panel
+    let panel = document.querySelector(".orbit-panel");
+    const panelClose = panel.querySelector(".orbit-panel-close");
+
+    // tests
+    await expect.element(panelClose).not.toBeNull();
+
+    // interactivity
+    await panelClose.click(item, { force: true });
+
+    // wait
+    await new Promise((resolve) => setTimeout(resolve, delay));
+
+    panel = document.querySelector(".orbit-panel");
+
+    // tests
+    await expect.element(panel).toBeNull();
   });
 });

@@ -8,13 +8,14 @@ export default defineWorkspace([
     test: {
       browser: {
         enabled: true,
-        provider: "playwright",
-        // https://vitest.dev/guide/browser/playwright
+        provider: "playwright", // https://vitest.dev/guide/browser/playwright
         instances: [
-          { browser: "chromium" },
-          // { browser: 'firefox' },
-          // { browser: 'webkit' },
+          // { browser: "chromium" },
+          // { browser: "firefox" },
+          { browser: "webkit" },
         ],
+        // provider: "webdriverio", // https://vitest.dev/guide/browser/webdriverio.html
+        // instances: [{ browser: "chrome" }],
       },
     },
   },
