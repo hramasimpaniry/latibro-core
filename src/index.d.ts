@@ -1,8 +1,16 @@
 declare module "latibro-core" {
+
+  export interface ItemPanelOptions {
+    content?: string;
+    customCss?: string;
+    style?: Partial<CSSStyleDeclaration>;
+  }  
+  
   export interface OrbitItemObject {
     src: string;    
     customCss?: string;
     style?: Partial<CSSStyleDeclaration>;
+    panel?: ItemPanelOptions;
   }
   
   export interface OrbitOptions {
@@ -29,6 +37,8 @@ declare module "latibro-core" {
       label?: string;
       title?: string;
     };
+    customCss?: string;
+    style?: Partial<CSSStyleDeclaration>;
   }
 
   export interface OrbitalOptions {
@@ -56,7 +66,7 @@ declare module "latibro-core" {
     private createOrbits(): void;
     private defineCSSRule(cssRules: string): void;
     private animate(element: HTMLElement, sequences: AnimationSequence[]): Promise<void>;
-    private _animateMultipleProperties(
+    private _animate(
       element: HTMLElement,
       duration: number,
       properties: Record<string, { 

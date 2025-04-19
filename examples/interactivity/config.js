@@ -5,6 +5,12 @@ const config = {
   interactivity: true,
   panel: {
     container: document.body,
+    style: {
+      top: document.documentElement.clientHeight / 2,
+      left: document.documentElement.clientWidth / 2,
+      width: 400,
+      height: 600,
+    },
   },
   orbits: [
     {
@@ -13,6 +19,12 @@ const config = {
           src: "https://placehold.co/50",
           panel: {
             content: "<h1>Orbit 1, Item 1</h1>",
+            style: {
+              top: document.documentElement.clientHeight / 2,
+              left: 220,
+              width: 400,
+              height: 600,
+            },
           },
         },
         "https://placehold.co/50",

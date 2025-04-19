@@ -203,9 +203,7 @@ class Orbital {
 
         itemDiv.classList.add("orbit-wrapper", itemCssRuleName);
 
-        const itemContent = item.panel?.content;
-
-        if (itemContent) {
+        if (item.panel?.content) {
           itemDiv.classList.add("hasContent", itemCssRuleName);
         }
 
@@ -265,7 +263,7 @@ class Orbital {
         const itemData = {
           parent: orbitDiv,
           element: imgDiv,
-          content: itemContent,
+          options: item,
           resumeTimeout: null,
         };
 
@@ -367,7 +365,7 @@ class Orbital {
 
   setupItemInteractivity(itemData) {
     if (!this.options.interactivity) return;
-    if (!itemData.content) {
+    if (!itemData.options?.panel?.content) {
       return;
     }
 
@@ -405,9 +403,19 @@ class Orbital {
   }
 
   openPanel() {
+    this.isPanelOpen = true;
     const { element } = this.currentItem;
     const isPanelContainerBody = this.options.panel.container === document.body;
-    this.isPanelOpen = true;
+    const globalPanelStyle = this.options?.panel?.style || {};
+    const itemPanelStyle = this.currentItem.options?.panel?.style || {};
+
+    // merge props
+    const panelStyle = {
+      ...globalPanelStyle,
+      ...itemPanelStyle,
+    };
+
+    console.log(globalPanelStyle, itemPanelStyle, panelStyle);
 
     // backdrop overlay
     const overlay = document.createElement("div");
@@ -417,14 +425,21 @@ class Orbital {
     this.options.panel.container.appendChild(overlay);
 
     const itemRect = element.getBoundingClientRect();
-    const containerRect = isPanelContainerBody
-      ? {
-          top: 0,
-          left: 0,
-          width: document.documentElement.clientWidth,
-          height: document.documentElement.clientHeight,
-        }
-      : this.options.panel.container.getBoundingClientRect();
+
+    const finalPosition = {
+      top: panelStyle.top !== undefined ? panelStyle.top : 0,
+      left: panelStyle.left !== undefined ? panelStyle.left : 0,
+      width:
+        panelStyle.width !== undefined
+          ? panelStyle.width
+          : (isPanelContainerBody ? document.documentElement.clientWidth : this.options.panel.container.clientWidth) -
+            this.options.panel.offset.width,
+      height:
+        panelStyle.height !== undefined
+          ? panelStyle.height
+          : (isPanelContainerBody ? document.documentElement.clientHeight : this.options.panel.container.clientHeight) -
+            this.options.panel.offset.height,
+    };
 
     // panel
     const panel = element.cloneNode(true);
@@ -460,21 +475,28 @@ class Orbital {
     // panel-content
     const panelContent = document.createElement("div");
     panelContent.className = "orbit-panel-content";
-    panelContent.innerHTML = this.currentItem.content;
+    panelContent.innerHTML = this.currentItem.options.panel.content;
     panelContent.style.display = "none";
     panel.appendChild(panelContent);
 
     this.panel = { overlay, panel, panelThumbnail, panelClose, panelContent };
 
-    const centerX = containerRect.left + containerRect.width / 2 - itemRect.width / 2;
-    const centerY = containerRect.top + containerRect.height / 2 - itemRect.height / 2;
+    const centerX =
+      panelStyle.left !== undefined
+        ? parseFloat(panelStyle.left)
+        : (isPanelContainerBody ? document.documentElement.clientWidth : this.options.panel.container.clientWidth) / 2 -
+          itemRect.width / 2;
 
-    const initialWidth = itemRect.width;
-    const finalWidth = containerRect.width - this.options.panel.offset.width;
-    const initialHeight = itemRect.height;
-    const finalHeight = containerRect.height - this.options.panel.offset.height;
+    const centerY =
+      panelStyle.top !== undefined
+        ? parseFloat(panelStyle.top)
+        : (isPanelContainerBody ? document.documentElement.clientHeight : this.options.panel.container.clientHeight) /
+            2 -
+          itemRect.height / 2;
 
     const self = this;
+
+    console.log(centerX, centerY);
 
     // open panel animation
 
@@ -505,11 +527,25 @@ class Orbital {
             from: `${this.defaults.panel.animation.borderRadius.from}`,
             to: `${this.defaults.panel.animation.borderRadius.to}`,
           },
-          width: { from: `${initialWidth}px`, to: `${finalWidth}px` },
-          height: { from: `${initialHeight}px`, to: `${finalHeight}px` },
+          width: {
+            from: `${itemRect.width}px`,
+            to: typeof finalPosition.width === "number" ? `${finalPosition.width}px` : finalPosition.width,
+          },
+          height: {
+            from: `${itemRect.height}px`,
+            to: typeof finalPosition.height === "number" ? `${finalPosition.height}px` : finalPosition.height,
+          },
+          left: {
+            from: -1 * (typeof finalPosition.left === "number" ? `${finalPosition.left}px` : finalPosition.left),
+            to: typeof finalPosition.left === "number" ? `${finalPosition.left}px` : finalPosition.left,
+          },
+          top: {
+            from: -1 * (typeof finalPosition.top === "number" ? `${finalPosition.top}px` : finalPosition.top),
+            to: typeof finalPosition.top === "number" ? `${finalPosition.top}px` : finalPosition.top,
+          },
           transform: {
-            from: "translate(0, 0)",
-            to: `translate(-${(finalWidth - initialWidth) / 2}px, -${(finalHeight - initialHeight) / 2}px)`,
+            from: `translate(${centerX}, ${centerY})`,
+            to: "translate(-50%, -50%)",
           },
         },
         after: function (el) {
