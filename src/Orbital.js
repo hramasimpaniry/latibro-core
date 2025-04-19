@@ -85,7 +85,6 @@ class Orbital {
     this.options.interactivity = this.options.interactivity !== false;
     this.options.mouseLeaveDelay = this.options.mouseLeaveDelay || this.defaults.interactivity.mouseLeaveDelay;
     this.options.panel = this.options.panel || {};
-    this.options.panel.container = this.options.panel.container || this.container;
     this.options.panel.offset = this.options.panel.offset || {};
     this.options.panel.offset.width = this.options.panel.offset.width || this.defaults.panel.offset.width;
     this.options.panel.offset.height = this.options.panel.offset.height || this.defaults.panel.offset.height;
@@ -405,7 +404,6 @@ class Orbital {
   openPanel() {
     this.isPanelOpen = true;
     const { element } = this.currentItem;
-    const isPanelContainerBody = this.options.panel.container === document.body;
     const globalPanelStyle = this.options?.panel?.style || {};
     const itemPanelStyle = this.currentItem.options?.panel?.style || {};
 
@@ -415,30 +413,20 @@ class Orbital {
       ...itemPanelStyle,
     };
 
-    console.log(globalPanelStyle, itemPanelStyle, panelStyle);
-
     // backdrop overlay
     const overlay = document.createElement("div");
     overlay.id = "orbit-panel-overlay";
     overlay.style.zIndex = this.defaults.orbit.zIndexStart + this.options.orbits.length + 1;
-    overlay.style.position = isPanelContainerBody ? "fixed" : "absolute";
-    this.options.panel.container.appendChild(overlay);
+    overlay.style.position = "fixed";
+    document.body.appendChild(overlay);
 
     const itemRect = element.getBoundingClientRect();
 
     const finalPosition = {
       top: panelStyle.top !== undefined ? panelStyle.top : 0,
       left: panelStyle.left !== undefined ? panelStyle.left : 0,
-      width:
-        panelStyle.width !== undefined
-          ? panelStyle.width
-          : (isPanelContainerBody ? document.documentElement.clientWidth : this.options.panel.container.clientWidth) -
-            this.options.panel.offset.width,
-      height:
-        panelStyle.height !== undefined
-          ? panelStyle.height
-          : (isPanelContainerBody ? document.documentElement.clientHeight : this.options.panel.container.clientHeight) -
-            this.options.panel.offset.height,
+      width: panelStyle.width !== undefined ? panelStyle.width : document.documentElement.clientWidth,
+      height: panelStyle.height !== undefined ? panelStyle.height : document.documentElement.clientHeight,
     };
 
     // panel
@@ -451,7 +439,7 @@ class Orbital {
     panel.style.height = `${itemRect.height}px`;
     panel.style.transition = "all 0.4s cubic-bezier(0.2, 0.8, 0.3, 1.2)";
     panel.style.zIndex = this.defaults.orbit.zIndexStart + this.options.orbits.length + 2;
-    this.options.panel.container.appendChild(panel);
+    document.body.appendChild(panel);
 
     // panel-thumbnail
     const panelThumbnail = panel.querySelector(".orbit-img");
@@ -481,22 +469,11 @@ class Orbital {
 
     this.panel = { overlay, panel, panelThumbnail, panelClose, panelContent };
 
-    const centerX =
-      panelStyle.left !== undefined
-        ? parseFloat(panelStyle.left)
-        : (isPanelContainerBody ? document.documentElement.clientWidth : this.options.panel.container.clientWidth) / 2 -
-          itemRect.width / 2;
+    const centerX = panelStyle.left !== undefined ? parseFloat(panelStyle.left) : document.documentElement.clientWidth;
 
-    const centerY =
-      panelStyle.top !== undefined
-        ? parseFloat(panelStyle.top)
-        : (isPanelContainerBody ? document.documentElement.clientHeight : this.options.panel.container.clientHeight) /
-            2 -
-          itemRect.height / 2;
+    const centerY = panelStyle.top !== undefined ? parseFloat(panelStyle.top) : document.documentElement.clientHeight;
 
     const self = this;
-
-    console.log(centerX, centerY);
 
     // open panel animation
 
@@ -564,7 +541,7 @@ class Orbital {
     const { overlay, panel, panelThumbnail, panelClose, panelContent } = this.panel;
 
     const itemRect = element.getBoundingClientRect();
-    const containerRect = this.options.panel.container.getBoundingClientRect();
+    const containerRect = document.body.getBoundingClientRect();
 
     const initialWidth = itemRect.width;
     const finalWidth = containerRect.width - this.options.panel.offset.width;

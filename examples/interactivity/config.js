@@ -4,7 +4,6 @@ const container = document.getElementById("orbital-container");
 const config = {
   interactivity: true,
   panel: {
-    container: document.body,
     style: {
       top: document.documentElement.clientHeight / 2,
       left: document.documentElement.clientWidth / 2,
@@ -27,7 +26,18 @@ const config = {
             },
           },
         },
-        "https://placehold.co/50",
+        {
+          src: "https://placehold.co/50",
+          panel: {
+            content: "<h1>Orbit 1, Item 2</h1>",
+            style: {
+              top: document.documentElement.clientHeight / 2,
+              left: document.documentElement.clientWidth - 220,
+              width: 400,
+              height: 600,
+            },
+          },
+        },
         "https://placehold.co/50",
       ],
       speed: 100,
