@@ -394,7 +394,7 @@ class Orbital {
     const handleMouseLeave = () => {
       itemData.resumeTimeout = setTimeout(() => {
         this.playOrbitCssAnimation(parent);
-      }, this.options.mouseLeaveDelay);
+      }, this.options.interactivity.mouseLeaveDelay);
     };
 
     element.addEventListener("mouseenter", handleMouseEnter);
