@@ -114,4 +114,95 @@ describe("Orbital: Items", () => {
     await expect.element(items[1]).toHaveStyle({ width: "48px", height: "48px" });
     await expect.element(items[2]).toHaveStyle({ width: "48px", height: "48px" });
   });
+
+  it("should display an image if item string is provided", async () => {
+    // options
+    const options = {
+      orbits: [
+        {
+          items: ["https://placehold.co/50", "https://placehold.co/50", "https://placehold.co/50"],
+        },
+      ],
+    };
+
+    // init
+    orbital = new Orbital(container, options);
+
+    // elements
+    let item;
+    let content;
+    item = container.querySelector(".orbit-item-0-0");
+    content = container.querySelector(".orbit-img-0-0");
+
+    // tests
+    await expect.element(content).toBeInstanceOf(Image);
+    await expect.element(content).toHaveAttribute("src", "https://placehold.co/50");
+    await expect.element(item).toContainElement(content);
+  });
+
+  it("should display an image if item.src provided", async () => {
+    // options
+    const options = {
+      orbits: [
+        {
+          items: [
+            { src: "https://placehold.co/50", alt: "Item Image" },
+            "https://placehold.co/50",
+            "https://placehold.co/50",
+          ],
+        },
+      ],
+    };
+
+    // init
+    orbital = new Orbital(container, options);
+
+    // elements
+    let item;
+    let content;
+    item = container.querySelector(".orbit-item-0-0");
+    content = container.querySelector(".orbit-img-0-0");
+
+    // tests
+    await expect.element(content).toBeInstanceOf(Image);
+    await expect.element(content).toHaveAttribute("src", "https://placehold.co/50");
+    await expect.element(item).toContainElement(content);
+  });
+
+  it("should display content if item.content is provided", async () => {
+    const itemContent = `
+    <div>
+    <span>Line 1</span>
+    <span>Line 2</span>
+    <span>Line 3</span>
+    </div>`;
+    // options
+    const options = {
+      orbits: [
+        {
+          items: [
+            { src: "https://placehold.co/50", content: itemContent, alt: "Item Content" },
+            "https://placehold.co/50",
+            "https://placehold.co/50",
+          ],
+        },
+      ],
+    };
+
+    // init
+    orbital = new Orbital(container, options);
+
+    // elements
+    let item;
+    let content;
+    item = container.querySelector(".orbit-item-0-0");
+    content = container.querySelector(".orbit-content-0-0");
+
+    // tests
+    await expect.element(content).toBeInstanceOf(HTMLElement);
+    await expect.element(content).toHaveTextContent("Line 1");
+    await expect.element(content).toHaveTextContent("Line 2");
+    await expect.element(content).toHaveTextContent("Line 3");
+    await expect.element(item).toContainElement(content);
+  });
 });
