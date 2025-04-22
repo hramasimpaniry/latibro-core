@@ -146,7 +146,10 @@ describe("Orbital: Items", () => {
       orbits: [
         {
           items: [
-            { src: "https://placehold.co/50", alt: "Item Image" },
+            {
+              src: "https://placehold.co/50",
+              alt: "Item Image",
+            },
             "https://placehold.co/50",
             "https://placehold.co/50",
           ],
@@ -169,8 +172,8 @@ describe("Orbital: Items", () => {
     await expect.element(item).toContainElement(content);
   });
 
-  it("should display content if item.content is provided", async () => {
-    const itemContent = `
+  it("should display content if item.thumbnail.content is provided", async () => {
+    const thumbnailContent = `
     <div>
     <span>Line 1</span>
     <span>Line 2</span>
@@ -181,7 +184,13 @@ describe("Orbital: Items", () => {
       orbits: [
         {
           items: [
-            { src: "https://placehold.co/50", content: itemContent, alt: "Item Content" },
+            {
+              src: "https://placehold.co/50",
+              alt: "Item Content",
+              thumbnail: {
+                content: thumbnailContent,
+              },
+            },
             "https://placehold.co/50",
             "https://placehold.co/50",
           ],

@@ -260,11 +260,11 @@ class Orbital {
           // Appliquer le style du contenu du thumbnail
           // TODO : this is inside a forEach loop. Check if duplicated
           this.defineCSSRule(`.${itemThumbnailCssRuleName} {
-            display: ${this.defaults.thumbnail.contentStyle.display};
-            align-items: ${this.defaults.thumbnail.contentStyle.alignItems};
-            justify-content: ${this.defaults.thumbnail.contentStyle.justifyContent};
-            width: ${this.defaults.thumbnail.contentStyle.width};
-            height: ${this.defaults.thumbnail.contentStyle.height};
+            display: ${this.defaults.thumbnail.style.display};
+            align-items: ${this.defaults.thumbnail.style.alignItems};
+            justify-content: ${this.defaults.thumbnail.style.justifyContent};
+            width: ${this.defaults.thumbnail.style.width};
+            height: ${this.defaults.thumbnail.style.height};
           }`);
 
           itemThumbnailDiv.classList.add("orbit-thumbnail", itemThumbnailCssRuleName);
