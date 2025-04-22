@@ -270,6 +270,17 @@ class Orbital {
           }`);
 
           itemThumbnailDiv.classList.add("orbit-thumbnail", itemThumbnailCssRuleName);
+
+          if (item.thumbnail?.customCss) {
+            // custom CSS
+            itemThumbnailDiv.classList.add(...item.thumbnail.customCss.split(" "));
+          }
+
+          if (item.thumbnail?.style) {
+            // custom inline styles
+            Object.assign(imgDiv.style, item.thumbnail.style || {});
+          }
+
           imgDiv.appendChild(itemThumbnailDiv);
         } else {
           // Add img
