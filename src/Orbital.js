@@ -257,6 +257,8 @@ class Orbital {
           const itemThumbnailCssRuleName = `orbit-thumbnail-${orbitIndex}-${itemIndex}`;
           const itemThumbnailDiv = document.createElement("div");
 
+          itemThumbnailDiv.innerHTML = item.thumbnail?.content;
+
           // Appliquer le style du contenu du thumbnail
           // TODO : this is inside a forEach loop. Check if duplicated
           this.defineCSSRule(`.${itemThumbnailCssRuleName} {
