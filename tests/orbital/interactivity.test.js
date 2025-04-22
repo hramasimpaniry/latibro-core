@@ -521,8 +521,6 @@ describe("Orbital: Interactivity / Panel", () => {
       ],
     };
 
-    console.log(`default : ${JSON.stringify(options.panel.style)}`);
-
     // init
     orbital = new Orbital(container, options);
 

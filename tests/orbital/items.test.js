@@ -214,4 +214,101 @@ describe("Orbital: Items", () => {
     await expect.element(content).toHaveTextContent("Line 3");
     await expect.element(item).toContainElement(content);
   });
+
+  it("should apply customCss if item.content.customCss is provided", async () => {
+    const thumbnailContent = `
+    <div>
+    <span>Line 1</span>
+    <span>Line 2</span>
+    <span>Line 3</span>
+    </div>`;
+    // options
+    const options = {
+      orbits: [
+        {
+          items: [
+            {
+              src: "https://placehold.co/50",
+              alt: "Item Content",
+              content: {
+                html: thumbnailContent,
+                customCss: "custom-item",
+              },
+            },
+            "https://placehold.co/50",
+            "https://placehold.co/50",
+          ],
+        },
+      ],
+    };
+
+    // init
+    orbital = new Orbital(container, options);
+
+    // elements
+    let item;
+    let content;
+    item = container.querySelector(".orbit-item-0-0");
+    content = container.querySelector(".orbit-content-0-0");
+
+    // tests
+    await expect.element(content).toBeInstanceOf(HTMLElement);
+    await expect.element(content).toHaveClass("custom-item");
+    await expect.element(item).toContainElement(content);
+  });
+
+  it("should apply custom style if item.content.style is provided", async () => {
+    const thumbnailContent = `
+    <div>
+    <span>Line 1</span>
+    <span>Line 2</span>
+    <span>Line 3</span>
+    </div>`;
+    // options
+    const options = {
+      orbits: [
+        {
+          items: [
+            {
+              src: "https://placehold.co/50",
+              alt: "Item Content",
+              content: {
+                html: thumbnailContent,
+                customCss: "custom-item",
+                style: {
+                  backgroundColor: "red",
+                },
+              },
+            },
+            "https://placehold.co/50",
+            "https://placehold.co/50",
+          ],
+        },
+      ],
+    };
+
+    // styles
+    const styleTag = document.createElement("style");
+    styleTag.innerHTML = `
+      .custom-item {
+         background-color: blue
+      }
+    `;
+    document.head.appendChild(styleTag);
+
+    // init
+    orbital = new Orbital(container, options);
+
+    // elements
+    let item;
+    let content;
+    item = container.querySelector(".orbit-item-0-0");
+    content = container.querySelector(".orbit-content-0-0");
+
+    // tests
+    await expect.element(content).toBeInstanceOf(HTMLElement);
+    await expect.element(content).toHaveClass("custom-item");
+    await expect.element(content).toHaveStyle("background-color: red");
+    await expect.element(item).toContainElement(content);
+  });
 });
