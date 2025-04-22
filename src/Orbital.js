@@ -159,6 +159,7 @@ class Orbital {
       }`;
 
       // default CSS
+      // TODO : this is inside a forEach loop. Check if duplicated
       this.defineCSSRule(`.${orbitCssRuleName} {
           position: absolute;
           width: ${this.defaults.orbit.scale.width * orbitRadius}px;
@@ -182,6 +183,7 @@ class Orbital {
         Object.assign(orbitDiv.style, orbit.style || {});
       }
 
+      // TODO : this is inside a forEach loop. Check if duplicated
       this.defineCSSRule(`@keyframes ${orbitAnimationName} {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
@@ -200,6 +202,7 @@ class Orbital {
         }`;
 
         // default CSS
+        // TODO : this is inside a forEach loop. Check if duplicated
         this.defineCSSRule(`.${itemCssRuleName} {
           position: absolute;
           offset-path: circle(${orbitRadius}px at 50% 50%);
@@ -243,26 +246,47 @@ class Orbital {
           Object.assign(imgDiv.style, item.style || {});
         }
 
-        // Add img
-        const itemImageCssRuleName = `orbit-img-${orbitIndex}-${itemIndex}`;
-        const img = document.createElement("img");
-        img.src = item.src ? item.src : item;
-        img.alt = item.alt ? item.alt : "";
+        if (item.thumbnail?.content) {
+          const itemThumbnailCssRuleName = `orbit-thumbnail-${orbitIndex}-${itemIndex}`;
+          const itemThumbnailDiv = document.createElement("div");
 
-        // default CSS
-        this.defineCSSRule(`.${itemImageCssRuleName} {
-          width: ${this.defaults.thumbnail.style.width};
-          height: ${this.defaults.thumbnail.style.height};
-          object-fit: contain;
-          -moz-user-select: -moz-none;
-          -khtml-user-select: none;
-          -webkit-user-select: none;
-          -ms-user-select: none;
-          user-select: none;   
-        }`);
+          // Appliquer le style du contenu du thumbnail
+          // TODO : this is inside a forEach loop. Check if duplicated
+          this.defineCSSRule(`.${itemThumbnailCssRuleName} {
+            display: ${this.defaults.thumbnail.contentStyle.display};
+            align-items: ${this.defaults.thumbnail.contentStyle.alignItems};
+            justify-content: ${this.defaults.thumbnail.contentStyle.justifyContent};
+            width: ${this.defaults.thumbnail.contentStyle.width};
+            height: ${this.defaults.thumbnail.contentStyle.height};
+          }`);
 
-        img.classList.add("orbit-img", itemImageCssRuleName);
+          itemThumbnailDiv.classList.add("orbit-thumbnail", itemThumbnailCssRuleName);
+          imgDiv.appendChild(itemThumbnailDiv);
+        } else {
+          // Add img
+          const itemImageCssRuleName = `orbit-img-${orbitIndex}-${itemIndex}`;
+          const img = document.createElement("img");
+          img.src = item.src ? item.src : item;
+          img.alt = item.alt ? item.alt : "";
 
+          // default CSS
+          // TODO : this is inside a forEach loop. Check if duplicated
+          this.defineCSSRule(`.${itemImageCssRuleName} {
+            width: ${this.defaults.thumbnail.style.width};
+            height: ${this.defaults.thumbnail.style.height};
+            object-fit: contain;
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;   
+          }`);
+
+          img.classList.add("orbit-img", itemImageCssRuleName);
+          imgDiv.appendChild(img);
+        }
+
+        // TODO : this is inside a forEach loop. Check if duplicated
         this.defineCSSRule(`@keyframes ${itemAnimationName} {
           0% { offset-distance: ${itemInitialOffset}%; offset-rotate: 360deg }
           100% { offset-distance: ${itemInitialOffset + 100}%; offset-rotate: 0deg }
@@ -280,7 +304,6 @@ class Orbital {
         this.orbitItems.push(itemData);
         this.setupItemInteractivity(itemData);
 
-        imgDiv.appendChild(img);
         itemDiv.appendChild(imgDiv);
         orbitDiv.appendChild(itemDiv);
       });
