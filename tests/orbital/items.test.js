@@ -172,7 +172,7 @@ describe("Orbital: Items", () => {
     await expect.element(item).toContainElement(content);
   });
 
-  it("should display content if item.thumbnail.content is provided", async () => {
+  it("should display html if item.content.html is provided", async () => {
     const thumbnailContent = `
     <div>
     <span>Line 1</span>
@@ -187,8 +187,8 @@ describe("Orbital: Items", () => {
             {
               src: "https://placehold.co/50",
               alt: "Item Content",
-              thumbnail: {
-                content: thumbnailContent,
+              content: {
+                html: thumbnailContent,
               },
             },
             "https://placehold.co/50",

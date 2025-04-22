@@ -203,13 +203,13 @@ class Orbital {
         const itemInitialOffset = (itemIndex / itemCount) * 100;
         const itemCssRuleName = `orbit-wrapper-${orbitIndex}-${itemIndex}`;
         const itemAnimationName = `${itemCssRuleName}-anim`;
-        const itemDiv = document.createElement("div");
         const itemAnimation = `${itemAnimationName} ${orbit.speed || this.defaults.orbit.speed}s linear infinite ${
           orbitIndex % 2 === 0 ? "normal" : "reverse"
         }`;
 
-        // default CSS
-        // TODO : this is inside a forEach loop. Check if duplicated
+        // orbit-wrapper
+        const itemDiv = document.createElement("div");
+
         this.defineCSSRule(`.${itemCssRuleName} {
           position: absolute;
           offset-path: circle(${orbitRadius}px at 50% 50%);
@@ -225,11 +225,10 @@ class Orbital {
           itemDiv.classList.add("hasContent", itemCssRuleName);
         }
 
-        // Add img div
+        // orbit-item
         const imageContainerCssRuleName = `orbit-item-${orbitIndex}-${itemIndex}`;
         const imgDiv = document.createElement("div");
 
-        // default CSS
         this.defineCSSRule(`.${imageContainerCssRuleName} {
           width: ${this.defaults.item.style.width};
           height: ${this.defaults.item.style.height};
@@ -253,14 +252,13 @@ class Orbital {
           Object.assign(imgDiv.style, item.style || {});
         }
 
-        if (item.thumbnail?.content) {
+        if (item.content?.html) {
+          // orbit-content
           const itemThumbnailCssRuleName = `orbit-thumbnail-${orbitIndex}-${itemIndex}`;
           const itemThumbnailDiv = document.createElement("div");
 
-          itemThumbnailDiv.innerHTML = item.thumbnail?.content;
+          itemThumbnailDiv.innerHTML = item.content?.html;
 
-          // Appliquer le style du contenu du thumbnail
-          // TODO : this is inside a forEach loop. Check if duplicated
           this.defineCSSRule(`.${itemThumbnailCssRuleName} {
             display: ${this.defaults.thumbnail.style.display};
             align-items: ${this.defaults.thumbnail.style.alignItems};
@@ -283,14 +281,12 @@ class Orbital {
 
           imgDiv.appendChild(itemThumbnailDiv);
         } else {
-          // Add img
+          // orbit-img
           const itemImageCssRuleName = `orbit-img-${orbitIndex}-${itemIndex}`;
           const img = document.createElement("img");
           img.src = item.src ? item.src : item;
           img.alt = item.alt ? item.alt : "";
 
-          // default CSS
-          // TODO : this is inside a forEach loop. Check if duplicated
           this.defineCSSRule(`.${itemImageCssRuleName} {
             width: ${this.defaults.thumbnail.style.width};
             height: ${this.defaults.thumbnail.style.height};
@@ -306,7 +302,6 @@ class Orbital {
           imgDiv.appendChild(img);
         }
 
-        // TODO : this is inside a forEach loop. Check if duplicated
         this.defineCSSRule(`@keyframes ${itemAnimationName} {
           0% { offset-distance: ${itemInitialOffset}%; offset-rotate: 360deg }
           100% { offset-distance: ${itemInitialOffset + 100}%; offset-rotate: 0deg }
