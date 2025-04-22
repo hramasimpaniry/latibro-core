@@ -8,8 +8,8 @@ const config = {
         "https://placehold.co/50",
         "https://placehold.co/50",
         {
-          thumbnail: {
-            content: "<span>Line 1</span><span>Line 2</span><span>Line 3</span>",
+          content: {
+            html: "<span>Line 1</span><span>Line 2</span><span>Line 3</span>",
             customCss: "item-thumbnail-custom",
           },
         },
