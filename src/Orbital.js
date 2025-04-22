@@ -285,7 +285,7 @@ class Orbital {
 
           if (item.content?.style) {
             // custom inline styles
-            Object.assign(imgDiv.style, item.thumbnail.style || {});
+            Object.assign(itemThumbnailDiv.style, item.content.style || {});
           }
 
           imgDiv.appendChild(itemThumbnailDiv);
