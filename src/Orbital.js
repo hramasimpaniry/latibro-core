@@ -4,6 +4,11 @@ class Orbital {
 
     // default values
     this.defaults = {
+      cssRuleName: {
+        item: {
+          wrapper: "orbit-item-wrapper",
+        },
+      },
       container: {
         style: {
           width: "500px",
@@ -210,14 +215,14 @@ class Orbital {
       // Add items
       orbit.items.forEach((item, itemIndex) => {
         const itemInitialOffset = (itemIndex / itemCount) * 100;
-        const itemCssRuleName = `orbit-wrapper-${orbitIndex}-${itemIndex}`;
+        const itemCssRuleName = `${this.defaults.cssRuleName.item.wrapper}-${orbitIndex}-${itemIndex}`;
         const itemAnimationName = `${itemCssRuleName}-anim`;
         const itemAnimation = `${itemAnimationName} ${orbit.speed || this.defaults.orbit.speed}s linear infinite ${
           orbitIndex % 2 === 0 ? "normal" : "reverse"
         }`;
 
-        // orbit-wrapper
-        const itemDiv = document.createElement("div");
+        // orbit-item-wrapper
+        const itemWrapperDiv = document.createElement("div");
 
         this.defineCSSRule(`.${itemCssRuleName} {
           position: absolute;
@@ -228,10 +233,10 @@ class Orbital {
           transition: ${this.defaults.orbit.style.transition};
         }`);
 
-        itemDiv.classList.add("orbit-wrapper", itemCssRuleName);
+        itemWrapperDiv.classList.add(`${this.defaults.cssRuleName.item.wrapper}`, itemCssRuleName);
 
         if (item.panel?.content) {
-          itemDiv.classList.add("hasContent", itemCssRuleName);
+          itemWrapperDiv.classList.add("hasContent", itemCssRuleName);
         }
 
         // orbit-item
@@ -328,8 +333,8 @@ class Orbital {
         this.orbitItems.push(itemData);
         this.setupItemInteractivity(itemData);
 
-        itemDiv.appendChild(imgDiv);
-        orbitDiv.appendChild(itemDiv);
+        itemWrapperDiv.appendChild(imgDiv);
+        orbitDiv.appendChild(itemWrapperDiv);
       });
     });
   }
@@ -337,7 +342,7 @@ class Orbital {
   createInteractivityCssRules() {
     if (!this.options.interactivity?.enabled) return;
 
-    this.defineCSSRule(`.orbit-wrapper.hasContent {
+    this.defineCSSRule(`.${this.defaults.cssRuleName.item.wrapper}.hasContent {
       cursor : pointer;
     }`);
 
@@ -404,7 +409,7 @@ class Orbital {
     orbitElement.style.animationPlayState = "paused";
     orbitElement.classList.add("orbit-paused");
 
-    const items = orbitElement.querySelectorAll(".orbit-wrapper");
+    const items = orbitElement.querySelectorAll(`.${this.defaults.cssRuleName.item.wrapper}`);
     items.forEach((el) => {
       el.style.animationPlayState = "paused";
     });
@@ -414,7 +419,7 @@ class Orbital {
     orbitElement.style.animationPlayState = "";
     orbitElement.classList.remove("orbit-paused");
 
-    const items = orbitElement.querySelectorAll(".orbit-wrapper");
+    const items = orbitElement.querySelectorAll(`.${this.defaults.cssRuleName.item.wrapper}`);
     items.forEach((el) => {
       el.style.animationPlayState = "";
     });
@@ -629,7 +634,7 @@ class Orbital {
           el.classList.add("animation-moving");
 
           const { top, left } = document
-            .querySelector(`.orbit-wrapper-${orbitIndex}-${itemIndex}`)
+            .querySelector(`.${this.defaults.cssRuleName.item.wrapper}-${orbitIndex}-${itemIndex}`)
             .getBoundingClientRect();
           finalPosition.top = top;
           finalPosition.left = left;

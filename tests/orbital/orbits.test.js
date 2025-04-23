@@ -215,7 +215,7 @@ describe("Orbital: Orbit Speed", () => {
 
     // elements
     const orbits = container.querySelectorAll(".orbit");
-    const items = container.querySelectorAll(".orbit-wrapper");
+    const items = container.querySelectorAll(".orbit-item-wrapper");
 
     // tests
     await expect.element(orbits[0]).toHaveStyle({ animation: "none" });
