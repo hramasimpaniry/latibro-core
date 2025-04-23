@@ -8,6 +8,7 @@ class Orbital {
         item: {
           wrapper: "orbit-item-wrapper",
           container: "orbit-item-container",
+          content: "orbit-item-content",
           image: "orbit-item-img",
         },
       },
@@ -262,13 +263,13 @@ class Orbital {
         }
 
         if (item.content?.html) {
-          // orbit-content
-          const itemThumbnailCssRuleName = `orbit-content-${orbitIndex}-${itemIndex}`;
-          const itemThumbnailDiv = document.createElement("div");
+          // orbit-item-content
+          const itemContentCssRuleName = `${this.defaults.cssRuleName.item.content}-${orbitIndex}-${itemIndex}`;
+          const itemContentDiv = document.createElement("div");
 
-          itemThumbnailDiv.innerHTML = item.content?.html;
+          itemContentDiv.innerHTML = item.content?.html;
 
-          this.defineCSSRule(`.${itemThumbnailCssRuleName} {
+          this.defineCSSRule(`.${itemContentCssRuleName} {
             display: ${this.defaults.item.content.style.display};
             align-items: ${this.defaults.item.content.style.alignItems};
             justify-content: ${this.defaults.item.content.style.justifyContent};
@@ -276,19 +277,19 @@ class Orbital {
             height: ${this.defaults.item.content.style.height};
           }`);
 
-          itemThumbnailDiv.classList.add("orbit-content", itemThumbnailCssRuleName);
+          itemContentDiv.classList.add(`${this.defaults.cssRuleName.item.content}`, itemContentCssRuleName);
 
           if (item.content?.customCss) {
             // custom CSS
-            itemThumbnailDiv.classList.add(...item.content.customCss.split(" "));
+            itemContentDiv.classList.add(...item.content.customCss.split(" "));
           }
 
           if (item.content?.style) {
             // custom inline styles
-            Object.assign(itemThumbnailDiv.style, item.content.style || {});
+            Object.assign(itemContentDiv.style, item.content.style || {});
           }
 
-          itemContainerDiv.appendChild(itemThumbnailDiv);
+          itemContainerDiv.appendChild(itemContentDiv);
         } else {
           // orbit-item-img
           const itemImageCssRuleName = `${this.defaults.cssRuleName.item.image}-${orbitIndex}-${itemIndex}`;
@@ -496,7 +497,7 @@ class Orbital {
     document.body.appendChild(panel);
 
     // panel-thumbnail
-    const panelThumbnail = panel.querySelector(`.${this.defaults.cssRuleName.item.image}`);
+    const panelImage = panel.querySelector(`.${this.defaults.cssRuleName.item.image}`);
 
     // panel-close
     const panelClose = document.createElement("button");
@@ -523,7 +524,7 @@ class Orbital {
     panelContent.style.display = "none";
     panel.appendChild(panelContent);
 
-    this.panel = { overlay, panel, panelThumbnail, panelClose, panelContent };
+    this.panel = { overlay, panel, panelImage, panelClose, panelContent };
 
     const centerX = parseFloat(panelStyle.left);
     const centerY = parseFloat(panelStyle.top);
@@ -578,7 +579,7 @@ class Orbital {
           },
         },
         after: function (el) {
-          panelThumbnail.style.display = "none";
+          panelImage.style.display = "none";
           panelContent.style.display = "";
           panelClose.style.display = "";
           el.classList.remove("animation-opening");
@@ -594,7 +595,7 @@ class Orbital {
     const self = this;
     this.isPanelBusy = true;
     const { parent, element, orbitIndex, itemIndex } = this.currentItem;
-    const { overlay, panel, panelThumbnail, panelClose, panelContent } = this.panel;
+    const { overlay, panel, panelImage, panelClose, panelContent } = this.panel;
     const itemRect = element.getBoundingClientRect();
     let finalPosition = {};
 
@@ -604,7 +605,7 @@ class Orbital {
       {
         // scale down
         before: function (el) {
-          panelThumbnail.style.display = "";
+          panelImage.style.display = "";
           panelContent.style.display = "none";
           panelClose.style.display = "none";
           el.classList.add("animation-closing");

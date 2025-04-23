@@ -206,7 +206,7 @@ describe("Orbital: Items", () => {
     let item;
     let content;
     item = container.querySelector(".orbit-item-container-0-0");
-    content = container.querySelector(".orbit-content-0-0");
+    content = container.querySelector(".orbit-item-content-0-0");
 
     // tests
     await expect.element(content).toBeInstanceOf(HTMLElement);
@@ -250,7 +250,7 @@ describe("Orbital: Items", () => {
     let item;
     let content;
     item = container.querySelector(".orbit-item-container-0-0");
-    content = container.querySelector(".orbit-content-0-0");
+    content = container.querySelector(".orbit-item-content-0-0");
 
     // tests
     await expect.element(content).toBeInstanceOf(HTMLElement);
@@ -304,7 +304,7 @@ describe("Orbital: Items", () => {
     let item;
     let content;
     item = container.querySelector(".orbit-item-container-0-0");
-    content = container.querySelector(".orbit-content-0-0");
+    content = container.querySelector(".orbit-item-content-0-0");
 
     // tests
     await expect.element(content).toBeInstanceOf(HTMLElement);
