@@ -8,6 +8,7 @@ class Orbital {
         item: {
           wrapper: "orbit-item-wrapper",
           container: "orbit-item-container",
+          image: "orbit-item-img",
         },
       },
       container: {
@@ -51,18 +52,11 @@ class Orbital {
             height: "100%",
           },
         },
-      },
-      thumbnail: {
-        // style: {
-        //   width: "32px",
-        //   height: "32px",
-        // },
-        style: {
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          height: "100%",
+        image: {
+          style: {
+            width: "32px",
+            height: "32px",
+          },
         },
       },
       panel: {
@@ -296,15 +290,15 @@ class Orbital {
 
           itemContainerDiv.appendChild(itemThumbnailDiv);
         } else {
-          // orbit-img
-          const itemImageCssRuleName = `orbit-img-${orbitIndex}-${itemIndex}`;
+          // orbit-item-img
+          const itemImageCssRuleName = `${this.defaults.cssRuleName.item.image}-${orbitIndex}-${itemIndex}`;
           const img = document.createElement("img");
           img.src = item.src ? item.src : item;
           img.alt = item.alt ? item.alt : "";
 
           this.defineCSSRule(`.${itemImageCssRuleName} {
-            width: ${this.defaults.item.content.style.width};
-            height: ${this.defaults.item.content.style.height};
+            width: ${this.defaults.item.image.style.width};
+            height: ${this.defaults.item.image.style.height};
             object-fit: contain;
             -moz-user-select: -moz-none;
             -khtml-user-select: none;
@@ -313,7 +307,7 @@ class Orbital {
             user-select: none;   
           }`);
 
-          img.classList.add("orbit-img", itemImageCssRuleName);
+          img.classList.add(`${this.defaults.cssRuleName.item.image}`, itemImageCssRuleName);
           itemContainerDiv.appendChild(img);
         }
 
@@ -502,7 +496,7 @@ class Orbital {
     document.body.appendChild(panel);
 
     // panel-thumbnail
-    const panelThumbnail = panel.querySelector(".orbit-img");
+    const panelThumbnail = panel.querySelector(`.${this.defaults.cssRuleName.item.image}`);
 
     // panel-close
     const panelClose = document.createElement("button");

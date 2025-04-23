@@ -132,7 +132,7 @@ describe("Orbital: Items", () => {
     let item;
     let content;
     item = container.querySelector(".orbit-item-container-0-0");
-    content = container.querySelector(".orbit-img-0-0");
+    content = container.querySelector(".orbit-item-img-0-0");
 
     // tests
     await expect.element(content).toBeInstanceOf(Image);
@@ -164,11 +164,12 @@ describe("Orbital: Items", () => {
     let item;
     let content;
     item = container.querySelector(".orbit-item-container-0-0");
-    content = container.querySelector(".orbit-img-0-0");
+    content = container.querySelector(".orbit-item-img-0-0");
 
     // tests
     await expect.element(content).toBeInstanceOf(Image);
     await expect.element(content).toHaveAttribute("src", "https://placehold.co/50");
+    await expect.element(content).toHaveStyle({ width: "32px", height: "32px" });
     await expect.element(item).toContainElement(content);
   });
 
