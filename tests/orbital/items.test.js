@@ -29,7 +29,7 @@ describe("Orbital: Items", () => {
     orbital = new Orbital(container, options);
 
     // elements
-    const items = container.querySelectorAll(".orbit .orbit-item");
+    const items = container.querySelectorAll(".orbit .orbit-item-container");
 
     await expect.element(items[0]).toHaveStyle({ width: "48px", height: "48px" });
     await expect.element(items[1]).toHaveStyle({ width: "48px", height: "48px" });
@@ -66,7 +66,7 @@ describe("Orbital: Items", () => {
     orbital = new Orbital(container, options);
 
     // elements
-    const items = container.querySelectorAll(".orbit .orbit-item");
+    const items = container.querySelectorAll(".orbit .orbit-item-container");
 
     await expect.element(items[0]).toHaveClass("custom-item");
     await expect.element(items[0]).toHaveStyle({ width: "75px", height: "48px" });
@@ -107,7 +107,7 @@ describe("Orbital: Items", () => {
     orbital = new Orbital(container, options);
 
     // elements
-    const items = container.querySelectorAll(".orbit .orbit-item");
+    const items = container.querySelectorAll(".orbit .orbit-item-container");
 
     await expect.element(items[0]).toHaveClass("custom-item");
     await expect.element(items[0]).toHaveStyle({ width: "150px", height: "48px" });
@@ -131,7 +131,7 @@ describe("Orbital: Items", () => {
     // elements
     let item;
     let content;
-    item = container.querySelector(".orbit-item-0-0");
+    item = container.querySelector(".orbit-item-container-0-0");
     content = container.querySelector(".orbit-img-0-0");
 
     // tests
@@ -163,7 +163,7 @@ describe("Orbital: Items", () => {
     // elements
     let item;
     let content;
-    item = container.querySelector(".orbit-item-0-0");
+    item = container.querySelector(".orbit-item-container-0-0");
     content = container.querySelector(".orbit-img-0-0");
 
     // tests
@@ -204,7 +204,7 @@ describe("Orbital: Items", () => {
     // elements
     let item;
     let content;
-    item = container.querySelector(".orbit-item-0-0");
+    item = container.querySelector(".orbit-item-container-0-0");
     content = container.querySelector(".orbit-content-0-0");
 
     // tests
@@ -248,7 +248,7 @@ describe("Orbital: Items", () => {
     // elements
     let item;
     let content;
-    item = container.querySelector(".orbit-item-0-0");
+    item = container.querySelector(".orbit-item-container-0-0");
     content = container.querySelector(".orbit-content-0-0");
 
     // tests
@@ -302,7 +302,7 @@ describe("Orbital: Items", () => {
     // elements
     let item;
     let content;
-    item = container.querySelector(".orbit-item-0-0");
+    item = container.querySelector(".orbit-item-container-0-0");
     content = container.querySelector(".orbit-content-0-0");
 
     // tests

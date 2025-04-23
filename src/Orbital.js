@@ -7,6 +7,7 @@ class Orbital {
       cssRuleName: {
         item: {
           wrapper: "orbit-item-wrapper",
+          container: "orbit-item-container",
         },
       },
       container: {
@@ -239,11 +240,11 @@ class Orbital {
           itemWrapperDiv.classList.add("hasContent", itemCssRuleName);
         }
 
-        // orbit-item
-        const imageContainerCssRuleName = `orbit-item-${orbitIndex}-${itemIndex}`;
-        const imgDiv = document.createElement("div");
+        // orbit-item-container
+        const itemContainerCssRuleName = `${this.defaults.cssRuleName.item.container}-${orbitIndex}-${itemIndex}`;
+        const itemContainerDiv = document.createElement("div");
 
-        this.defineCSSRule(`.${imageContainerCssRuleName} {
+        this.defineCSSRule(`.${itemContainerCssRuleName} {
           width: ${this.defaults.item.style.width};
           height: ${this.defaults.item.style.height};
           border-radius: ${this.defaults.item.style.borderRadius};
@@ -254,16 +255,16 @@ class Orbital {
           justify-content: center;
         }`);
 
-        imgDiv.classList.add("orbit-item", imageContainerCssRuleName);
+        itemContainerDiv.classList.add(`${this.defaults.cssRuleName.item.container}`, itemContainerCssRuleName);
 
         if (item.customCss) {
           // custom CSS
-          imgDiv.classList.add(...item.customCss.split(" "));
+          itemContainerDiv.classList.add(...item.customCss.split(" "));
         }
 
         if (item.style) {
           // custom inline styles
-          Object.assign(imgDiv.style, item.style || {});
+          Object.assign(itemContainerDiv.style, item.style || {});
         }
 
         if (item.content?.html) {
@@ -293,7 +294,7 @@ class Orbital {
             Object.assign(itemThumbnailDiv.style, item.content.style || {});
           }
 
-          imgDiv.appendChild(itemThumbnailDiv);
+          itemContainerDiv.appendChild(itemThumbnailDiv);
         } else {
           // orbit-img
           const itemImageCssRuleName = `orbit-img-${orbitIndex}-${itemIndex}`;
@@ -313,7 +314,7 @@ class Orbital {
           }`);
 
           img.classList.add("orbit-img", itemImageCssRuleName);
-          imgDiv.appendChild(img);
+          itemContainerDiv.appendChild(img);
         }
 
         this.defineCSSRule(`@keyframes ${itemAnimationName} {
@@ -323,7 +324,7 @@ class Orbital {
 
         const itemData = {
           parent: orbitDiv,
-          element: imgDiv,
+          element: itemContainerDiv, // orbit-item-container
           options: item,
           resumeTimeout: null,
           orbitIndex,
@@ -333,7 +334,7 @@ class Orbital {
         this.orbitItems.push(itemData);
         this.setupItemInteractivity(itemData);
 
-        itemWrapperDiv.appendChild(imgDiv);
+        itemWrapperDiv.appendChild(itemContainerDiv);
         orbitDiv.appendChild(itemWrapperDiv);
       });
     });
@@ -431,7 +432,7 @@ class Orbital {
       return;
     }
 
-    let { parent, element } = itemData; // parent : orbit, element : item
+    let { parent, element } = itemData; // parent : orbit, element : orbit-item-container
 
     element.addEventListener("click", () => this.handleItemClick(itemData));
 
@@ -634,7 +635,7 @@ class Orbital {
           el.classList.add("animation-moving");
 
           const { top, left } = document
-            .querySelector(`.${this.defaults.cssRuleName.item.wrapper}-${orbitIndex}-${itemIndex}`)
+            .querySelector(`.${self.defaults.cssRuleName.item.wrapper}-${orbitIndex}-${itemIndex}`)
             .getBoundingClientRect();
           finalPosition.top = top;
           finalPosition.left = left;

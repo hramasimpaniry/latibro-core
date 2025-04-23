@@ -78,7 +78,7 @@ describe("Orbital: Interactivity / Mouse", () => {
 
     // elements
     const orbits = container.querySelectorAll(".orbit");
-    const item = container.querySelector(".orbit .orbit-item");
+    const item = container.querySelector(".orbit .orbit-item-container");
 
     // interactivity
     await userEvent.hover(item, { force: true });
@@ -118,7 +118,7 @@ describe("Orbital: Interactivity / Mouse", () => {
 
     // elements
     const orbits = container.querySelectorAll(".orbit");
-    const item = container.querySelector(".orbit .orbit-item");
+    const item = container.querySelector(".orbit .orbit-item-container");
 
     // interactivity
     await userEvent.hover(item, { force: true });
@@ -163,7 +163,7 @@ describe("Orbital: Interactivity / Mouse", () => {
     orbital = new Orbital(container, options);
 
     // elements
-    const item = container.querySelector(".orbit .orbit-item");
+    const item = container.querySelector(".orbit .orbit-item-container");
 
     // interactivity
     await userEvent.click(item, { force: true });
@@ -207,7 +207,7 @@ describe("Orbital: Interactivity / Mouse", () => {
 
     // elements
     const orbits = container.querySelectorAll(".orbit");
-    const item = container.querySelector(".orbit .orbit-item");
+    const item = container.querySelector(".orbit .orbit-item-container");
 
     // interactivity
     await userEvent.click(item, { force: true });
@@ -250,7 +250,7 @@ describe("Orbital: Interactivity / Mouse", () => {
     orbital = new Orbital(container, options);
 
     // elements
-    const item = container.querySelector(".orbit .orbit-item");
+    const item = container.querySelector(".orbit .orbit-item-container");
 
     // interactivity
     await userEvent.click(item, { force: true });
@@ -265,7 +265,7 @@ describe("Orbital: Interactivity / Mouse", () => {
     await expect.element(closeButton).not.toBeNull();
   });
 
-  it("should close button close the panel when clicked", async () => {
+  it("should close the panel when close button is clicked", async () => {
     // options
     const options = {
       interactivity: {
@@ -292,7 +292,7 @@ describe("Orbital: Interactivity / Mouse", () => {
     orbital = new Orbital(container, options);
 
     // elements
-    const item = container.querySelector(".orbit .orbit-item");
+    const item = container.querySelector(".orbit .orbit-item-container");
 
     // interactivity
     await userEvent.click(item, { force: true });
@@ -370,7 +370,7 @@ describe("Orbital: Interactivity / Panel", () => {
 
     // -- item 0
     // elements
-    items = container.querySelectorAll(".orbit .orbit-item");
+    items = container.querySelectorAll(".orbit .orbit-item-container");
     item = items[0];
 
     // tests
@@ -378,7 +378,7 @@ describe("Orbital: Interactivity / Panel", () => {
 
     // -- item 1
     // elements
-    items = container.querySelectorAll(".orbit .orbit-item");
+    items = container.querySelectorAll(".orbit .orbit-item-container");
     item = items[1];
 
     // tests
@@ -386,7 +386,7 @@ describe("Orbital: Interactivity / Panel", () => {
 
     // -- item 2
     // elements
-    items = container.querySelectorAll(".orbit .orbit-item");
+    items = container.querySelectorAll(".orbit .orbit-item-container");
     item = items[2];
 
     // tests
@@ -442,7 +442,7 @@ describe("Orbital: Interactivity / Panel", () => {
 
     // -- item 0
     // elements
-    items = container.querySelectorAll(".orbit .orbit-item");
+    items = container.querySelectorAll(".orbit .orbit-item-container");
     item = items[0];
 
     // tests
@@ -450,7 +450,7 @@ describe("Orbital: Interactivity / Panel", () => {
 
     // -- item 1
     // elements
-    items = container.querySelectorAll(".orbit .orbit-item");
+    items = container.querySelectorAll(".orbit .orbit-item-container");
     item = items[1];
 
     // tests
@@ -458,7 +458,7 @@ describe("Orbital: Interactivity / Panel", () => {
 
     // -- item 2
     // elements
-    items = container.querySelectorAll(".orbit .orbit-item");
+    items = container.querySelectorAll(".orbit .orbit-item-container");
     item = items[2];
 
     // tests
@@ -526,7 +526,7 @@ describe("Orbital: Interactivity / Panel", () => {
 
     // -- item 0
     // elements
-    items = container.querySelectorAll(".orbit .orbit-item");
+    items = container.querySelectorAll(".orbit .orbit-item-container");
     item = items[0];
 
     // tests
@@ -534,7 +534,7 @@ describe("Orbital: Interactivity / Panel", () => {
 
     // -- item 1
     // elements
-    items = container.querySelectorAll(".orbit .orbit-item");
+    items = container.querySelectorAll(".orbit .orbit-item-container");
     item = items[1];
 
     // tests
@@ -542,7 +542,7 @@ describe("Orbital: Interactivity / Panel", () => {
 
     // -- item 2
     // elements
-    items = container.querySelectorAll(".orbit .orbit-item");
+    items = container.querySelectorAll(".orbit .orbit-item-container");
     item = items[2];
 
     // tests

@@ -1,4 +1,4 @@
-.hasContent .orbit-item::before,
+.hasContent .orbit-item-container::before,
 .orbit-panel.animation-moving::before {
   content: "";
   position: absolute;
@@ -10,7 +10,7 @@
   border-radius: 50%;
   transition: all 0.3s ease-in-out;
 }
-.hasContent .orbit-item::after,
+.hasContent .orbit-item-container::after,
 .orbit-panel.animation-moving::after {
   content: "";
   position: absolute;
@@ -23,13 +23,13 @@
   transition: all 0.15s ease-in-out;
 }
 
-.hasContent:hover .orbit-item,
+.hasContent:hover .orbit-item-container,
 .orbit-panel.animation-moving {
   box-shadow: 0 0 12px 12px rgba(1, 186, 253, 0.65);
   animation: pulse 2s infinite ease-in-out;
 }
 
-.hasContent:hover .orbit-item::before,
+.hasContent:hover .orbit-item-container::before,
 .orbit-panel.animation-moving::before {
   width: 54px;
   height: 54px;
@@ -40,7 +40,7 @@
   animation: spin-reverse 0.5s linear infinite;
 }
 
-.hasContent:hover .orbit-item::after,
+.hasContent:hover .orbit-item-container::after,
 .orbit-panel.animation-moving::after {
   width: 54px;
   height: 54px;
