@@ -1,5 +1,5 @@
 .hasContent .orbit-item-container::before,
-.orbit-panel.animation-moving::before {
+.orbit-panel.orbit-animation-moving::before {
   content: "";
   position: absolute;
   border: solid 4px #0f465a;
@@ -11,7 +11,7 @@
   transition: all 0.3s ease-in-out;
 }
 .hasContent .orbit-item-container::after,
-.orbit-panel.animation-moving::after {
+.orbit-panel.orbit-animation-moving::after {
   content: "";
   position: absolute;
   border: solid 4px rgba(1, 186, 253, 0.5);
@@ -24,13 +24,13 @@
 }
 
 .hasContent:hover .orbit-item-container,
-.orbit-panel.animation-moving {
+.orbit-panel.orbit-animation-moving {
   box-shadow: 0 0 12px 12px rgba(1, 186, 253, 0.65);
   animation: pulse 2s infinite ease-in-out;
 }
 
 .hasContent:hover .orbit-item-container::before,
-.orbit-panel.animation-moving::before {
+.orbit-panel.orbit-animation-moving::before {
   width: 54px;
   height: 54px;
   left: -7px;
@@ -41,7 +41,7 @@
 }
 
 .hasContent:hover .orbit-item-container::after,
-.orbit-panel.animation-moving::after {
+.orbit-panel.orbit-animation-moving::after {
   width: 54px;
   height: 54px;
   left: -7px;

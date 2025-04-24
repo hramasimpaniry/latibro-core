@@ -87,7 +87,7 @@ describe("Orbital: Interactivity / Mouse", () => {
     await new Promise((resolve) => setTimeout(resolve, delay));
 
     // tests
-    await expect.element(orbits[0]).toHaveClass("orbit-paused");
+    await expect.element(orbits[0]).toHaveClass("orbit-animation-paused");
   });
 
   it("should run orbit on mouseleave", async () => {
@@ -124,7 +124,7 @@ describe("Orbital: Interactivity / Mouse", () => {
     await userEvent.hover(item, { force: true });
 
     // tests
-    await expect.element(orbits[0]).toHaveClass("orbit-paused");
+    await expect.element(orbits[0]).toHaveClass("orbit-animation-paused");
 
     // wait
     await new Promise((resolve) => setTimeout(resolve, delay));
@@ -133,7 +133,7 @@ describe("Orbital: Interactivity / Mouse", () => {
     await userEvent.unhover(item, { force: true });
 
     // tests
-    await expect.element(orbits[0]).not.toHaveClass("orbit-paused");
+    await expect.element(orbits[0]).not.toHaveClass("orbit-animation-paused");
   });
 
   it("should display an overlay on item click", async () => {
