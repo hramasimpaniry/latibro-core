@@ -21,6 +21,12 @@ class Orbital {
           footer: "orbit-panel-footer",
           close: "orbit-panel-close",
         },
+        animation: {
+          paused: "orbit-animation-paused",
+          moving: "orbit-animation-moving",
+          closing: "orbit-animation-closing",
+          opening: "orbit-animation-opening",
+        },
       },
       container: {
         style: {
@@ -413,7 +419,7 @@ class Orbital {
 
   pauseOrbitCssAnimation(orbitElement) {
     orbitElement.style.animationPlayState = "paused";
-    orbitElement.classList.add("orbit-paused");
+    orbitElement.classList.add(this.defaults.cssRuleName.animation.paused);
 
     const items = orbitElement.querySelectorAll(`.${this.defaults.cssRuleName.item.wrapper}`);
     items.forEach((el) => {
@@ -423,7 +429,7 @@ class Orbital {
 
   playOrbitCssAnimation(orbitElement) {
     orbitElement.style.animationPlayState = "";
-    orbitElement.classList.remove("orbit-paused");
+    orbitElement.classList.remove(this.defaults.cssRuleName.animation.paused);
 
     const items = orbitElement.querySelectorAll(`.${this.defaults.cssRuleName.item.wrapper}`);
     items.forEach((el) => {
@@ -487,7 +493,7 @@ class Orbital {
 
     // backdrop overlay
     const overlay = document.createElement("div");
-    overlay.id = `$${this.defaults.cssRuleName.panel.overlay}`;
+    overlay.id = `${this.defaults.cssRuleName.panel.overlay}`;
     overlay.style.zIndex = this.defaults.orbit.zIndexStart + this.options.orbits.length + 1;
     overlay.style.position = "fixed";
     document.body.appendChild(overlay);
@@ -506,7 +512,7 @@ class Orbital {
     panel.style.zIndex = this.defaults.orbit.zIndexStart + this.options.orbits.length + 2;
     document.body.appendChild(panel);
 
-    // panel-image
+    // panel-img
     const panelImage = panel.querySelector(`.${this.defaults.cssRuleName.item.image}`);
     panelImage.classList.add(`${this.defaults.cssRuleName.panel.img}`);
 
@@ -546,7 +552,7 @@ class Orbital {
       {
         // move to center
         before: function (el) {
-          el.classList.add("animation-moving");
+          el.classList.add(self.defaults.cssRuleName.animation.moving);
         },
         duration: this.defaults.panel.animation.moving.duration,
         properties: {
@@ -554,13 +560,13 @@ class Orbital {
           top: { to: `${centerY}px` },
         },
         after: function (el) {
-          el.classList.remove("animation-moving");
+          el.classList.remove(self.defaults.cssRuleName.animation.moving);
         },
       },
       {
         // scale up
         before: function (el) {
-          el.classList.add("animation-opening");
+          el.classList.add(self.defaults.cssRuleName.animation.opening);
         },
         duration: this.defaults.panel.animation.opening.duration,
         properties: {
@@ -593,7 +599,7 @@ class Orbital {
           panelImage.style.display = "none";
           panelContent.style.display = "";
           panelClose.style.display = "";
-          el.classList.remove("animation-opening");
+          el.classList.remove(self.defaults.cssRuleName.animation.opening);
           self.isPanelBusy = false;
         },
       },
@@ -619,7 +625,7 @@ class Orbital {
           panelImage.style.display = "";
           panelContent.style.display = "none";
           panelClose.style.display = "none";
-          el.classList.add("animation-closing");
+          el.classList.add(self.defaults.cssRuleName.animation.closing);
         },
         duration: this.defaults.panel.animation.closing.duration,
         properties: {
@@ -631,14 +637,14 @@ class Orbital {
           },
         },
         after: function (el) {
-          el.classList.remove("animation-closing");
+          el.classList.remove(self.defaults.cssRuleName.animation.closing);
           self.pauseOrbitCssAnimation(parent);
         },
       },
       {
         // move to item
         before: function (el) {
-          el.classList.add("animation-moving");
+          el.classList.add(self.defaults.cssRuleName.animation.moving);
 
           const { top, left } = document
             .querySelector(`.${self.defaults.cssRuleName.item.wrapper}-${orbitIndex}-${itemIndex}`)
@@ -664,7 +670,7 @@ class Orbital {
           panel.remove();
           overlay.remove();
           self.playOrbitCssAnimation(parent);
-          el.classList.remove("animation-moving");
+          el.classList.remove(self.defaults.cssRuleName.animation.moving);
           self.isPanelBusy = false;
         },
       },
