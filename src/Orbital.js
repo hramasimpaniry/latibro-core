@@ -496,8 +496,9 @@ class Orbital {
     panel.style.zIndex = this.defaults.orbit.zIndexStart + this.options.orbits.length + 2;
     document.body.appendChild(panel);
 
-    // panel-thumbnail
+    // panel-image
     const panelImage = panel.querySelector(`.${this.defaults.cssRuleName.item.image}`);
+    panelImage.classList.add("orbit-panel-img");
 
     // panel-close
     const panelClose = document.createElement("button");
