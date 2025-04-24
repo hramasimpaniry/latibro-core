@@ -78,10 +78,10 @@ class Orbital {
       },
       panel: {
         style: {
-          top: document.documentElement.clientHeight / 2,
-          left: document.documentElement.clientWidth / 2,
-          width: document.documentElement.clientWidth - 30,
-          height: document.documentElement.clientHeight - 30,
+          top: () => document.documentElement.clientHeight / 2,
+          left: () => document.documentElement.clientWidth / 2,
+          width: () => document.documentElement.clientWidth - 30,
+          height: () => document.documentElement.clientHeight - 30,
         },
         close: {
           label: "×",
@@ -543,8 +543,14 @@ class Orbital {
 
     this.panel = { overlay, panel, panelImage, panelClose, panelContent };
 
-    const centerX = parseFloat(panelStyle.left);
-    const centerY = parseFloat(panelStyle.top);
+    let panelRect = {};
+    panelRect.left = this._getPropertyValue(panelStyle.left);
+    panelRect.top = this._getPropertyValue(panelStyle.top);
+    panelRect.width = this._getPropertyValue(panelStyle.width);
+    panelRect.height = this._getPropertyValue(panelStyle.height);
+
+    const centerX = parseFloat(panelRect.left);
+    const centerY = parseFloat(panelRect.top);
 
     // open panel animation
 
@@ -576,23 +582,23 @@ class Orbital {
           },
           width: {
             from: `${itemRect.width}px`,
-            to: typeof panelStyle.width === "number" ? `${panelStyle.width}px` : panelStyle.width,
+            to: `${panelRect.width}px`,
           },
           height: {
             from: `${itemRect.height}px`,
-            to: typeof panelStyle.height === "number" ? `${panelStyle.height}px` : panelStyle.height,
+            to: `${panelRect.height}px`,
           },
           left: {
-            from: -1 * (typeof panelStyle.left === "number" ? `${panelStyle.left}px` : panelStyle.left),
-            to: typeof panelStyle.left === "number" ? `${panelStyle.left}px` : panelStyle.left,
+            from: `-${panelRect.left}px`,
+            to: `${panelRect.left}px`,
           },
           top: {
-            from: -1 * (typeof panelStyle.top === "number" ? `${panelStyle.top}px` : panelStyle.top),
-            to: typeof panelStyle.top === "number" ? `${panelStyle.top}px` : panelStyle.top,
+            from: `-${panelRect.top}px`,
+            to: `${panelRect.top}px`,
           },
           transform: {
             from: `translate(${centerX}, ${centerY})`,
-            to: `translate(-${panelStyle.width / 2}px, -${panelStyle.height / 2}px)`,
+            to: `translate(-${panelRect.width / 2}px, -${panelRect.height / 2}px)`,
           },
         },
         after: function (el) {
@@ -604,6 +610,10 @@ class Orbital {
         },
       },
     ]);
+  }
+
+  _getPropertyValue(prop) {
+    return typeof prop === "function" ? prop() : parseFloat(prop);
   }
 
   closePanel() {

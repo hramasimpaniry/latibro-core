@@ -21,7 +21,7 @@ const config = {
           panel: {
             content: "<h1>Orbit 1, Item 1</h1>",
             style: {
-              top: document.documentElement.clientHeight / 2,
+              top: () => document.documentElement.clientHeight / 2,
               left: 220,
               width: 400,
               height: 560,
@@ -34,7 +34,7 @@ const config = {
             content: "<h1>Orbit 1, Item 2</h1>",
             style: {
               top: document.documentElement.clientHeight / 2,
-              left: document.documentElement.clientWidth - 220,
+              left: () => document.documentElement.clientWidth - 220,
               width: 400,
               height: 560,
             },
