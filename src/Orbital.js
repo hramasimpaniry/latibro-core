@@ -11,6 +11,16 @@ class Orbital {
           content: "orbit-item-content",
           image: "orbit-item-img",
         },
+        panel: {
+          overlay: "orbit-panel-overlay",
+          container: "orbit-panel",
+          content: "orbit-panel-content",
+          image: "orbit-panel-img",
+          header: "orbit-panel-header",
+          body: "orbit-panel-body",
+          footer: "orbit-panel-footer",
+          close: "orbit-panel-close",
+        },
       },
       container: {
         style: {
@@ -342,7 +352,7 @@ class Orbital {
       cursor : pointer;
     }`);
 
-    this.defineCSSRule(`#orbit-panel-overlay {
+    this.defineCSSRule(`#${this.defaults.cssRuleName.panel.overlay} {
       position: absolute;
       top: 0;
       left: 0;
@@ -354,7 +364,7 @@ class Orbital {
       align-items: flex-start;
     }`);
 
-    this.defineCSSRule(`.orbit-panel {
+    this.defineCSSRule(`.${this.defaults.cssRuleName.panel.container} {
       width: ${this.defaults.item.style.width};
       height: ${this.defaults.item.style.height};
       border-radius: ${this.defaults.item.style.borderRadius};      
@@ -365,7 +375,7 @@ class Orbital {
       justify-content: center;
     }`);
 
-    this.defineCSSRule(`.orbit-panel-close {
+    this.defineCSSRule(`.${this.defaults.cssRuleName.panel.close} {
       position: absolute;
       top: 4px;
       right: 10px;
@@ -376,11 +386,11 @@ class Orbital {
       opacity: .55;
     }`);
 
-    this.defineCSSRule(`.orbit-panel-close:hover {
+    this.defineCSSRule(`.${this.defaults.cssRuleName.panel.close}:hover {
       opacity: .80;
     }`);
 
-    this.defineCSSRule(`.orbit-panel-content {
+    this.defineCSSRule(`.${this.defaults.cssRuleName.panel.content} {
       display: flex;
       flex-direction: column;
       padding: 15px;
@@ -389,15 +399,15 @@ class Orbital {
       height: 100%; 
     }`);
 
-    this.defineCSSRule(`.orbit-panel-header {
+    this.defineCSSRule(`.${this.defaults.cssRuleName.panel.header} {
       margin-right: 30px;
     }`);
 
-    this.defineCSSRule(`.orbit-panel-body {
+    this.defineCSSRule(`.${this.defaults.cssRuleName.panel.body} {
       flex: 1;
     }`);
 
-    this.defineCSSRule(`.orbit-panel-footer {
+    this.defineCSSRule(`.${this.defaults.cssRuleName.panel.footer} {
     }`);
   }
 
@@ -477,7 +487,7 @@ class Orbital {
 
     // backdrop overlay
     const overlay = document.createElement("div");
-    overlay.id = "orbit-panel-overlay";
+    overlay.id = `$${this.defaults.cssRuleName.panel.overlay}`;
     overlay.style.zIndex = this.defaults.orbit.zIndexStart + this.options.orbits.length + 1;
     overlay.style.position = "fixed";
     document.body.appendChild(overlay);
@@ -486,7 +496,7 @@ class Orbital {
 
     // panel
     const panel = element.cloneNode(true);
-    panel.className = "orbit-panel";
+    panel.className = `${this.defaults.cssRuleName.panel.container}`;
     panel.style.position = "fixed";
     panel.style.left = `${itemRect.left}px`;
     panel.style.top = `${itemRect.top}px`;
@@ -498,11 +508,11 @@ class Orbital {
 
     // panel-image
     const panelImage = panel.querySelector(`.${this.defaults.cssRuleName.item.image}`);
-    panelImage.classList.add("orbit-panel-img");
+    panelImage.classList.add(`${this.defaults.cssRuleName.panel.img}`);
 
     // panel-close
     const panelClose = document.createElement("button");
-    panelClose.className = "orbit-panel-close";
+    panelClose.className = `${this.defaults.cssRuleName.panel.close}`;
     panelClose.title = this.options.panel.close.title;
     panelClose.innerHTML = this.options.panel.close.label;
     panelClose.style.display = "none";
@@ -520,7 +530,7 @@ class Orbital {
 
     // panel-content
     const panelContent = document.createElement("div");
-    panelContent.className = "orbit-panel-content";
+    panelContent.className = `${this.defaults.cssRuleName.panel.content}`;
     panelContent.innerHTML = this.currentItem.options.panel.content;
     panelContent.style.display = "none";
     panel.appendChild(panelContent);
