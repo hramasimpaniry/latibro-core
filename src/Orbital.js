@@ -142,6 +142,9 @@ class Orbital {
 
     // init
     this.init();
+
+    this.handleResize = this.handleResize.bind(this);
+    window.addEventListener("resize", this.handleResize);
   }
 
   init() {
@@ -559,6 +562,8 @@ class Orbital {
     panel.style.top = `${itemRect.top}px`;
     panel.style.width = `${itemRect.width}px`;
     panel.style.height = `${itemRect.height}px`;
+    panel.style.maxWidth = "100vw";
+    panel.style.maxHeight = "100vh";
     panel.style.transition = "all 0.4s cubic-bezier(0.2, 0.8, 0.3, 1.2)";
     panel.style.zIndex = this.defaults.orbit.zIndexStart + this.options.orbits.length + 2;
     document.body.appendChild(panel);
@@ -806,6 +811,27 @@ class Orbital {
     if (!styleTag.textContent.includes(ruleStart)) {
       styleTag.textContent += `${ruleStart}${cssDefinition}}\n`; // Styles are Visible in the DOM
     }
+  }
+
+  elementIsVisibleInViewport(el, partiallyVisible = false) {
+    const { top, left, bottom, right } = el.getBoundingClientRect();
+    const { innerHeight, innerWidth } = window;
+    return partiallyVisible
+      ? ((top > 0 && top < innerHeight) || (bottom > 0 && bottom < innerHeight)) &&
+          ((left > 0 && left < innerWidth) || (right > 0 && right < innerWidth))
+      : top >= 0 && left >= 0 && bottom <= innerHeight && right <= innerWidth;
+  }
+
+  handleResize() {
+    setTimeout(() => {
+      if (this.isPanelOpen && this.panel) {
+        let panel = document.querySelector(".orbit-panel");
+        const panelRect = panel.getBoundingClientRect();
+        if (!this.elementIsVisibleInViewport(el)) {
+          panel.style.left = `${window.innerWidth - panelRect.width}px`;
+        }
+      }
+    }, 200);
   }
 
   destroy() {
