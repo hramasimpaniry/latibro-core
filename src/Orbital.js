@@ -139,6 +139,7 @@ class Orbital {
     this.panel = null;
     this.isPanelOpen = false;
     this.isPanelBusy = false;
+    this.isPanelResize = false;
 
     // init
     this.init();
@@ -535,15 +536,7 @@ class Orbital {
     this.isPanelOpen = true;
     this.isPanelBusy = true;
     const { element } = this.currentItem;
-    const globalPanelStyle = this.options?.panel?.style || {};
-    const itemPanelStyle = this.currentItem.options?.panel?.style || {};
-
-    // merge props
-    const panelStyle = {
-      ...this.defaults.panel.style,
-      ...globalPanelStyle,
-      ...itemPanelStyle,
-    };
+    const { itemRect, panelRect } = this.getPanelFinalPosition();
 
     // backdrop overlay
     const overlay = document.createElement("div");
@@ -551,8 +544,6 @@ class Orbital {
     overlay.style.zIndex = this.defaults.orbit.zIndexStart + this.options.orbits.length + 1;
     overlay.style.position = "fixed";
     document.body.appendChild(overlay);
-
-    const itemRect = element.getBoundingClientRect();
 
     // panel
     const panel = element.cloneNode(true);
@@ -598,12 +589,6 @@ class Orbital {
     panel.appendChild(panelContent);
 
     this.panel = { overlay, panel, panelImage, panelClose, panelContent };
-
-    let panelRect = {};
-    panelRect.left = this._getPropertyValue(panelStyle.left);
-    panelRect.top = this._getPropertyValue(panelStyle.top);
-    panelRect.width = this._getPropertyValue(panelStyle.width);
-    panelRect.height = this._getPropertyValue(panelStyle.height);
 
     const centerX = parseFloat(panelRect.left);
     const centerY = parseFloat(panelRect.top);
@@ -822,18 +807,40 @@ class Orbital {
       : top >= 0 && left >= 0 && bottom <= innerHeight && right <= innerWidth;
   }
 
+  getPanelFinalPosition() {
+    const { element } = this.currentItem;
+    const itemRect = element.getBoundingClientRect();
+    const globalPanelStyle = this.options?.panel?.style || {};
+    const itemPanelStyle = this.currentItem.options?.panel?.style || {};
+    const panelStyle = {
+      ...this.defaults.panel.style,
+      ...globalPanelStyle,
+      ...itemPanelStyle,
+    };
+
+    const panelRect = {
+      left: this._getPropertyValue(panelStyle.left),
+      top: this._getPropertyValue(panelStyle.top),
+      width: this._getPropertyValue(panelStyle.width),
+      height: this._getPropertyValue(panelStyle.height),
+    };
+
+    return { itemRect, panelRect };
+  }
+
   handleResize() {
-    // setTimeout(() => {
-    //   if (this.isPanelOpen && this.panel) {
-    //     let panel = document.querySelector(".orbit-panel");
-    //     const panelRect = panel.getBoundingClientRect();
-    //     // overflow x
-    //     const overflow_x = panelRect.left + panelRect.width - window.innerWidth;
-    //     if (overflow_x > 0) {
-    //       panel.style.left = `${this._getPropertyValue(panel.style.left) - overflow_x}px`;
-    //     }
-    //   }
-    // }, 200);
+    setTimeout(() => {
+      const { panel } = this.panel;
+      if (this.isPanelOpen && panel) {
+        const { panelRect } = this.getPanelFinalPosition();
+        panel.style.left = `${panelRect.left}px`;
+        panel.style.top = `${panelRect.top}px`;
+        panel.style.width = `${panelRect.width}px`;
+        panel.style.height = `${panelRect.height}px`;
+        panel.style.transition = "none";
+        panel.style.transform = `translate(-${panelRect.width / 2}px, -${panelRect.height / 2}px)`;
+      }
+    }, 0);
   }
 
   destroy() {
