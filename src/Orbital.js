@@ -147,7 +147,9 @@ class Orbital {
   init() {
     const containerCssRuleName = `orbital-container`;
 
-    this.defineCSSRule(`.${containerCssRuleName} {
+    this.defineCSSRule(
+      `.${containerCssRuleName}`,
+      `
       width: ${this.defaults.container.style.width};
       height: ${this.defaults.container.style.height};
       background-color:${this.defaults.container.style.backgroundColor};
@@ -156,7 +158,8 @@ class Orbital {
       display: flex;
       align-items: center;
       justify-content: center;
-    }`);
+    `
+    );
 
     // default CSS
     this.container.classList.add(containerCssRuleName);
@@ -193,16 +196,19 @@ class Orbital {
 
       // default CSS
       // TODO : this is inside a forEach loop. Check if duplicated
-      this.defineCSSRule(`.${orbitCssRuleName} {
-          position: absolute;
-          width: ${this.defaults.orbit.scale.width * orbitRadius}px;
-          height: ${this.defaults.orbit.scale.height * orbitRadius}px;
-          border-radius: ${orbitBorderRadius};
-          border: ${orbitBorder};
-          animation: ${orbit?.speed <= 0 ? "none" : orbitAnimation};
-          z-index: ${this.defaults.orbit.zIndexStart + (this.options.orbits.length - orbitIndex)};
-          transition: ${this.defaults.orbit.style.transition};
-      }`);
+      this.defineCSSRule(
+        `.${orbitCssRuleName}`,
+        `
+        position: absolute;
+        width: ${this.defaults.orbit.scale.width * orbitRadius}px;
+        height: ${this.defaults.orbit.scale.height * orbitRadius}px;
+        border-radius: ${orbitBorderRadius};
+        border: ${orbitBorder};
+        animation: ${orbit?.speed <= 0 ? "none" : orbitAnimation};
+        z-index: ${this.defaults.orbit.zIndexStart + (this.options.orbits.length - orbitIndex)};
+        transition: ${this.defaults.orbit.style.transition};
+      `
+      );
 
       orbitDiv.classList.add("orbit", orbitCssRuleName);
 
@@ -217,10 +223,13 @@ class Orbital {
       }
 
       // TODO : this is inside a forEach loop. Check if duplicated
-      this.defineCSSRule(`@keyframes ${orbitAnimationName} {
+      this.defineCSSRule(
+        `@keyframes ${orbitAnimationName}`,
+        `
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
-        }`);
+        `
+      );
 
       this.container.appendChild(orbitDiv);
 
@@ -236,14 +245,17 @@ class Orbital {
         // orbit-item-wrapper
         const itemWrapperDiv = document.createElement("div");
 
-        this.defineCSSRule(`.${itemCssRuleName} {
+        this.defineCSSRule(
+          `.${itemCssRuleName}`,
+          `
           position: absolute;
           offset-path: circle(${orbitRadius}px at 50% 50%);
           offset-distance: ${itemInitialOffset}%;
           offset-rotate: 0deg;
           animation: ${orbit?.speed <= 0 ? "none" : itemAnimation};
           transition: ${this.defaults.orbit.style.transition};
-        }`);
+        `
+        );
 
         itemWrapperDiv.classList.add(`${this.defaults.cssRuleName.item.wrapper}`, itemCssRuleName);
 
@@ -255,7 +267,9 @@ class Orbital {
         const itemContainerCssRuleName = `${this.defaults.cssRuleName.item.container}-${orbitIndex}-${itemIndex}`;
         const itemContainerDiv = document.createElement("div");
 
-        this.defineCSSRule(`.${itemContainerCssRuleName} {
+        this.defineCSSRule(
+          `.${itemContainerCssRuleName}`,
+          `
           width: ${this.defaults.item.style.width};
           height: ${this.defaults.item.style.height};
           border-radius: ${this.defaults.item.style.borderRadius};
@@ -264,7 +278,8 @@ class Orbital {
           display: flex;
           align-items: center;
           justify-content: center;
-        }`);
+        `
+        );
 
         itemContainerDiv.classList.add(`${this.defaults.cssRuleName.item.container}`, itemContainerCssRuleName);
 
@@ -285,13 +300,16 @@ class Orbital {
 
           itemContentDiv.innerHTML = item.content?.html;
 
-          this.defineCSSRule(`.${itemContentCssRuleName} {
+          this.defineCSSRule(
+            `.${itemContentCssRuleName}`,
+            `
             display: ${this.defaults.item.content.style.display};
             align-items: ${this.defaults.item.content.style.alignItems};
             justify-content: ${this.defaults.item.content.style.justifyContent};
             width: ${this.defaults.item.content.style.width};
             height: ${this.defaults.item.content.style.height};
-          }`);
+          `
+          );
 
           itemContentDiv.classList.add(`${this.defaults.cssRuleName.item.content}`, itemContentCssRuleName);
 
@@ -313,7 +331,9 @@ class Orbital {
           img.src = item.src ? item.src : item;
           img.alt = item.alt ? item.alt : "";
 
-          this.defineCSSRule(`.${itemImageCssRuleName} {
+          this.defineCSSRule(
+            `.${itemImageCssRuleName}`,
+            `
             width: ${this.defaults.item.image.style.width};
             height: ${this.defaults.item.image.style.height};
             object-fit: contain;
@@ -322,16 +342,20 @@ class Orbital {
             -webkit-user-select: none;
             -ms-user-select: none;
             user-select: none;   
-          }`);
+          `
+          );
 
           img.classList.add(`${this.defaults.cssRuleName.item.image}`, itemImageCssRuleName);
           itemContainerDiv.appendChild(img);
         }
 
-        this.defineCSSRule(`@keyframes ${itemAnimationName} {
+        this.defineCSSRule(
+          `@keyframes ${itemAnimationName}`,
+          `
           0% { offset-distance: ${itemInitialOffset}%; offset-rotate: 360deg }
           100% { offset-distance: ${itemInitialOffset + 100}%; offset-rotate: 0deg }
-        }`);
+        `
+        );
 
         const itemData = {
           parent: orbitDiv,
@@ -354,11 +378,16 @@ class Orbital {
   createInteractivityCssRules() {
     if (!this.options.interactivity?.enabled) return;
 
-    this.defineCSSRule(`.${this.defaults.cssRuleName.item.wrapper}.hasContent {
+    this.defineCSSRule(
+      `.${this.defaults.cssRuleName.item.wrapper}.hasContent`,
+      `
       cursor : pointer;
-    }`);
+    `
+    );
 
-    this.defineCSSRule(`#${this.defaults.cssRuleName.panel.overlay} {
+    this.defineCSSRule(
+      `#${this.defaults.cssRuleName.panel.overlay}`,
+      `
       position: absolute;
       top: 0;
       left: 0;
@@ -368,9 +397,12 @@ class Orbital {
       display: flex;
       justify-content: center;
       align-items: flex-start;
-    }`);
+    `
+    );
 
-    this.defineCSSRule(`.${this.defaults.cssRuleName.panel.container} {
+    this.defineCSSRule(
+      `.${this.defaults.cssRuleName.panel.container}`,
+      `
       width: ${this.defaults.item.style.width};
       height: ${this.defaults.item.style.height};
       border-radius: ${this.defaults.item.style.borderRadius};      
@@ -379,9 +411,12 @@ class Orbital {
       display: flex ;
       align-items: center;
       justify-content: center;
-    }`);
+    `
+    );
 
-    this.defineCSSRule(`.${this.defaults.cssRuleName.panel.close} {
+    this.defineCSSRule(
+      `.${this.defaults.cssRuleName.panel.close}`,
+      `
       position: absolute;
       top: 4px;
       right: 10px;
@@ -390,31 +425,47 @@ class Orbital {
       font-size: 2rem;
       cursor: pointer;
       opacity: .55;
-    }`);
+    `
+    );
 
-    this.defineCSSRule(`.${this.defaults.cssRuleName.panel.close}:hover {
+    this.defineCSSRule(
+      `.${this.defaults.cssRuleName.panel.close}:hover`,
+      `
       opacity: .80;
-    }`);
+    `
+    );
 
-    this.defineCSSRule(`.${this.defaults.cssRuleName.panel.content} {
+    this.defineCSSRule(
+      `.${this.defaults.cssRuleName.panel.content}`,
+      `
       display: flex;
       flex-direction: column;
       padding: 15px;
       gap: 15px;
       width: 100%;
       height: 100%; 
-    }`);
+    `
+    );
 
-    this.defineCSSRule(`.${this.defaults.cssRuleName.panel.header} {
+    this.defineCSSRule(
+      `.${this.defaults.cssRuleName.panel.header}`,
+      `
       margin-right: 30px;
-    }`);
+    `
+    );
 
-    this.defineCSSRule(`.${this.defaults.cssRuleName.panel.body} {
+    this.defineCSSRule(
+      `.${this.defaults.cssRuleName.panel.body}`,
+      `
       flex: 1;
-    }`);
+    `
+    );
 
-    this.defineCSSRule(`.${this.defaults.cssRuleName.panel.footer} {
-    }`);
+    this.defineCSSRule(
+      `.${this.defaults.cssRuleName.panel.footer}`,
+      `
+    `
+    );
   }
 
   pauseOrbitCssAnimation(orbitElement) {
@@ -734,7 +785,7 @@ class Orbital {
     });
   }
 
-  defineCSSRule(cssRules) {
+  defineCSSRule(cssSelector, cssDefinition) {
     const styleId = "latibro-core";
     let styleTag = document.querySelector(`#${styleId}`);
 
@@ -751,7 +802,10 @@ class Orbital {
       }
     }
 
-    styleTag.textContent += cssRules + "\n"; // Styles are Visible in the DOM
+    const ruleStart = `${cssSelector} {`;
+    if (!styleTag.textContent.includes(ruleStart)) {
+      styleTag.textContent += `${ruleStart}${cssDefinition}}\n`; // Styles are Visible in the DOM
+    }
   }
 
   destroy() {
