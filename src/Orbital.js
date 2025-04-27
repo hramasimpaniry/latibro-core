@@ -80,8 +80,8 @@ class Orbital {
         style: {
           top: () => document.documentElement.clientHeight / 2,
           left: () => document.documentElement.clientWidth / 2,
-          width: () => document.documentElement.clientWidth - 30,
-          height: () => document.documentElement.clientHeight - 30,
+          width: () => document.documentElement.clientWidth - 15,
+          height: () => document.documentElement.clientHeight - 15,
         },
         close: {
           label: "×",
@@ -823,15 +823,17 @@ class Orbital {
   }
 
   handleResize() {
-    setTimeout(() => {
-      if (this.isPanelOpen && this.panel) {
-        let panel = document.querySelector(".orbit-panel");
-        const panelRect = panel.getBoundingClientRect();
-        if (!this.elementIsVisibleInViewport(el)) {
-          panel.style.left = `${window.innerWidth - panelRect.width}px`;
-        }
-      }
-    }, 200);
+    // setTimeout(() => {
+    //   if (this.isPanelOpen && this.panel) {
+    //     let panel = document.querySelector(".orbit-panel");
+    //     const panelRect = panel.getBoundingClientRect();
+    //     // overflow x
+    //     const overflow_x = panelRect.left + panelRect.width - window.innerWidth;
+    //     if (overflow_x > 0) {
+    //       panel.style.left = `${this._getPropertyValue(panel.style.left) - overflow_x}px`;
+    //     }
+    //   }
+    // }, 200);
   }
 
   destroy() {
