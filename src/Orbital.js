@@ -77,6 +77,7 @@ class Orbital {
         },
       },
       panel: {
+        position: "center",
         style: {
           top: () => document.documentElement.clientHeight / 2,
           left: () => document.documentElement.clientWidth / 2,
@@ -538,6 +539,8 @@ class Orbital {
     const { element } = this.currentItem;
     const { itemRect, panelRect } = this.getPanelFinalPosition();
 
+    console.log(panelRect);
+
     // backdrop overlay
     const overlay = document.createElement("div");
     overlay.id = `${this.defaults.cssRuleName.panel.overlay}`;
@@ -603,8 +606,10 @@ class Orbital {
         },
         duration: this.defaults.panel.animation.moving.duration,
         properties: {
-          left: { to: `${centerX}px` },
-          top: { to: `${centerY}px` },
+          // left: { to: `${centerX}px` },
+          // top: { to: `${centerY}px` },
+          left: { to: `${panelRect.left}px` },
+          top: { to: `${panelRect.top}px` },
         },
         after: function (el) {
           el.classList.remove(self.defaults.cssRuleName.animation.moving);
@@ -629,16 +634,16 @@ class Orbital {
             from: `${itemRect.height}px`,
             to: `${panelRect.height}px`,
           },
-          left: {
-            from: `-${panelRect.left}px`,
-            to: `${panelRect.left}px`,
-          },
-          top: {
-            from: `-${panelRect.top}px`,
-            to: `${panelRect.top}px`,
-          },
+          // left: {
+          //   from: `-${panelRect.left}px`,
+          //   to: `${panelRect.left}px`,
+          // },
+          // top: {
+          //   from: `-${panelRect.top}px`,
+          //   to: `${panelRect.top}px`,
+          // },
           transform: {
-            from: `translate(${centerX}, ${centerY})`,
+            // from: `translate(${centerX}, ${centerY})`,
             to: `translate(-${panelRect.width / 2}px, -${panelRect.height / 2}px)`,
           },
         },
@@ -818,14 +823,136 @@ class Orbital {
       ...itemPanelStyle,
     };
 
-    const panelRect = {
-      left: this._getPropertyValue(panelStyle.left),
-      top: this._getPropertyValue(panelStyle.top),
-      width: this._getPropertyValue(panelStyle.width),
-      height: this._getPropertyValue(panelStyle.height),
-    };
+    const viewportWidth = document.documentElement.clientWidth;
+    const viewportHeight = document.documentElement.clientHeight;
 
-    return { itemRect, panelRect };
+    const position = itemPanelStyle.position || globalPanelStyle.position || this.defaults.panel.position;
+
+    console.log(position);
+
+    let panelWidth = this._getPropertyValue(panelStyle.width);
+    let panelHeight = this._getPropertyValue(panelStyle.height);
+
+    if (panelWidth > viewportWidth) {
+      panelWidth = viewportWidth - 20;
+    }
+
+    if (panelHeight > viewportHeight) {
+      panelHeight = viewportHeight - 20;
+    }
+
+    const { x, y } = this.parsePanelPosition(position, panelWidth, panelHeight, viewportWidth, viewportHeight);
+
+    let finalX = x;
+    let finalY = y;
+
+    if (finalX + panelWidth > viewportWidth) {
+      finalX = viewportWidth - panelWidth;
+    }
+
+    if (finalX < 0) {
+      finalX = 0;
+    }
+
+    if (finalY + panelHeight > viewportHeight) {
+      finalY = viewportHeight - panelHeight;
+    }
+
+    if (finalY < 0) {
+      finalY = 0;
+    }
+
+    // panel transformOrigin : center
+    const translateX = panelWidth / 2;
+    const translateY = panelHeight / 2;
+
+    finalX += translateX;
+    finalY += translateY;
+
+    return {
+      itemRect,
+      panelRect: {
+        left: finalX,
+        top: finalY,
+        width: panelWidth,
+        height: panelHeight,
+      },
+    };
+  }
+
+  parsePanelPosition(position, panelWidth, panelHeight, viewportWidth, viewportHeight) {
+    let x = (viewportWidth - panelWidth) / 2;
+    let y = (viewportHeight - panelHeight) / 2;
+
+    if (!position) return { x, y };
+
+    const parts = position.trim().split(/\s+/);
+
+    if (parts.length === 1) {
+      const pos = parts[0];
+      if (pos === "top" || pos === "bottom") {
+        y = pos === "top" ? 0 : viewportHeight - panelHeight;
+        x = (viewportWidth - panelWidth) / 2;
+      } else if (pos === "left" || pos === "right") {
+        x = pos === "left" ? 0 : viewportWidth - panelWidth;
+        y = (viewportHeight - panelHeight) / 2;
+      } else if (pos.endsWith("%")) {
+        const percent = parseFloat(pos) / 100;
+        x = (viewportWidth - panelWidth) * percent;
+        y = (viewportHeight - panelHeight) * percent;
+      }
+      return { x, y };
+    }
+
+    if (parts.length >= 2) {
+      if (parts[0] === "left") {
+        x = 0;
+      } else if (parts[0] === "right") {
+        x = viewportWidth - panelWidth;
+      } else if (parts[0].endsWith("%")) {
+        x = (viewportWidth - panelWidth) * (parseFloat(parts[0]) / 100);
+      }
+
+      if (parts[1] === "top") {
+        y = 0;
+      } else if (parts[1] === "bottom") {
+        y = viewportHeight - panelHeight;
+      } else if (parts[1].endsWith("%")) {
+        y = ((viewportHeight - panelHeight) * parseFloat(parts[1])) / 100;
+      }
+
+      if (parts.length === 4) {
+        if (parts[2] === "left" || parts[2] === "right") {
+          if (parts[2] === "left") {
+            x = 0;
+          } else {
+            x = viewportWidth - panelWidth;
+          }
+
+          if (parts[3].endsWith("%")) {
+            x += viewportWidth * (parseFloat(parts[3]) / 100);
+          } else {
+            x += parseFloat(parts[3]);
+          }
+        }
+
+        if (parts[2] === "top" || parts[2] === "bottom") {
+          if (parts[2] === "top") {
+            y = 0;
+          } else {
+            y = viewportHeight - panelHeight;
+          }
+
+          if (parts[3].endsWith("%")) {
+            y += viewportHeight * (parseFloat(parts[3]) / 100);
+          } else {
+            y += parseFloat(parts[3]);
+          }
+        }
+      }
+    }
+
+    return { x, y };
   }
 
   handleResize() {

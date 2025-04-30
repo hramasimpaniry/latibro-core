@@ -5,14 +5,13 @@ const config = {
   interactivity: {
     enabled: true,
   },
-  // panel: {
-  //   style: {
-  //     top: document.documentElement.clientHeight / 2,
-  //     left: document.documentElement.clientWidth / 2,
-  //     width: 400,
-  //     height: 600,
-  //   },
-  // },
+  panel: {
+    // defaults for all panels
+    style: {
+      width: 600,
+      height: 400,
+    },
+  },
   orbits: [
     {
       items: [
@@ -21,8 +20,7 @@ const config = {
           panel: {
             content: "<h1>Orbit 1, Item 1</h1>",
             style: {
-              top: () => document.documentElement.clientHeight / 2,
-              left: 220,
+              position: "left bottom",
               width: 400,
               height: 560,
             },
@@ -33,8 +31,7 @@ const config = {
           panel: {
             content: "<h1>Orbit 1, Item 2</h1>",
             style: {
-              top: () => document.documentElement.clientHeight / 2,
-              left: () => document.documentElement.clientWidth - 220,
+              position: "right top",
               width: 400,
               height: 560,
             },
