@@ -815,7 +815,8 @@ class Orbital {
     const viewportWidth = document.documentElement.clientWidth;
     const viewportHeight = document.documentElement.clientHeight;
 
-    const position = itemPanelStyle.position || globalPanelStyle.position || this.defaults.panel.position;
+    const position =
+      this.currentItem.options?.panel?.position || this.options?.panel?.position || this.defaults.panel.position;
 
     console.log(position);
 
@@ -835,19 +836,19 @@ class Orbital {
     let finalX = x;
     let finalY = y;
 
-    if (finalX + panelWidth > viewportWidth) {
+    if (finalX + panelWidth >= viewportWidth) {
       finalX = viewportWidth - panelWidth;
     }
 
-    if (finalX < 0) {
+    if (finalX <= 0) {
       finalX = 0;
     }
 
-    if (finalY + panelHeight > viewportHeight) {
+    if (finalY + panelHeight >= viewportHeight) {
       finalY = viewportHeight - panelHeight;
     }
 
-    if (finalY < 0) {
+    if (finalY <= 0) {
       finalY = 0;
     }
 

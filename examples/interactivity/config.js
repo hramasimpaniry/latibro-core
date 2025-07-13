@@ -19,8 +19,8 @@ const config = {
           src: "https://placehold.co/50",
           panel: {
             content: "<h1>Orbit 1, Item 1</h1>",
+            position: "left bottom",
             style: {
-              position: "left bottom",
               width: 400,
               height: 560,
             },
@@ -30,8 +30,8 @@ const config = {
           src: "https://placehold.co/50",
           panel: {
             content: "<h1>Orbit 1, Item 2</h1>",
+            position: "right center",
             style: {
-              position: "right center",
               width: 400,
               height: 560,
             },
