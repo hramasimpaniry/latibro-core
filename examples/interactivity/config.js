@@ -31,7 +31,7 @@ const config = {
           panel: {
             content: "<h1>Orbit 1, Item 2</h1>",
             style: {
-              position: "right top",
+              position: "right center",
               width: 400,
               height: 560,
             },
