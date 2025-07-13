@@ -78,7 +78,6 @@ class Orbital {
       },
       panel: {
         position: "center",
-        position: "center",
         style: {
           top: () => document.documentElement.clientHeight / 2,
           left: () => document.documentElement.clientWidth / 2,
