@@ -89,8 +89,10 @@ class Orbital {
           title: "Click to close this panel",
         },
         offset: {
-          width: 15,
-          height: 15,
+          left: 15,
+          top: 15,
+          width: 20,
+          height: 20,
         },
         overlay: {
           style: {
@@ -539,8 +541,6 @@ class Orbital {
     const { element } = this.currentItem;
     const { itemRect, panelRect } = this.getPanelFinalPosition();
 
-    console.log(panelRect);
-
     // backdrop overlay
     const overlay = document.createElement("div");
     overlay.id = `${this.defaults.cssRuleName.panel.overlay}`;
@@ -817,18 +817,17 @@ class Orbital {
 
     const position =
       this.currentItem.options?.panel?.position || this.options?.panel?.position || this.defaults.panel.position;
-
-    console.log(position);
+    const offset = this.currentItem.options?.panel?.offset || this.options?.panel?.offset || this.defaults.panel.offset;
 
     let panelWidth = this._getPropertyValue(panelStyle.width);
     let panelHeight = this._getPropertyValue(panelStyle.height);
 
     if (panelWidth > viewportWidth) {
-      panelWidth = viewportWidth - 20;
+      panelWidth = viewportWidth - offset.width;
     }
 
     if (panelHeight > viewportHeight) {
-      panelHeight = viewportHeight - 20;
+      panelHeight = viewportHeight - offset.height;
     }
 
     const { x, y } = this.parsePanelPosition(position, panelWidth, panelHeight, viewportWidth, viewportHeight);
@@ -837,19 +836,19 @@ class Orbital {
     let finalY = y;
 
     if (finalX + panelWidth >= viewportWidth) {
-      finalX = viewportWidth - panelWidth;
+      finalX = viewportWidth - panelWidth - offset.left;
     }
 
     if (finalX <= 0) {
-      finalX = 0;
+      finalX = offset.left;
     }
 
     if (finalY + panelHeight >= viewportHeight) {
-      finalY = viewportHeight - panelHeight;
+      finalY = viewportHeight - panelHeight - offset.top;
     }
 
     if (finalY <= 0) {
-      finalY = 0;
+      finalY = offset.top;
     }
 
     // panel transformOrigin : center

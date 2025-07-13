@@ -30,7 +30,7 @@ const config = {
           src: "https://placehold.co/50",
           panel: {
             content: "<h1>Orbit 1, Item 2</h1>",
-            position: "right center",
+            position: "right top",
             style: {
               width: 400,
               height: 560,
