@@ -541,8 +541,6 @@ class Orbital {
 
     console.log(panelRect);
 
-    console.log(panelRect);
-
     // backdrop overlay
     const overlay = document.createElement("div");
     overlay.id = `${this.defaults.cssRuleName.panel.overlay}`;
@@ -608,12 +606,6 @@ class Orbital {
         },
         duration: this.defaults.panel.animation.moving.duration,
         properties: {
-          // left: { to: `${centerX}px` },
-          // top: { to: `${centerY}px` },
-          left: { to: `${panelRect.left}px` },
-          top: { to: `${panelRect.top}px` },
-          // left: { to: `${centerX}px` },
-          // top: { to: `${centerY}px` },
           left: { to: `${panelRect.left}px` },
           top: { to: `${panelRect.top}px` },
         },
@@ -640,25 +632,7 @@ class Orbital {
             from: `${itemRect.height}px`,
             to: `${panelRect.height}px`,
           },
-          // left: {
-          //   from: `-${panelRect.left}px`,
-          //   to: `${panelRect.left}px`,
-          // },
-          // top: {
-          //   from: `-${panelRect.top}px`,
-          //   to: `${panelRect.top}px`,
-          // },
-          // left: {
-          //   from: `-${panelRect.left}px`,
-          //   to: `${panelRect.left}px`,
-          // },
-          // top: {
-          //   from: `-${panelRect.top}px`,
-          //   to: `${panelRect.top}px`,
-          // },
           transform: {
-            // from: `translate(${centerX}, ${centerY})`,
-            // from: `translate(${centerX}, ${centerY})`,
             to: `translate(-${panelRect.width / 2}px, -${panelRect.height / 2}px)`,
           },
         },
