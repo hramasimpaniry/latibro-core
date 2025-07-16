@@ -548,4 +548,88 @@ describe("Orbital: Interactivity / Panel", () => {
     // tests
     expectPanelStyle(item, options.orbits[0].items[2].panel.style);
   });
+
+  it("should understand CSS unit dimension (ex: 50%)", async () => {
+    let items;
+    let item;
+
+    // options
+    const options = {
+      interactivity: {
+        enabled: true,
+      },
+      panel: {
+        style: {
+          left: 200,
+          top: 200,
+          width: 600,
+          height: 400,
+        },
+      },
+      orbits: [
+        {
+          items: [
+            {
+              src: "https://placehold.co/50",
+              panel: {
+                content: "Hello from Item 1",
+              },
+            },
+            {
+              src: "https://placehold.co/50",
+              panel: {
+                content: "Hello from Item 2",
+                style: {
+                  left: 0,
+                  top: 0,
+                  width: 500,
+                  height: 300,
+                },
+              },
+            },
+            {
+              src: "https://placehold.co/50",
+              panel: {
+                content: "Hello from Item 3",
+                style: {
+                  left: 150,
+                  top: 150,
+                  width: "150px",
+                  height: 200,
+                },
+              },
+            },
+          ],
+          speed: 0,
+        },
+      ],
+    };
+
+    // init
+    orbital = new Orbital(container, options);
+
+    // -- item 0
+    // elements
+    items = container.querySelectorAll(".orbit .orbit-item-container");
+    item = items[0];
+
+    // tests
+    expectPanelStyle(item, options.panel.style);
+
+    // -- item 1
+    // elements
+    items = container.querySelectorAll(".orbit .orbit-item-container");
+    item = items[1];
+
+    // tests
+    expectPanelStyle(item, options.orbits[0].items[1].panel.style);
+
+    // -- item 2
+    // elements
+    items = container.querySelectorAll(".orbit .orbit-item-container");
+    item = items[2];
+
+    // tests
+    expectPanelStyle(item, options.orbits[0].items[2].panel.style);
+  });
 });
