@@ -91,8 +91,8 @@ class Orbital {
         offset: {
           left: 15,
           top: 15,
-          width: 20,
-          height: 20,
+          width: 15,
+          height: 15,
         },
         overlay: {
           style: {
@@ -593,9 +593,6 @@ class Orbital {
 
     this.panel = { overlay, panel, panelImage, panelClose, panelContent };
 
-    const centerX = parseFloat(panelRect.left);
-    const centerY = parseFloat(panelRect.top);
-
     // open panel animation
 
     this.animate(panel, [
@@ -819,14 +816,14 @@ class Orbital {
       this.currentItem.options?.panel?.position || this.options?.panel?.position || this.defaults.panel.position;
     const offset = this.currentItem.options?.panel?.offset || this.options?.panel?.offset || this.defaults.panel.offset;
 
-    let panelWidth = this._getPropertyValue(panelStyle.width);
-    let panelHeight = this._getPropertyValue(panelStyle.height);
+    let panelWidth = this._toPx(panelStyle.width, "width");
+    let panelHeight = this._toPx(panelStyle.height, "height");
 
-    if (panelWidth > viewportWidth) {
+    if (panelWidth >= viewportWidth) {
       panelWidth = viewportWidth - offset.width;
     }
 
-    if (panelHeight > viewportHeight) {
+    if (panelHeight >= viewportHeight) {
       panelHeight = viewportHeight - offset.height;
     }
 
@@ -835,7 +832,7 @@ class Orbital {
     let finalX = x;
     let finalY = y;
 
-    if (finalX + panelWidth >= viewportWidth) {
+    if (finalX >= viewportWidth - panelWidth) {
       finalX = viewportWidth - panelWidth - offset.left;
     }
 
@@ -843,8 +840,8 @@ class Orbital {
       finalX = offset.left;
     }
 
-    if (finalY + panelHeight >= viewportHeight) {
-      finalY = viewportHeight - panelHeight - offset.top;
+    if (finalY >= viewportHeight - panelHeight) {
+      finalY = viewportHeight - panelHeight - offset.height;
     }
 
     if (finalY <= 0) {
@@ -858,14 +855,16 @@ class Orbital {
     finalX += translateX;
     finalY += translateY;
 
+    const panelRect = {
+      left: finalX,
+      top: finalY,
+      width: panelWidth,
+      height: panelHeight,
+    };
+
     return {
       itemRect,
-      panelRect: {
-        left: finalX,
-        top: finalY,
-        width: panelWidth,
-        height: panelHeight,
-      },
+      panelRect,
     };
   }
 
@@ -942,6 +941,32 @@ class Orbital {
     }
 
     return { x, y };
+  }
+
+  _convertToPixels(value, property, element = document.body) {
+    const testElement = document.createElement("div");
+
+    // On évite d'affecter le layout
+    testElement.style.position = "absolute";
+    testElement.style.visibility = "hidden";
+    testElement.style[property] = value;
+
+    element.appendChild(testElement);
+
+    // Récupération de la valeur calculée en pixels
+    let pixels;
+    if (property === "fontSize") {
+      pixels = parseFloat(getComputedStyle(testElement).fontSize);
+    } else {
+      pixels = parseFloat(getComputedStyle(testElement)[property]);
+    }
+
+    element.removeChild(testElement);
+    return pixels;
+  }
+
+  _toPx(value, property) {
+    return typeof value == "number" ? value : this._convertToPixels(value, property);
   }
 
   handleResize() {

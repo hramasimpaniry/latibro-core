@@ -6,7 +6,8 @@ const config = {
     enabled: true,
   },
   panel: {
-    // defaults for all panels
+    // default settings : if not set on item level, default settings is applied
+    // position : "center center",
     style: {
       width: 600,
       height: 400,
@@ -48,12 +49,33 @@ const config = {
     },
     {
       items: [
-        "https://placehold.co/50",
-        "https://placehold.co/50",
         {
           src: "https://placehold.co/50",
           panel: {
+            position: "center top",
+            style: {
+              width: "80%",
+              height: "50%",
+            },
             content: "<h1>Orbit 3, Item 1</h1>",
+          },
+        },
+        {
+          src: "https://placehold.co/50",
+          panel: {
+            position: "center bottom",
+            style: {
+              width: "80%",
+              height: "50%",
+            },
+            content: "<h1>Orbit 3, Item 2</h1>",
+          },
+        },
+        {
+          src: "https://placehold.co/50",
+          // position is set to default
+          panel: {
+            content: "<h1>Orbit 3, Item 3</h1>",
           },
         },
       ],
