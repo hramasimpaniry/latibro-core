@@ -562,8 +562,6 @@ class Orbital {
     panel.style.zIndex = this.defaults.orbit.zIndexStart + this.options.orbits.length + 2;
     document.body.appendChild(panel);
 
-    console.log(this.currentItem);
-
     if (options?.panel?.customCss) {
       // custom CSS
       panel.classList.add(...options.panel.customCss.split(" "));
