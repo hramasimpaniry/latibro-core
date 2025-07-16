@@ -6,12 +6,12 @@ const config = {
     enabled: true,
   },
   panel: {
-    // default settings : if not set on item level, default settings is applied
+    // default panel settings : if not set on item level, default settings is applied
     // position : "center center",
-    style: {
-      width: 600,
-      height: 400,
-    },
+    // dimension: {
+    //   width: 600,
+    //   height: 400,
+    // },
   },
   orbits: [
     {
@@ -21,7 +21,7 @@ const config = {
           panel: {
             content: "<h1>Orbit 1, Item 1</h1>",
             position: "left bottom",
-            style: {
+            dimension: {
               width: 400,
               height: 560,
             },
@@ -32,7 +32,7 @@ const config = {
           panel: {
             content: "<h1>Orbit 1, Item 2</h1>",
             position: "right top",
-            style: {
+            dimension: {
               width: 400,
               height: 560,
             },
@@ -53,7 +53,7 @@ const config = {
           src: "https://placehold.co/50",
           panel: {
             position: "center top",
-            style: {
+            dimension: {
               width: "80%",
               height: "50%",
             },
@@ -65,7 +65,7 @@ const config = {
           src: "https://placehold.co/50",
           panel: {
             position: "center bottom",
-            style: {
+            dimension: {
               width: "80%",
               height: "50%",
             },
@@ -74,8 +74,9 @@ const config = {
         },
         {
           src: "https://placehold.co/50",
-          // position is set to default
           panel: {
+            // position: if not set on item level, default panel settings are applied
+            // dimension: if not set on item level, default panel settings are applied
             content: "<h1>Orbit 3, Item 3</h1>",
           },
         },

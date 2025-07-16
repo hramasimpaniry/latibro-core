@@ -78,11 +78,9 @@ class Orbital {
       },
       panel: {
         position: "center",
-        style: {
-          top: () => document.documentElement.clientHeight / 2,
-          left: () => document.documentElement.clientWidth / 2,
-          width: () => document.documentElement.clientWidth - 15,
-          height: () => document.documentElement.clientHeight - 15,
+        dimension: {
+          width: "100%",
+          height: "100%",
         },
         close: {
           label: "×",
@@ -806,12 +804,12 @@ class Orbital {
   getPanelFinalPosition() {
     const { element } = this.currentItem;
     const itemRect = element.getBoundingClientRect();
-    const globalPanelStyle = this.options?.panel?.style || {};
-    const itemPanelStyle = this.currentItem.options?.panel?.style || {};
-    const panelStyle = {
-      ...this.defaults.panel.style,
-      ...globalPanelStyle,
-      ...itemPanelStyle,
+    const globalPanelDimension = this.options?.panel?.dimension || {};
+    const itemPanelDimension = this.currentItem.options?.panel?.dimension || {};
+    const dimension = {
+      ...this.defaults.panel.dimension,
+      ...globalPanelDimension,
+      ...itemPanelDimension,
     };
 
     const viewportWidth = document.documentElement.clientWidth;
@@ -821,8 +819,8 @@ class Orbital {
       this.currentItem.options?.panel?.position || this.options?.panel?.position || this.defaults.panel.position;
     const offset = this.currentItem.options?.panel?.offset || this.options?.panel?.offset || this.defaults.panel.offset;
 
-    let panelWidth = this._toPx(panelStyle.width, "width");
-    let panelHeight = this._toPx(panelStyle.height, "height");
+    let panelWidth = this._toPx(dimension.width, "width");
+    let panelHeight = this._toPx(dimension.height, "height");
 
     if (panelWidth >= viewportWidth) {
       panelWidth = viewportWidth - offset.width;
@@ -853,7 +851,7 @@ class Orbital {
       finalY = offset.top;
     }
 
-    // panel transformOrigin : center
+    // panel transformOrigin : center center
     const translateX = panelWidth / 2;
     const translateY = panelHeight / 2;
 
