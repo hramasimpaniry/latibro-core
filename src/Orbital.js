@@ -569,7 +569,7 @@ class Orbital {
 
     // panel-img
     const panelImage = panel.querySelector(`.${this.defaults.cssRuleName.item.image}`);
-    panelImage.classList.add(`${this.defaults.cssRuleName.panel.img}`);
+    panelImage.classList.add(`${this.defaults.cssRuleName.panel.image}`);
 
     // panel-close
     const panelClose = document.createElement("button");
