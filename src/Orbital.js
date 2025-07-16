@@ -538,7 +538,7 @@ class Orbital {
     const self = this;
     this.isPanelOpen = true;
     this.isPanelBusy = true;
-    const { element } = this.currentItem;
+    const { element, options, orbitIndex, itemIndex } = this.currentItem;
     const { itemRect, panelRect } = this.getPanelFinalPosition();
 
     // backdrop overlay
@@ -550,7 +550,7 @@ class Orbital {
 
     // panel
     const panel = element.cloneNode(true);
-    panel.className = `${this.defaults.cssRuleName.panel.container}`;
+    panel.className = `${this.defaults.cssRuleName.panel.container} ${this.defaults.cssRuleName.panel.container}-${orbitIndex}-${itemIndex}`;
     panel.style.position = "fixed";
     panel.style.left = `${itemRect.left}px`;
     panel.style.top = `${itemRect.top}px`;
@@ -561,6 +561,13 @@ class Orbital {
     panel.style.transition = "all 0.4s cubic-bezier(0.2, 0.8, 0.3, 1.2)";
     panel.style.zIndex = this.defaults.orbit.zIndexStart + this.options.orbits.length + 2;
     document.body.appendChild(panel);
+
+    console.log(this.currentItem);
+
+    if (options?.panel?.customCss) {
+      // custom CSS
+      panel.classList.add(...options.panel.customCss.split(" "));
+    }
 
     // panel-img
     const panelImage = panel.querySelector(`.${this.defaults.cssRuleName.item.image}`);

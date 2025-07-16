@@ -57,6 +57,7 @@ const config = {
               width: "80%",
               height: "50%",
             },
+            customCss: "custom-panel",
             content: "<h1>Orbit 3, Item 1</h1>",
           },
         },
