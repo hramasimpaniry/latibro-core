@@ -1,0 +1,11 @@
+.item-thumbnail-custom {
+  flex-direction: column;
+  gap: 20px;
+}
+
+.item-thumbnail-custom span:nth-child(2) {
+  color: inherit;
+}
+.item-thumbnail-custom span {
+  color: white;
+}

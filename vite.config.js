@@ -10,8 +10,6 @@ export default defineConfig({
     },
   },
   test: {
-    globals: true,
-    setupFiles: ["@testing-library/jest-dom/vitest"],
-    environment: "jsdom",
+    // see : vitest.workspace.js
   },
 });

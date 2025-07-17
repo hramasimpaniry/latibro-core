@@ -6,6 +6,26 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [0.4.0] - 2025-04-20
+
+### Breaking Changes
+
+- Renamed all `styles` properties to `style` (singular)
+  - Migration: Change `something.styles` to `something.style`
+
+### New Features
+
+- **Panel System**:
+  - Clickable items when `item.panel.content` exists
+  - Global config: `options.panel`
+  - Per-item config: `item.panel`
+- **Customization**:
+  - Style: `panel.style` (position/dimensions via `top/left/width/height`)
+  - CSS: `panel.customCss` for class names
+- **Backdrop**:
+  - Toggle with `panel.backdrop` (default: true)
+  - Click to close panel
+
 ## [0.3.0] - 2025-02-03
 
 ### Removed
