@@ -6,24 +6,38 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
-## [0.4.0] - 2025-04-20
+## [0.4.0] - 2025-07-17
 
 ### Breaking Changes
 
 - Renamed all `styles` properties to `style` (singular)
-  - Migration: Change `something.styles` to `something.style`
+- Migration: Change `something.styles` to `something.style`
+
+### Added
+
+- Interactivity system (hover/click on items)
+- Panel component with animations
+- Configuration for panel positioning/dimensions
+
+### Changed
+
+- Improved animation handling
 
 ### New Features
 
 - **Panel System**:
-  - Clickable items when `item.panel.content` exists
+  - Interactivity : `interactivity.enable` must be set to `true`.
+    - Note : Only item with `item.panel.content` set are clickable. Other will not have any interactivity.
   - Global config: `options.panel`
-  - Per-item config: `item.panel`
+  - Per-item config: `item.panel` (Override global config)
 - **Customization**:
-  - Style: `panel.style` (position/dimensions via `top/left/width/height`)
-  - CSS: `panel.customCss` for class names
+  - Position : `panel.position` for controlling the opened panel position on the screen (`top`, `bottom`, `left`, `right`, `center`, or combinations)
+  - Dimension : `panel.dimension` is an object to specify the final `width` and `height` of the opening panel. It can parse any valid CSS units (e.g. `50%`, `25rem`...). Panels are responsive to the viewport dimension.
+  - Animation : `panel.animation` for controlling the default timing of the panel's animation.
+  - CSS: `panel.customCss` for custom class names
+  - **Notes**: By design, the panel object has no `style` configuration Please use `panel.customCss` instead.
 - **Backdrop**:
-  - Toggle with `panel.backdrop` (default: true)
+  - Toggle with `panel.backdrop` (default: `true`)
   - Click to close panel
 
 ## [0.3.0] - 2025-02-03

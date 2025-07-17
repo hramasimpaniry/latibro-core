@@ -77,7 +77,7 @@ class Orbital {
         },
       },
       panel: {
-        position: "center",
+        position: "center center",
         dimension: {
           width: "100%",
           height: "100%",
