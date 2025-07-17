@@ -823,11 +823,11 @@ class Orbital {
     let panelHeight = this._toPx(dimension.height, "height");
 
     if (panelWidth >= viewportWidth) {
-      panelWidth = viewportWidth - offset.width;
+      panelWidth = viewportWidth - offset.width * 2;
     }
 
     if (panelHeight >= viewportHeight) {
-      panelHeight = viewportHeight - offset.height;
+      panelHeight = viewportHeight - offset.height * 2;
     }
 
     const { x, y } = this.parsePanelPosition(position, panelWidth, panelHeight, viewportWidth, viewportHeight);
